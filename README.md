@@ -26,7 +26,6 @@
 4. 意见反馈
 
 
-
 ---
 
 
@@ -120,6 +119,8 @@
 | selfevaluation | varchar  | 255  | 个人评价 |
 | updatetime     | datetime | -    | 更新时间 |
 
+
+
 ###### 4.1 教育经历子表-resedu
 
 | 变量名             | 类型       | 长度   | 备注   |
@@ -134,6 +135,8 @@
 | majorclass      | varchar  | 100  | 主修课程 |
 | certificate     | varchar  | 255  | 证书   |
 | awards          | varchar  | 255  | 奖项   |
+
+
 
 ###### 4.2 校园经历子表-rescampus
 
@@ -180,11 +183,15 @@
 | imgurl       | varchar  | 200  | 公司图片地址             |      |
 | companysize  | varchar  | 10   | 公司规模               |      |
 | industrytype | varchar  | 20   | 行业类型               |      |
-| companytag   | varchar  | 20   | 公司标签               |      |
+| companytag   | varchar  | 40   | 公司标签               |      |
 | introduction | text     | -    | 介绍                 |      |
 | address      | varchar  | 30   | 地址                 |      |
 | updatetime   | datetime | -    | 更新时间               |      |
 | checked(++)  | int      | 1    | 审核状态，1通过 2不通过 0待审核 |      |
+| credit(++)   | double   | 4    | 信用平均分              |      |
+|              |          |      |                    |      |
+
+
 
 
 
@@ -196,7 +203,9 @@
 | type | varchar | 10   | 类型 （-行业类型 -公司标签 -职位诱惑 -招聘信息类型） |
 | name | varchar | 20   | 名称                             |
 
- 
+
+
+
 
 ##### 8. 简历投递状态表-resdeliverstatus
 
@@ -206,7 +215,7 @@
 | joid        | int      | 11   | 招聘信息id                |
 | reid        | int      | 11   | 简历id                  |
 | status      | int      | 1    | 简历状态（投递，查看，面试，初筛，不合适） |
-| checked     | int      | 1    | （保留）                  |
+| viewed      | int      | 1    | 被查看（保留）               |
 | description | text     | -    | 描述                    |
 | updatetime  | datetime | -    | 更新时间                  |
 | openid(++)  | varchar  | 50   | 用户id                  |
@@ -215,29 +224,61 @@
 
 ##### 9. 面试邀约信息表-interviewinfo
 
-| 变量名           | 类型       | 长度   | 备注     |
-| ------------- | -------- | ---- | ------ |
-| id            | int      | 11   | -      |
-| interviewtime | datetime | -    | 面试时间   |
-| description   | text     | -    | 描述     |
-| openid        | varchar  | 50   | 用户id   |
-| joid          | int      | 11   | 招聘信息id |
-| updatetime    | datetime | -    | 更新时间   |
+| 变量名           | 类型       | 长度   | 备注             |
+| ------------- | -------- | ---- | -------------- |
+| id            | int      | 11   | -              |
+| interviewtime | datetime | -    | 面试时间           |
+| description   | text     | -    | 描述             |
+| openid        | varchar  | 50   | 用户id           |
+| joid          | int      | 11   | 招聘信息id         |
+| updatetime    | datetime | -    | 更新时间           |
+| viewed(++)    | int      | 1    | 被用户查看(0未看，1已看) |
+|               |          |      |                |
 
 
 
 ##### 10. 意见表-opinion
 
-| 变量名         | 类型       | 长度   | 备注   |
-| ----------- | -------- | ---- | ---- |
-| id          | int      | 11   | -    |
-| openid      | varchar  | 50   | 用户id |
-| description | text     | -    | 描述   |
-| updatetime  | datetime | -    | 更新时间 |
+| 变量名             | 类型       | 长度   | 备注       |
+| --------------- | -------- | ---- | -------- |
+| id              | int      | 11   | -        |
+| openid          | varchar  | 50   | 用户id     |
+| description     | text     | -    | 描述       |
+| updatetime      | datetime | -    | 更新时间     |
+| contactinfo(++) | varchar  | 30   | 联系方式(保留) |
+|                 |          |      |          |
 
 
 
 ##### 11.配置表(待定，首页轮播图，广告内容等...)
+
+
+
+##### 12.用户对公司信用评分表usercompanycredit
+
+| 变量名        | 类型       | 长度   | 备注   |
+| ---------- | -------- | ---- | ---- |
+| id         | int      | 11   |      |
+| companyid  | int      | 11   | 公司id |
+| openid     | varchar  | 50   | 用户id |
+| credit     | double   | 5    | 信用分数 |
+| updatetime | datetime | -    | 更新时间 |
+|            |          |      |      |
+
+
+
+##### 13.用户对公司信用评分表companyusercredit
+
+| 变量名        | 类型       | 长度   | 备注   |
+| ---------- | -------- | ---- | ---- |
+| id         | int      | 11   |      |
+| companyid  | int      | 11   | 公司id |
+| openid     | varchar  | 50   | 用户id |
+| credit     | double   | 5    | 信用分数 |
+| updatetime | datetime | -    | 更新时间 |
+|            |          |      |      |
+
+
 
 
 
