@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcl.dao.JobOffersMapper" >
+  <resultMap id="BaseResultMap" type="com.mcl.pojo.JobOffers" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="jobname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="temptation" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="tag" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="wage" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="companyid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="city/country" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="education" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="duration" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="workfrequency" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="checkd" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.mcl.pojo.JobOffers" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="jobname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="temptation" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="tag" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="wage" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="companyid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="city/country" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="education" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="duration" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="workfrequency" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="checkd" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="description" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, jobname, temptation, tag, type, wage, companyid, city/country, address, education, 
+    duration, workfrequency, updatetime, checkd
+  </sql>
+  <sql id="Blob_Column_List" >
+    description
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from joboffers
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from joboffers
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mcl.pojo.JobOffers" >
+    insert into joboffers (id, jobname, temptation, 
+      tag, type, wage, companyid, 
+      city/country, address, education, 
+      duration, workfrequency, updatetime, 
+      checkd, description)
+    values (#{id,jdbcType=INTEGER}, #{jobname,jdbcType=VARCHAR}, #{temptation,jdbcType=VARCHAR}, 
+      #{tag,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{wage,jdbcType=VARCHAR}, #{companyid,jdbcType=INTEGER}, 
+      #{cityCountry,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, 
+      #{duration,jdbcType=VARCHAR}, #{workfrequency,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{checkd,jdbcType=INTEGER}, #{description,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mcl.pojo.JobOffers" >
+    insert into joboffers
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="jobname != null" >
+        jobname,
+      </if>
+      <if test="temptation != null" >
+        temptation,
+      </if>
+      <if test="tag != null" >
+        tag,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="wage != null" >
+        wage,
+      </if>
+      <if test="companyid != null" >
+        companyid,
+      </if>
+      <if test="cityCountry != null" >
+        city/country,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="education != null" >
+        education,
+      </if>
+      <if test="duration != null" >
+        duration,
+      </if>
+      <if test="workfrequency != null" >
+        workfrequency,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="checkd != null" >
+        checkd,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="jobname != null" >
+        #{jobname,jdbcType=VARCHAR},
+      </if>
+      <if test="temptation != null" >
+        #{temptation,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null" >
+        #{tag,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="wage != null" >
+        #{wage,jdbcType=VARCHAR},
+      </if>
+      <if test="companyid != null" >
+        #{companyid,jdbcType=INTEGER},
+      </if>
+      <if test="cityCountry != null" >
+        #{cityCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null" >
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="duration != null" >
+        #{duration,jdbcType=VARCHAR},
+      </if>
+      <if test="workfrequency != null" >
+        #{workfrequency,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkd != null" >
+        #{checkd,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mcl.pojo.JobOffers" >
+    update joboffers
+    <set >
+      <if test="jobname != null" >
+        jobname = #{jobname,jdbcType=VARCHAR},
+      </if>
+      <if test="temptation != null" >
+        temptation = #{temptation,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null" >
+        tag = #{tag,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="wage != null" >
+        wage = #{wage,jdbcType=VARCHAR},
+      </if>
+      <if test="companyid != null" >
+        companyid = #{companyid,jdbcType=INTEGER},
+      </if>
+      <if test="cityCountry != null" >
+        city/country = #{cityCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null" >
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="duration != null" >
+        duration = #{duration,jdbcType=VARCHAR},
+      </if>
+      <if test="workfrequency != null" >
+        workfrequency = #{workfrequency,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkd != null" >
+        checkd = #{checkd,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mcl.pojo.JobOffers" >
+    update joboffers
+    set jobname = #{jobname,jdbcType=VARCHAR},
+      temptation = #{temptation,jdbcType=VARCHAR},
+      tag = #{tag,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      wage = #{wage,jdbcType=VARCHAR},
+      companyid = #{companyid,jdbcType=INTEGER},
+      city/country = #{cityCountry,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      education = #{education,jdbcType=VARCHAR},
+      duration = #{duration,jdbcType=VARCHAR},
+      workfrequency = #{workfrequency,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      checkd = #{checkd,jdbcType=INTEGER},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mcl.pojo.JobOffers" >
+    update joboffers
+    set jobname = #{jobname,jdbcType=VARCHAR},
+      temptation = #{temptation,jdbcType=VARCHAR},
+      tag = #{tag,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      wage = #{wage,jdbcType=VARCHAR},
+      companyid = #{companyid,jdbcType=INTEGER},
+      city/country = #{cityCountry,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      education = #{education,jdbcType=VARCHAR},
+      duration = #{duration,jdbcType=VARCHAR},
+      workfrequency = #{workfrequency,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      checkd = #{checkd,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

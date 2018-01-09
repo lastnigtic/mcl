@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcl.dao.ResEduMapper" >
+  <resultMap id="BaseResultMap" type="com.mcl.pojo.ResEdu" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="reid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="schoolname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="major" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="startschooltime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="endschooltime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="education" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="majorclass" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="certificate" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="awards" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, reid, schoolname, major, startschooltime, endschooltime, education, majorclass, 
+    certificate, awards
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from resedu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from resedu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mcl.pojo.ResEdu" >
+    insert into resedu (id, reid, schoolname, 
+      major, startschooltime, endschooltime, 
+      education, majorclass, certificate, 
+      awards)
+    values (#{id,jdbcType=INTEGER}, #{reid,jdbcType=INTEGER}, #{schoolname,jdbcType=VARCHAR}, 
+      #{major,jdbcType=VARCHAR}, #{startschooltime,jdbcType=TIMESTAMP}, #{endschooltime,jdbcType=TIMESTAMP}, 
+      #{education,jdbcType=VARCHAR}, #{majorclass,jdbcType=VARCHAR}, #{certificate,jdbcType=VARCHAR}, 
+      #{awards,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mcl.pojo.ResEdu" >
+    insert into resedu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="reid != null" >
+        reid,
+      </if>
+      <if test="schoolname != null" >
+        schoolname,
+      </if>
+      <if test="major != null" >
+        major,
+      </if>
+      <if test="startschooltime != null" >
+        startschooltime,
+      </if>
+      <if test="endschooltime != null" >
+        endschooltime,
+      </if>
+      <if test="education != null" >
+        education,
+      </if>
+      <if test="majorclass != null" >
+        majorclass,
+      </if>
+      <if test="certificate != null" >
+        certificate,
+      </if>
+      <if test="awards != null" >
+        awards,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="reid != null" >
+        #{reid,jdbcType=INTEGER},
+      </if>
+      <if test="schoolname != null" >
+        #{schoolname,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null" >
+        #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="startschooltime != null" >
+        #{startschooltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endschooltime != null" >
+        #{endschooltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="education != null" >
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="majorclass != null" >
+        #{majorclass,jdbcType=VARCHAR},
+      </if>
+      <if test="certificate != null" >
+        #{certificate,jdbcType=VARCHAR},
+      </if>
+      <if test="awards != null" >
+        #{awards,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mcl.pojo.ResEdu" >
+    update resedu
+    <set >
+      <if test="reid != null" >
+        reid = #{reid,jdbcType=INTEGER},
+      </if>
+      <if test="schoolname != null" >
+        schoolname = #{schoolname,jdbcType=VARCHAR},
+      </if>
+      <if test="major != null" >
+        major = #{major,jdbcType=VARCHAR},
+      </if>
+      <if test="startschooltime != null" >
+        startschooltime = #{startschooltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endschooltime != null" >
+        endschooltime = #{endschooltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="education != null" >
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="majorclass != null" >
+        majorclass = #{majorclass,jdbcType=VARCHAR},
+      </if>
+      <if test="certificate != null" >
+        certificate = #{certificate,jdbcType=VARCHAR},
+      </if>
+      <if test="awards != null" >
+        awards = #{awards,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mcl.pojo.ResEdu" >
+    update resedu
+    set reid = #{reid,jdbcType=INTEGER},
+      schoolname = #{schoolname,jdbcType=VARCHAR},
+      major = #{major,jdbcType=VARCHAR},
+      startschooltime = #{startschooltime,jdbcType=TIMESTAMP},
+      endschooltime = #{endschooltime,jdbcType=TIMESTAMP},
+      education = #{education,jdbcType=VARCHAR},
+      majorclass = #{majorclass,jdbcType=VARCHAR},
+      certificate = #{certificate,jdbcType=VARCHAR},
+      awards = #{awards,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

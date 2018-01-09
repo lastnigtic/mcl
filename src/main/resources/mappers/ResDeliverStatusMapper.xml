@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcl.dao.ResDeliverStatusMapper" >
+  <resultMap id="BaseResultMap" type="com.mcl.pojo.ResDeliverStatus" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="joid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="reid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="viewed" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="openid" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.mcl.pojo.ResDeliverStatus" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="joid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="reid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="viewed" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="openid" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="description" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, joid, reid, status, viewed, updatetime, openid
+  </sql>
+  <sql id="Blob_Column_List" >
+    description
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from resdeliverstatus
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from resdeliverstatus
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mcl.pojo.ResDeliverStatus" >
+    insert into resdeliverstatus (id, joid, reid, 
+      status, viewed, updatetime, 
+      openid, description)
+    values (#{id,jdbcType=INTEGER}, #{joid,jdbcType=INTEGER}, #{reid,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{viewed,jdbcType=INTEGER}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{openid,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mcl.pojo.ResDeliverStatus" >
+    insert into resdeliverstatus
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="joid != null" >
+        joid,
+      </if>
+      <if test="reid != null" >
+        reid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="viewed != null" >
+        viewed,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="openid != null" >
+        openid,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="joid != null" >
+        #{joid,jdbcType=INTEGER},
+      </if>
+      <if test="reid != null" >
+        #{reid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="viewed != null" >
+        #{viewed,jdbcType=INTEGER},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mcl.pojo.ResDeliverStatus" >
+    update resdeliverstatus
+    <set >
+      <if test="joid != null" >
+        joid = #{joid,jdbcType=INTEGER},
+      </if>
+      <if test="reid != null" >
+        reid = #{reid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="viewed != null" >
+        viewed = #{viewed,jdbcType=INTEGER},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="openid != null" >
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mcl.pojo.ResDeliverStatus" >
+    update resdeliverstatus
+    set joid = #{joid,jdbcType=INTEGER},
+      reid = #{reid,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      viewed = #{viewed,jdbcType=INTEGER},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      openid = #{openid,jdbcType=VARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mcl.pojo.ResDeliverStatus" >
+    update resdeliverstatus
+    set joid = #{joid,jdbcType=INTEGER},
+      reid = #{reid,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      viewed = #{viewed,jdbcType=INTEGER},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      openid = #{openid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
