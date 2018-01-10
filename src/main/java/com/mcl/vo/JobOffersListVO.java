@@ -1,13 +1,18 @@
-package com.mcl.pojo;
+package com.mcl.vo;
+
+import com.mcl.pojo.Company;
 
 import java.util.Date;
 
-public class JobOffers {
+/**
+ * Created by Administrator on 2018/1/10 0010.
+ */
+public class JobOffersListVO {
     private Integer id;
 
     private String jobname;
 
-    private String temptation;
+    private String[] temptation;
 
     private String tag;
 
@@ -29,31 +34,11 @@ public class JobOffers {
 
     private Date updatetime;
 
-    private Integer checked;
+    private Integer checkd;
 
     private String description;
 
-    public JobOffers(Integer id, String jobname, String temptation, String tag, String type, String wage, Integer companyid, String city, String address, String education, String duration, String workfrequency, Date updatetime, Integer checked, String description) {
-        this.id = id;
-        this.jobname = jobname;
-        this.temptation = temptation;
-        this.tag = tag;
-        this.type = type;
-        this.wage = wage;
-        this.companyid = companyid;
-        this.city = city;
-        this.address = address;
-        this.education = education;
-        this.duration = duration;
-        this.workfrequency = workfrequency;
-        this.updatetime = updatetime;
-        this.checked = checked;
-        this.description = description;
-    }
-
-    public JobOffers() {
-        super();
-    }
+    private Company company ;
 
     public Integer getId() {
         return id;
@@ -68,15 +53,15 @@ public class JobOffers {
     }
 
     public void setJobname(String jobname) {
-        this.jobname = jobname == null ? null : jobname.trim();
+        this.jobname = jobname;
     }
 
-    public String getTemptation() {
+    public String[] getTemptation() {
         return temptation;
     }
 
-    public void setTemptation(String temptation) {
-        this.temptation = temptation == null ? null : temptation.trim();
+    public void setTemptation(String[] temptation) {
+        this.temptation = temptation;
     }
 
     public String getTag() {
@@ -84,7 +69,7 @@ public class JobOffers {
     }
 
     public void setTag(String tag) {
-        this.tag = tag == null ? null : tag.trim();
+        this.tag = tag;
     }
 
     public String getType() {
@@ -92,7 +77,7 @@ public class JobOffers {
     }
 
     public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+        this.type = type;
     }
 
     public String getWage() {
@@ -100,7 +85,7 @@ public class JobOffers {
     }
 
     public void setWage(String wage) {
-        this.wage = wage == null ? null : wage.trim();
+        this.wage = wage;
     }
 
     public Integer getCompanyid() {
@@ -116,7 +101,7 @@ public class JobOffers {
     }
 
     public void setCity(String city) {
-        this.city = city == null ? null : city.trim();
+        this.city = city;
     }
 
     public String getAddress() {
@@ -124,7 +109,7 @@ public class JobOffers {
     }
 
     public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
+        this.address = address;
     }
 
     public String getEducation() {
@@ -132,7 +117,7 @@ public class JobOffers {
     }
 
     public void setEducation(String education) {
-        this.education = education == null ? null : education.trim();
+        this.education = education;
     }
 
     public String getDuration() {
@@ -140,7 +125,7 @@ public class JobOffers {
     }
 
     public void setDuration(String duration) {
-        this.duration = duration == null ? null : duration.trim();
+        this.duration = duration;
     }
 
     public String getWorkfrequency() {
@@ -148,7 +133,7 @@ public class JobOffers {
     }
 
     public void setWorkfrequency(String workfrequency) {
-        this.workfrequency = workfrequency == null ? null : workfrequency.trim();
+        this.workfrequency = workfrequency;
     }
 
     public Date getUpdatetime() {
@@ -159,12 +144,12 @@ public class JobOffers {
         this.updatetime = updatetime;
     }
 
-    public Integer getChecked() {
-        return checked;
+    public Integer getCheckd() {
+        return checkd;
     }
 
-    public void setChecked(Integer checked) {
-        this.checked = checked;
+    public void setCheckd(Integer checkd) {
+        this.checkd = checkd;
     }
 
     public String getDescription() {
@@ -172,6 +157,14 @@ public class JobOffers {
     }
 
     public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
+        this.description = description;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

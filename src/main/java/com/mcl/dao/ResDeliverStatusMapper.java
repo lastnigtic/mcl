@@ -1,6 +1,7 @@
 package com.mcl.dao;
 
 import com.mcl.pojo.ResDeliverStatus;
+import org.apache.ibatis.annotations.Param;
 
 public interface ResDeliverStatusMapper {
     int deleteByPrimaryKey(Integer id);
@@ -16,4 +17,6 @@ public interface ResDeliverStatusMapper {
     int updateByPrimaryKeyWithBLOBs(ResDeliverStatus record);
 
     int updateByPrimaryKey(ResDeliverStatus record);
+
+    int checkUserDelivered(@Param("openid") String openid,@Param("joid") Integer joid);
 }

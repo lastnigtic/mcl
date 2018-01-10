@@ -27,7 +27,9 @@ public class UserBaseInfo {
 
     private String phone;
 
-    public UserBaseInfo(String openid, String nickname, String avatarurl, Integer gender, String language, String city, String province, String country, String realname, Date birthday, String email, String phone) {
+    private Double credit;
+
+    public UserBaseInfo(String openid, String nickname, String avatarurl, Integer gender, String language, String city, String province, String country, String realname, Date birthday, String email, String phone, Double credit) {
         this.openid = openid;
         this.nickname = nickname;
         this.avatarurl = avatarurl;
@@ -40,6 +42,7 @@ public class UserBaseInfo {
         this.birthday = birthday;
         this.email = email;
         this.phone = phone;
+        this.credit = credit;
     }
 
     public UserBaseInfo() {
@@ -140,5 +143,13 @@ public class UserBaseInfo {
 
     public void setPhone(String phone) {
         this.phone = phone == null ? null : phone.trim();
+    }
+
+    public Double getCredit() {
+        return credit;
+    }
+
+    public void setCredit(Double credit) {
+        this.credit = credit;
     }
 }

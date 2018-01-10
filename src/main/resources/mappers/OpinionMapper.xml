@@ -39,7 +39,7 @@
   <insert id="insert" parameterType="com.mcl.pojo.Opinion" >
     insert into opinion (id, openid, updatetime, 
       contactinfo, description)
-    values (#{id,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR},now(),
       #{contactinfo,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.mcl.pojo.Opinion" >
@@ -51,8 +51,8 @@
       <if test="openid != null" >
         openid,
       </if>
-      <if test="updatetime != null" >
-        updatetime,
+      <if test="updatetime == null" >
+        now(),
       </if>
       <if test="contactinfo != null" >
         contactinfo,
@@ -68,8 +68,8 @@
       <if test="openid != null" >
         #{openid,jdbcType=VARCHAR},
       </if>
-      <if test="updatetime != null" >
-        #{updatetime,jdbcType=TIMESTAMP},
+      <if test="updatetime == null" >
+        now(),
       </if>
       <if test="contactinfo != null" >
         #{contactinfo,jdbcType=VARCHAR},

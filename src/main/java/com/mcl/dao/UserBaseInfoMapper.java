@@ -14,4 +14,6 @@ public interface UserBaseInfoMapper {
     int updateByPrimaryKeySelective(UserBaseInfo record);
 
     int updateByPrimaryKey(UserBaseInfo record);
+
+    int checkUserByOpenid(String openid); //查找用户是否存在，存在则不为零
 }

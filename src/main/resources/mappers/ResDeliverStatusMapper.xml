@@ -38,7 +38,10 @@
     from resdeliverstatus
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="checkUserDelivered" resultType="java.lang.Integer">
+      SELECT COUNT(1) FROM resdeliverstatus WHERE openid=#{openid,jdbcType=VARCHAR} and joid=#{joid,jdbcType=INTEGER} and status>0
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from resdeliverstatus
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -47,7 +50,7 @@
       status, viewed, updatetime, 
       openid, description)
     values (#{id,jdbcType=INTEGER}, #{joid,jdbcType=INTEGER}, #{reid,jdbcType=INTEGER}, 
-      #{status,jdbcType=INTEGER}, #{viewed,jdbcType=INTEGER}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER}, #{viewed,jdbcType=INTEGER},now(),
       #{openid,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.mcl.pojo.ResDeliverStatus" >

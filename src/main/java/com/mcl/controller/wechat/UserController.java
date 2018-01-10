@@ -2,6 +2,10 @@ package com.mcl.controller.wechat;
 
 import com.github.pagehelper.PageInfo;
 import com.mcl.common.ServerResponse;
+import com.mcl.pojo.Opinion;
+import com.mcl.pojo.UserBaseInfo;
+import com.mcl.service.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -11,16 +15,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/user/")
 public class UserController {
 
+    @Autowired
+    private IUserService iUserService ;
+
     /**
      * 进入小程序后存储或更新用户基本信息
      * @return
      */
     @RequestMapping(value = "saveorupdateuser.do",method = RequestMethod.POST)
-    public ServerResponse saveOrUpdateUser(){
-        //判断是否存在openid
-        //存在就更新
-        //不存在就新增
-        return null ;
+    public ServerResponse saveOrUpdateUser(UserBaseInfo userBaseInfo){
+        return iUserService.saveOrUpdateUser(userBaseInfo) ;
     }
 
     /**
@@ -30,10 +34,7 @@ public class UserController {
      */
     @RequestMapping(value = "getusercollectjobcount.do" ,method = RequestMethod.GET)
     public ServerResponse getUserCollectJobCount(String openid){
-        //判断是否存在openid
-        //存在就查询
-        //不存在就返回error
-        return null ;
+        return iUserService.getUserCollectJobCount(openid) ;
     }
 
     /**
@@ -44,14 +45,11 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "getusercollectjoblist.do" ,method = RequestMethod.GET)
-    public ServerResponse<PageInfo> getUserCollectJobCount(
+    public ServerResponse<PageInfo> getUserCollectJobList(
             @RequestParam(value="openid")String openid,
             @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
             @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
-        //判断是否存在openid
-        //存在就查询(联表查询)
-        //不存在就返回error
-        return  null;
+        return  iUserService.getUserCollectJobList(openid,pageNum,pageSize);
     }
 
     /**
@@ -61,11 +59,8 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "checkjobiscollect.do" ,method = RequestMethod.GET)
-    public ServerResponse checkJobIsCollect(String openid,int joid){
-        //判断是否存在openid,joid
-        //都存在就查询(联表查询)
-        //不存在就返回error
-        return null ;
+    public ServerResponse checkJobIsCollect(String openid,Integer joid){
+        return iUserService.checkJobIsCollect(openid,joid) ;
     }
 
     /**
@@ -75,11 +70,8 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "checkjobisdeliver.do" ,method = RequestMethod.GET)
-    public ServerResponse<Integer> checkJobIsDeliver(String openid,int joid){
-        //判断是否存在openid,joid
-        //都存在就查询(联表查询)
-        //不存在就返回error
-        return null ;
+    public ServerResponse<Integer> checkJobIsDeliver(String openid,Integer joid){
+        return iUserService.checkJobIsDeliver(openid,joid) ;
     }
 
     /**
@@ -89,11 +81,8 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "collectjob.do" ,method = RequestMethod.POST)
-    public ServerResponse<Integer> collectJob(String openid,int joid){
-        //判断是否存在openid,joid
-        //都存在就新增一条记录
-        //不存在就返回error
-        return  null;
+    public ServerResponse collectJob(String openid,Integer joid){
+        return  iUserService.collectJob(openid,joid);
     }
 
     /**
@@ -103,12 +92,8 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "uncollectjob.do" ,method = RequestMethod.POST)
-    public ServerResponse<Integer> uncollectJob(String openid,int joid){
-        //判断是否存在openid,joid
-        //判断存在这条关联记录
-        //都存在就删除这一条记录
-        //不存在就返回error
-        return null ;
+    public ServerResponse uncollectJob(String openid,Integer joid){
+        return iUserService.uncollectJob(openid,joid);
     }
 
     /**
@@ -119,22 +104,17 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "deliverresume.do" ,method = RequestMethod.POST)
-    public ServerResponse<Integer> deliverResume(String openid,int joid,int reid){
-        //判断并验证openid,joid,reid
-        //都通过就新增一条记录,用户消息那里也新增一条记录
-        //不然就返回error
-        return null;
+    public ServerResponse deliverResume(String openid,Integer joid,Integer reid){
+        return iUserService.deliverResume(openid,joid,reid);
     }
 
     /**
      * 用户提交意见反馈
-     * @param openid
-     * @param description
      * @return
      */
     @RequestMapping(value = "submitopinion.do" ,method = RequestMethod.POST)
-    public ServerResponse<Integer> submitOpinion(String openid,String description){
-        return null;
+    public ServerResponse submitOpinion(Opinion opinion){
+        return iUserService.submitOpinion(opinion);
     }
 
     /**
@@ -142,12 +122,12 @@ public class UserController {
      * @param openid
      * @return
      */
-    @RequestMapping(value = "getDeliveredJob.do" ,method = RequestMethod.POST)
-    @ResponseBody
-    public ServerResponse<PageInfo> getDeliveredJob(String openid){
-        //判断openid是否存在
-        //存在就查...
-        return null;
+    @RequestMapping(value = "getuserdeliveredlist.do" ,method = RequestMethod.POST)
+    public ServerResponse getUserDeliveredList(@RequestParam(value="openid")String openid,
+                                          @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                          @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
+                                          @RequestParam(required = false)Integer status){
+        return iUserService.getUserDeliveredList(openid,pageNum,pageSize,status);
     }
 
 

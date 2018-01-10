@@ -17,9 +17,23 @@
     from usercollection
     where id = #{id,jdbcType=INTEGER}
   </select>
+    <select id="countUserCollectByOpenid" resultType="java.lang.Integer">
+      SELECT COUNT(1) FROM  usercollection where openid=#{openid,jdbcType=VARCHAR}
+    </select>
+  <select id="selectUserCollectedJobOffersList" resultType="com.mcl.pojo.JobOffers">
+    select *
+    from joboffers where id in (select joid from usercollection where openid = #{openid,jdbcType=VARCHAR})  and checked=1
+    order by updatetime desc
+  </select>
+  <select id="countUserCollectByOpenidJoid" resultType="java.lang.Integer">
+    SELECT COUNT(1) FROM usercollection WHERE  openid = #{openid,jdbcType=VARCHAR} and joid =  #{joid,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from usercollection
     where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByOpenidJoid">
+    DELETE FROM usercollection WHERE openid = #{openid} and joid = #{joid}
   </delete>
   <insert id="insert" parameterType="com.mcl.pojo.UserCollection" >
     insert into usercollection (id, openid, joid

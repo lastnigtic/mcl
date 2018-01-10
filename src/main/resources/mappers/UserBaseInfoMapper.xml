@@ -15,11 +15,12 @@
       <arg column="birthday" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="credit" jdbcType="DOUBLE" javaType="java.lang.Double" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
     openid, nickname, avatarurl, gender, language, city, province, country, realname, 
-    birthday, email, phone
+    birthday, email, phone, credit
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -27,7 +28,10 @@
     from userbaseinfo
     where openid = #{openid,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    <select id="checkUserByOpenid" resultType="java.lang.Integer">
+      select COUNT(1) FROM userbaseinfo where openid=#{openid,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from userbaseinfo
     where openid = #{openid,jdbcType=VARCHAR}
   </delete>
@@ -35,13 +39,13 @@
     insert into userbaseinfo (openid, nickname, avatarurl, 
       gender, language, city, 
       province, country, realname, 
-      birthday, email, phone
-      )
+      birthday, email, phone, 
+      credit)
     values (#{openid,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{avatarurl,jdbcType=VARCHAR}, 
       #{gender,jdbcType=INTEGER}, #{language,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
       #{province,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, 
-      #{birthday,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}
-      )
+      #{birthday,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{credit,jdbcType=DOUBLE})
   </insert>
   <insert id="insertSelective" parameterType="com.mcl.pojo.UserBaseInfo" >
     insert into userbaseinfo
@@ -82,6 +86,9 @@
       <if test="phone != null" >
         phone,
       </if>
+      <if test="credit != null" >
+        credit,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="openid != null" >
@@ -119,6 +126,9 @@
       </if>
       <if test="phone != null" >
         #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="credit != null" >
+        #{credit,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -158,6 +168,9 @@
       <if test="phone != null" >
         phone = #{phone,jdbcType=VARCHAR},
       </if>
+      <if test="credit != null" >
+        credit = #{credit,jdbcType=DOUBLE},
+      </if>
     </set>
     where openid = #{openid,jdbcType=VARCHAR}
   </update>
@@ -173,7 +186,8 @@
       realname = #{realname,jdbcType=VARCHAR},
       birthday = #{birthday,jdbcType=TIMESTAMP},
       email = #{email,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR}
+      phone = #{phone,jdbcType=VARCHAR},
+      credit = #{credit,jdbcType=DOUBLE}
     where openid = #{openid,jdbcType=VARCHAR}
   </update>
 </mapper>

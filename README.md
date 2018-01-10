@@ -291,6 +291,7 @@
 5. 用户可以提交意见，管理员登录web端后可以<u>查看</u>，管理员可以<u>审核HR注册</u>，<u>招聘信息发布的审核</u>
 6. 用户可以查看自己投递过的招聘岗位，按最新的时间排序
 7. 用户可以填写求职意向表(该表待定)，然后根据求职意向为用户推荐职位
+8. (++)信用评级评分
 
 
 
@@ -508,18 +509,46 @@ public ServerResponse<Integer> submitOpinion(String openid,String description){
 
 url: /user/getdeliveredjob.do
 
-param: openid
+param: openid,pageNum,pageSize,status(投递，查看，面试，通过，未通过)
 
 method: post
 
 return: pageInfo
 
 ```java
-@RequestMapping(value = "getDeliveredJob.do" ,method = RequestMethod.POST)
+/**
+* 用户查看投递过的招聘信息
+* @param openid
+* @return
+*/
+@RequestMapping(value = "getuserdeliveredlist.do" ,method = RequestMethod.POST)
+public ServerResponse getUserDeliveredList(@RequestParam(value="openid")String openid,
+                                           @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                           @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
+                                           @RequestParam(required = false)Integer status){
+  return iUserService.getUserDeliveredList(openid,pageNum,pageSize,status);
+}
+```
+
+
+
+##### 10.用户给公司评分
+
+url:/user/ratetocompany.do
+
+param:openid,companyid,credit(分数)
+
+method:post
+
+return: 0/1 失败/成功
+
+```java
+@RequestMapping(value = "ratetocompany.do" ,method = RequestMethod.POST)
 @ResponseBody
-public ServerResponse<pageInfo> getDeliveredJob(String openid){
+public ServerResponse rateToCompany(String openid,int companyid,double credit){
     //判断openid是否存在
-    	//存在就查...
+  	//判断是否有过面试完成记录
+  	//如有，则可以评分
 }
 ```
 
@@ -567,6 +596,10 @@ public ServerResponse<Integer> delResume(String openid,int reid,待定...){
 }
 ```
 
+##### 3.查看简历
+
+
+
 
 
 #### 招聘信息
@@ -582,8 +615,7 @@ method: post
 return:pageInfo
 
 ```java
-@RequestMapping(value = "list.do" ,method = RequestMethod.POST)
-@ResponseBody
+@RequestMapping(value = "list.do" ,method = RequestMethod.GET)
 public ServerResponse<PageInfo> getOfferList(String openid,pageNum,pageSize,String city,待定筛选字段...){
    	
 }
@@ -604,10 +636,14 @@ return: object
 ```java
 @RequestMapping(value = "detail.do" ,method = RequestMethod.POST)
 @ResponseBody
-public ServerResponse<JobOffers> getOfferDetail(int joid){
+public ServerResponse getOfferDetail(Integer joid){
    	//这里记得还要返回多一个公司的id
 }
 ```
+
+##### 3.发布一条招聘信息
+
+##### 4.删除一条招聘信息
 
 
 
@@ -617,7 +653,7 @@ public ServerResponse<JobOffers> getOfferDetail(int joid){
 
 url: /company/detail.do
 
-param: joid
+param: id
 
 method: post
 
@@ -626,12 +662,54 @@ return: object
 ```java
 @RequestMapping(value = "detail.do" ,method = RequestMethod.POST)
 @ResponseBody
-public ServerResponse<Company> getCompanyDetail(int joid){
+public ServerResponse getCompanyDetail(Integer id){
 
 }
 ```
 
+##### 2.公司给用户评分(可能在web端操作)
 
+url:/company/ratetouser.do
+
+param:openid,companyid,credit(分数)
+
+method:post
+
+return: 0/1 失败/成功
+
+```java
+@RequestMapping(value = "ratetouser.do" ,method = RequestMethod.POST)
+@ResponseBody
+public ServerResponse rateToUser(String openid,int companyid,double credit){
+    //判断openid是否存在
+  	//判断是否有过面试完成记录
+  	//如有，则可以评分
+}
+```
+
+##### 3.HR给一份投递到自己公司的简历变更状态(投递->查看->邀约面试/筛掉->通过/不通过)
+
+url:/company/changeuserdeliveredstatus.do
+
+param:companyid,openid,rdsid,status
+
+method:post
+
+return:
+
+
+
+##### 
+
+
+
+#### 管理员
+
+##### 1.审核HR注册
+
+##### 2.审核HR发布的招聘信息
+
+##### 3.查看用户提交的意见
 
 
 

@@ -1,6 +1,8 @@
 package com.mcl.controller.wechat;
 
 import com.mcl.common.ServerResponse;
+import com.mcl.service.ICompanyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,15 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CompanyController {
 
+    @Autowired
+    private ICompanyService iCompanyService;
+
     /**
      * 查看公司的信息
-     * @param joid
+     * @param id
      * @return
      */
-    @RequestMapping(value = "detail.do" ,method = RequestMethod.POST)
-    public ServerResponse getCompanyDetail(int joid){
-        return null;
-
+    @RequestMapping(value = "detail.do" ,method = RequestMethod.GET)
+    public ServerResponse getCompanyDetail(Integer id){
+        return iCompanyService.getCompanyDetail(id);
     }
 
     /**
