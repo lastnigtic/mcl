@@ -1,8 +1,12 @@
 package com.mcl.controller.wechat;
 
 import com.mcl.common.ServerResponse;
+import com.mcl.pojo.Resume;
+import com.mcl.service.IResumeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -13,28 +17,27 @@ import org.springframework.web.bind.annotation.RestController;
 public class ResumeController {
 
 
+    @Autowired
+    private IResumeService iResumeService ;
+
     /**
-     * 创建、修改简历
-     * @param openid
-     * @param reid
+     * 创建或修改简历
+     * @param resume
      * @return
      */
     @RequestMapping(value = "saveorupdateresume.do" ,method = RequestMethod.POST)
-    public ServerResponse<Integer> saveOrUpdateResume(String openid, int reid){
-        //判断reid是否为空，空则新建，不空则修改
-        return null;
+    public ServerResponse saveOrUpdateResume(Resume resume){
+        return iResumeService.saveOrUpdateResume(resume);
     }
 
     /**
      * 删除简历
-     * @param openid
-     * @param reid
+     * @param id
      * @return
      */
     @RequestMapping(value = "delresume.do" ,method = RequestMethod.POST)
-    public ServerResponse<Integer> delResume(String openid,int reid){
-        //判断reid，openid是否为空，空则error，不空则删除
-        return null;
+    public ServerResponse delResume(Integer id){
+        return iResumeService.delResume(id);
     }
 
 }

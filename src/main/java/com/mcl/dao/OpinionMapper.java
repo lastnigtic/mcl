@@ -13,7 +13,5 @@ public interface OpinionMapper {
 
     int updateByPrimaryKeySelective(Opinion record);
 
-    int updateByPrimaryKeyWithBLOBs(Opinion record);
-
     int updateByPrimaryKey(Opinion record);
 }

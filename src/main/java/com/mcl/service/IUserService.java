@@ -28,4 +28,6 @@ public interface IUserService {
     ServerResponse submitOpinion(Opinion opinion);
 
     ServerResponse getUserDeliveredList(String openid, int pageNum, int pageSize, Integer status);
+
+    ServerResponse isUserFirstLogin(String openid);
 }

@@ -37,15 +37,23 @@ public class IOffersServiceImpl implements IOffersService {
      * 获取招聘信息列表
      * @param pageNum
      * @param pageSize
-     * @param city
+     * @param jobOffers
+     * @param keywords
      * @return
      */
     @Override
-    public ServerResponse<PageInfo> getOfferList(int pageNum, int pageSize, String city) {
-
-        //存在用户
+    public ServerResponse<PageInfo> getOfferList(int pageNum, int pageSize,JobOffers jobOffers, String keywords) {
         PageHelper.startPage(pageNum,pageSize);
-        List<JobOffers> jobOffersList = jobOffersMapper.selectList(city);
+        //看看keywords有没有
+        if(StringUtils.isNotBlank(keywords)){
+            //有keywords
+            if(jobOffers==null) {
+                jobOffers = new JobOffers();
+            }
+            String k = new StringBuilder().append("%").append(keywords).append("%").toString();
+            jobOffers.setJobname(k);
+        }
+        List<JobOffers> jobOffersList = jobOffersMapper.selectList(jobOffers);
         List<JobOffersListVO> list = Lists.newArrayList();
         for(JobOffers jo:jobOffersList){
             JobOffersListVO vo = assembleJobOffersListVO(jo);
@@ -75,6 +83,9 @@ public class IOffersServiceImpl implements IOffersService {
         }
         return ServerResponse.createByErrorMessage("传入参数有误！");
     }
+
+
+
 
     private JobOffersListVO assembleJobOffersListVO(JobOffers jobOffers){
         JobOffersListVO vo = new JobOffersListVO();

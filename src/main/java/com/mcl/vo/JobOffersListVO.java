@@ -18,7 +18,7 @@ public class JobOffersListVO {
 
     private String type;
 
-    private String wage;
+    private Integer wage;
 
     private Integer companyid;
 
@@ -28,9 +28,9 @@ public class JobOffersListVO {
 
     private String education;
 
-    private String duration;
+    private Integer duration;
 
-    private String workfrequency;
+    private Integer workfrequency;
 
     private Date updatetime;
 
@@ -80,11 +80,11 @@ public class JobOffersListVO {
         this.type = type;
     }
 
-    public String getWage() {
+    public Integer getWage() {
         return wage;
     }
 
-    public void setWage(String wage) {
+    public void setWage(Integer wage) {
         this.wage = wage;
     }
 
@@ -120,19 +120,19 @@ public class JobOffersListVO {
         this.education = education;
     }
 
-    public String getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
-    public String getWorkfrequency() {
+    public Integer getWorkfrequency() {
         return workfrequency;
     }
 
-    public void setWorkfrequency(String workfrequency) {
+    public void setWorkfrequency(Integer workfrequency) {
         this.workfrequency = workfrequency;
     }
 

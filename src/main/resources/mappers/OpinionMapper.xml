@@ -9,29 +9,14 @@
       <arg column="contactinfo" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.mcl.pojo.Opinion" >
-    <constructor >
-      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="openid" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="contactinfo" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="description" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
-    </constructor>
-  </resultMap>
+
   <sql id="Base_Column_List" >
     id, openid, updatetime, contactinfo
   </sql>
   <sql id="Blob_Column_List" >
     description
   </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from opinion
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from opinion
     where id = #{id,jdbcType=INTEGER}
@@ -86,7 +71,7 @@
         openid = #{openid,jdbcType=VARCHAR},
       </if>
       <if test="updatetime != null" >
-        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+        updatetime = now(),
       </if>
       <if test="contactinfo != null" >
         contactinfo = #{contactinfo,jdbcType=VARCHAR},
@@ -97,19 +82,5 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mcl.pojo.Opinion" >
-    update opinion
-    set openid = #{openid,jdbcType=VARCHAR},
-      updatetime = #{updatetime,jdbcType=TIMESTAMP},
-      contactinfo = #{contactinfo,jdbcType=VARCHAR},
-      description = #{description,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.mcl.pojo.Opinion" >
-    update opinion
-    set openid = #{openid,jdbcType=VARCHAR},
-      updatetime = #{updatetime,jdbcType=TIMESTAMP},
-      contactinfo = #{contactinfo,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
 </mapper>

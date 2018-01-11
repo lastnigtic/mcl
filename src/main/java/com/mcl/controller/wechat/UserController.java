@@ -28,6 +28,16 @@ public class UserController {
     }
 
     /**
+     * 判断是否初次登录
+     * @param openid
+     * @return
+     */
+    @RequestMapping(value = "isfirstlogin",method = RequestMethod.POST)
+    public ServerResponse isUserFirstLogin(String openid){
+        return iUserService.isUserFirstLogin(openid);
+    }
+
+    /**
      * 查询用户收藏的招聘信息条数
      * @param openid
      * @return

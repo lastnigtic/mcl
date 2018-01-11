@@ -2,6 +2,7 @@ package com.mcl.controller.wechat;
 
 import com.github.pagehelper.PageInfo;
 import com.mcl.common.ServerResponse;
+import com.mcl.pojo.JobOffers;
 import com.mcl.service.IOffersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,14 +25,15 @@ public class OffersController {
      * 获取招聘信息列表
      * @param pageNum
      * @param pageSize
-     * @param city
+     * @param jobOffers
+     * @param keywords
      * @return
      */
     @RequestMapping(value = "list.do" ,method = RequestMethod.GET)
-    public ServerResponse<PageInfo> getOfferList( @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
-                                                  @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
-                                                  @RequestParam(value = "city",required = false) String city){
-        return iOffersService.getOfferList(pageNum,pageSize,city);
+    public ServerResponse<PageInfo> getOfferList(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                                 @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
+                                                 JobOffers jobOffers,@RequestParam(value = "keywords",required = false) String keywords){
+        return iOffersService.getOfferList(pageNum,pageSize,jobOffers,keywords);
     }
 
     /**
@@ -43,5 +45,7 @@ public class OffersController {
     public ServerResponse getOfferDetail(Integer joid){
         return iOffersService.getOfferDetail(joid);
     }
+
+
 
 }

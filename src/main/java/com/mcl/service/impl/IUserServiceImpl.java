@@ -350,6 +350,24 @@ public class IUserServiceImpl implements IUserService {
         return null;
     }
 
+
+    /**
+     * 判断是否初次登录
+     * @param openid
+     * @return
+     */
+    @Override
+    public ServerResponse isUserFirstLogin(String openid) {
+        if(StringUtils.isNotBlank(openid)){
+            int rowUser = userBaseInfoMapper.checkUserByOpenid(openid);
+            if(rowUser>0){
+                return ServerResponse.createBySuccess("是初次登录！");
+            }
+            return ServerResponse.createByErrorMessage("不是初次登录！");
+        }
+        return ServerResponse.createByErrorMessage("传入参数错误！");
+    }
+
     /**
      * 检查某用户的某个简历是否完善，是否可以投递（规则待补充，记得查重）
      * @param openid

@@ -13,7 +13,6 @@ public interface UserMsgMapper {
 
     int updateByPrimaryKeySelective(UserMsg record);
 
-    int updateByPrimaryKeyWithBLOBs(UserMsg record);
 
     int updateByPrimaryKey(UserMsg record);
 }

@@ -14,8 +14,6 @@ public interface ResDeliverStatusMapper {
 
     int updateByPrimaryKeySelective(ResDeliverStatus record);
 
-    int updateByPrimaryKeyWithBLOBs(ResDeliverStatus record);
-
     int updateByPrimaryKey(ResDeliverStatus record);
 
     int checkUserDelivered(@Param("openid") String openid,@Param("joid") Integer joid);

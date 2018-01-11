@@ -1,6 +1,7 @@
 package com.mcl.dao;
 
 import com.mcl.pojo.Resume;
+import org.apache.ibatis.annotations.Param;
 
 public interface ResumeMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +15,6 @@ public interface ResumeMapper {
     int updateByPrimaryKeySelective(Resume record);
 
     int updateByPrimaryKey(Resume record);
+
+    int checkResumeExist(@Param("id") Integer id);
 }

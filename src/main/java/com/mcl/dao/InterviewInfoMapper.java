@@ -13,7 +13,5 @@ public interface InterviewInfoMapper {
 
     int updateByPrimaryKeySelective(InterviewInfo record);
 
-    int updateByPrimaryKeyWithBLOBs(InterviewInfo record);
-
     int updateByPrimaryKey(InterviewInfo record);
 }

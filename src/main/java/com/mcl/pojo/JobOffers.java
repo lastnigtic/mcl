@@ -13,7 +13,7 @@ public class JobOffers {
 
     private String type;
 
-    private String wage;
+    private Integer wage;
 
     private Integer companyid;
 
@@ -23,37 +23,15 @@ public class JobOffers {
 
     private String education;
 
-    private String duration;
+    private Integer duration;
 
-    private String workfrequency;
+    private Integer workfrequency;
 
     private Date updatetime;
 
     private Integer checked;
 
     private String description;
-
-    public JobOffers(Integer id, String jobname, String temptation, String tag, String type, String wage, Integer companyid, String city, String address, String education, String duration, String workfrequency, Date updatetime, Integer checked, String description) {
-        this.id = id;
-        this.jobname = jobname;
-        this.temptation = temptation;
-        this.tag = tag;
-        this.type = type;
-        this.wage = wage;
-        this.companyid = companyid;
-        this.city = city;
-        this.address = address;
-        this.education = education;
-        this.duration = duration;
-        this.workfrequency = workfrequency;
-        this.updatetime = updatetime;
-        this.checked = checked;
-        this.description = description;
-    }
-
-    public JobOffers() {
-        super();
-    }
 
     public Integer getId() {
         return id;
@@ -68,7 +46,7 @@ public class JobOffers {
     }
 
     public void setJobname(String jobname) {
-        this.jobname = jobname == null ? null : jobname.trim();
+        this.jobname = jobname;
     }
 
     public String getTemptation() {
@@ -76,7 +54,7 @@ public class JobOffers {
     }
 
     public void setTemptation(String temptation) {
-        this.temptation = temptation == null ? null : temptation.trim();
+        this.temptation = temptation;
     }
 
     public String getTag() {
@@ -84,7 +62,7 @@ public class JobOffers {
     }
 
     public void setTag(String tag) {
-        this.tag = tag == null ? null : tag.trim();
+        this.tag = tag;
     }
 
     public String getType() {
@@ -92,15 +70,15 @@ public class JobOffers {
     }
 
     public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+        this.type = type;
     }
 
-    public String getWage() {
+    public Integer getWage() {
         return wage;
     }
 
-    public void setWage(String wage) {
-        this.wage = wage == null ? null : wage.trim();
+    public void setWage(Integer wage) {
+        this.wage = wage;
     }
 
     public Integer getCompanyid() {
@@ -116,7 +94,7 @@ public class JobOffers {
     }
 
     public void setCity(String city) {
-        this.city = city == null ? null : city.trim();
+        this.city = city;
     }
 
     public String getAddress() {
@@ -124,7 +102,7 @@ public class JobOffers {
     }
 
     public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
+        this.address = address;
     }
 
     public String getEducation() {
@@ -132,23 +110,23 @@ public class JobOffers {
     }
 
     public void setEducation(String education) {
-        this.education = education == null ? null : education.trim();
+        this.education = education;
     }
 
-    public String getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration == null ? null : duration.trim();
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
-    public String getWorkfrequency() {
+    public Integer getWorkfrequency() {
         return workfrequency;
     }
 
-    public void setWorkfrequency(String workfrequency) {
-        this.workfrequency = workfrequency == null ? null : workfrequency.trim();
+    public void setWorkfrequency(Integer workfrequency) {
+        this.workfrequency = workfrequency;
     }
 
     public Date getUpdatetime() {
@@ -172,6 +150,6 @@ public class JobOffers {
     }
 
     public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
+        this.description = description;
     }
 }

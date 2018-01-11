@@ -10,30 +10,14 @@
       <arg column="viewd" jdbcType="INTEGER" javaType="java.lang.Integer" />
     </constructor>
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.mcl.pojo.InterviewInfo" >
-    <constructor >
-      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="interviewtime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="joid" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="viewd" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="description" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
-    </constructor>
-  </resultMap>
+
   <sql id="Base_Column_List" >
     id, interviewtime, joid, updatetime, viewd
   </sql>
   <sql id="Blob_Column_List" >
     description
   </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from interviewinfo
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from interviewinfo
     where id = #{id,jdbcType=INTEGER}
@@ -110,15 +94,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mcl.pojo.InterviewInfo" >
-    update interviewinfo
-    set interviewtime = #{interviewtime,jdbcType=TIMESTAMP},
-      joid = #{joid,jdbcType=INTEGER},
-      updatetime = #{updatetime,jdbcType=TIMESTAMP},
-      viewd = #{viewd,jdbcType=INTEGER},
-      description = #{description,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
   <update id="updateByPrimaryKey" parameterType="com.mcl.pojo.InterviewInfo" >
     update interviewinfo
     set interviewtime = #{interviewtime,jdbcType=TIMESTAMP},
