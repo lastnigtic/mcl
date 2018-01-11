@@ -65,25 +65,25 @@ CREATE TABLE `interviewinfo` (
 
 CREATE TABLE `joboffers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `jobname` varchar(20) DEFAULT NULL COMMENT '职位名称',
+  `jobname` varchar(20) NOT NULL DEFAULT '' COMMENT '职位名称',
   `temptation` varchar(50) DEFAULT NULL COMMENT '职位诱惑',
   `tag` varchar(30) DEFAULT NULL COMMENT '职位标签',
   `type` varchar(30) DEFAULT NULL COMMENT '类型（互联网/通信）',
-  `wage` varchar(10) DEFAULT NULL COMMENT '工资（10k-20k）',
+  `wage` int(6) DEFAULT NULL COMMENT '月工资',
   `companyid` int(11) DEFAULT NULL COMMENT '公司id',
   `city` varchar(10) DEFAULT NULL COMMENT '城市（广州）',
   `address` varchar(30) DEFAULT NULL COMMENT '地址',
   `education` varchar(2) DEFAULT NULL COMMENT '学历限制（本科）',
-  `duration` varchar(10) DEFAULT NULL COMMENT '时间长度（10个月）',
-  `workfrequency` varchar(10) DEFAULT NULL COMMENT '上班频率（4天/周)',
+  `duration` int(2) DEFAULT NULL COMMENT '时间长度（n个月）',
+  `workfrequency` int(1) DEFAULT NULL COMMENT '上班频率（n天/周)',
   `description` text COMMENT '描述',
   `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
   `checked` int(1) DEFAULT NULL COMMENT '审核状态0未审核 1通过 2不通过 3过期',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='招聘信息表';
-INSERT INTO `joboffers` VALUES (1,'亚信java开发','没有诱惑','五险一金','通信行业','6k',1,'广州','大学城信息枢纽楼','本科','10个月','4天/周','过来做政企门户\r\n','2017-03-15',0);
-INSERT INTO `joboffers` VALUES (2,'美团前端开发','五险一金，免费班车，免费体检，节日福利，试用期全薪，绩效奖金多，优秀团队，周末双休，办公环境好','大企业','互联网','面议',2,'厦门','望京东路6号','本科','3年','5天/周','职位职责：\r\n⼯作职责\r\n在移动设备上，追求极致的⽤户体验\r\n负责开发与⽤户和服务器的交互界面\r\n建设企业级和移动前端的技术和工程架构\r\n知识分享者，善于总结、乐于对内外分享\r\n低级别⼯程师的导师，辅导新人\r\n\r\n基本要求\r\n2年以上前端领域开发经验\r\n熟练阅读英⽂原版技术⽂档和书刊\r\n深⼊掌握HTML+CSS+JavaScript等前端技术，代码符合W3C标准、兼容主流浏览器\r\n熟练使⽤⾄少⼀种JS框架，掌握其原理\r\n掌握⾄少⼀种其他语⾔（如Java/PHP/Python/Ruby/Go），有实战经验\r\n本科及以上学历，计算机相关专业毕业（或计算机基础⾮常扎实）\r\n做事认真细心，有一份用心的简历\r\n\r\n优先条件\r\n熟悉Mobile Web/Hybrid Web App/小程序开发/基于Canvas的游戏等开发\r\n利⽤开源代码打造⾃有效率⼯具的经验\r\n熟悉Linux/Unix/Mac平台下的软件开发环境\r\n多终端的开发经验（Android/iOS/Mac/Windows）\r\nNodejs下项目开发经验\r\n技术社区的活跃份⼦\r\n品质优秀的开源作品\r\n妥善经营的技术博客\r\n团队管理经验','2017-11-11',1);
-INSERT INTO `joboffers` VALUES (3,'开发实习生','优秀团队，弹性工作制，节日福利，周末双休','六险一金','互联网','3k',3,'北京','海淀区小营西路33号金山软件大厦','本科','2年','4天/周','招聘人数：4 人 实习天数：4 天 / 周\r\n职位职责：\r\n职位描述：\r\n1. 参与基于云端的 HTML5 产品前端/后端/移动端开发 \r\n2. 调研和学习新技术。\r\n\r\n职位要求：\r\n1、熟悉常用的浏览器内核Chromium/WebKit/Webview；\r\n2、理解并掌握Javascript语言核心技术DOM、BOM、Ajax、JSON等，对Javascript框架应用(如jQuery/bootstrap等)有一定的经验；\r\n3、有 Vue.js/Angular.js/React.js/Webpack.js 等前端框架实践经验是加分项；\r\n4、熟悉 Node.js 是加分项   \r\n5、工作习惯良好：自驱动，擅合作，代码清晰整洁；\r\n6. 本科大四或者研二的学生，每周工作至少4天，实习时间3-6个月。\r\n\r\n实习福利：\r\n不打卡，包三餐，转正机会多。\r\n适合能够立即上岗并能保证实习时间的同学\r\n','2017-11-23',1);
+INSERT INTO `joboffers` VALUES (1,'亚信java开发','没有诱惑','五险一金','通信行业',6,1,'广州','大学城信息枢纽楼','本科',10,4,'过来做政企门户\r\n','2017-03-15',0);
+INSERT INTO `joboffers` VALUES (2,'美团前端开发','五险一金，免费班车，免费体检，节日福利，试用期全薪，绩效奖金多，优秀团队，周末双休，办公环境好','大企业','互联网',6,1,'厦门','望京东路6号','本科',3,5,'职位职责：\r\n⼯作职责\r\n在移动设备上，追求极致的⽤户体验\r\n负责开发与⽤户和服务器的交互界面\r\n建设企业级和移动前端的技术和工程架构\r\n知识分享者，善于总结、乐于对内外分享\r\n低级别⼯程师的导师，辅导新人\r\n\r\n基本要求\r\n2年以上前端领域开发经验\r\n熟练阅读英⽂原版技术⽂档和书刊\r\n深⼊掌握HTML+CSS+JavaScript等前端技术，代码符合W3C标准、兼容主流浏览器\r\n熟练使⽤⾄少⼀种JS框架，掌握其原理\r\n掌握⾄少⼀种其他语⾔（如Java/PHP/Python/Ruby/Go），有实战经验\r\n本科及以上学历，计算机相关专业毕业（或计算机基础⾮常扎实）\r\n做事认真细心，有一份用心的简历\r\n\r\n优先条件\r\n熟悉Mobile Web/Hybrid Web App/小程序开发/基于Canvas的游戏等开发\r\n利⽤开源代码打造⾃有效率⼯具的经验\r\n熟悉Linux/Unix/Mac平台下的软件开发环境\r\n多终端的开发经验（Android/iOS/Mac/Windows）\r\nNodejs下项目开发经验\r\n技术社区的活跃份⼦\r\n品质优秀的开源作品\r\n妥善经营的技术博客\r\n团队管理经验','2017-11-11',1);
+INSERT INTO `joboffers` VALUES (3,'开发实习生','优秀团队，弹性工作制，节日福利，周末双休','六险一金','互联网',5,3,'北京','海淀区小营西路33号金山软件大厦','本科',2,4,'招聘人数：4 人 实习天数：4 天 / 周\r\n职位职责：\r\n职位描述：\r\n1. 参与基于云端的 HTML5 产品前端/后端/移动端开发 \r\n2. 调研和学习新技术。\r\n\r\n职位要求：\r\n1、熟悉常用的浏览器内核Chromium/WebKit/Webview；\r\n2、理解并掌握Javascript语言核心技术DOM、BOM、Ajax、JSON等，对Javascript框架应用(如jQuery/bootstrap等)有一定的经验；\r\n3、有 Vue.js/Angular.js/React.js/Webpack.js 等前端框架实践经验是加分项；\r\n4、熟悉 Node.js 是加分项   \r\n5、工作习惯良好：自驱动，擅合作，代码清晰整洁；\r\n6. 本科大四或者研二的学生，每周工作至少4天，实习时间3-6个月。\r\n\r\n实习福利：\r\n不打卡，包三餐，转正机会多。\r\n适合能够立即上岗并能保证实习时间的同学\r\n','2017-11-23',1);
 
 #
 # Table structure for table opinion
@@ -102,21 +102,6 @@ INSERT INTO `opinion` VALUES (2,'asdasdwqeqr324234sadad12','12345','2018-01-10 1
 INSERT INTO `opinion` VALUES (3,'asdasdwqeqr324234sadad12','12345','2018-01-10 16:44:27',NULL);
 
 #
-# Table structure for table rescampus
-#
-
-CREATE TABLE `rescampus` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `reid` int(11) DEFAULT NULL COMMENT '简历id',
-  `organizationname` varchar(20) DEFAULT NULL COMMENT '组织名称',
-  `position` varchar(20) DEFAULT NULL COMMENT '职位',
-  `starttime` datetime DEFAULT NULL COMMENT '开始时间',
-  `endtime` datetime DEFAULT NULL COMMENT '结束时间',
-  `description` text COMMENT '经历描述',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='校园经历子表';
-
-#
 # Table structure for table resdeliverstatus
 #
 
@@ -130,27 +115,9 @@ CREATE TABLE `resdeliverstatus` (
   `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
   `openid` varchar(50) DEFAULT NULL COMMENT '用户id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='简历投递状态表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='简历投递状态表';
 INSERT INTO `resdeliverstatus` VALUES (1,2,1,2,1,'232213213','2017-11-11','asdasdwqeqr324234sadad12');
 INSERT INTO `resdeliverstatus` VALUES (2,1,2,1,NULL,NULL,'2018-01-10 16:18:10','asdasdwqeqr324234sadad12');
-
-#
-# Table structure for table resedu
-#
-
-CREATE TABLE `resedu` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `reid` int(11) DEFAULT NULL COMMENT '简历id',
-  `schoolname` varchar(20) DEFAULT NULL COMMENT '学校名称',
-  `major` varchar(10) DEFAULT NULL COMMENT '专业',
-  `startschooltime` datetime DEFAULT NULL COMMENT '入学时间',
-  `endschooltime` datetime DEFAULT NULL COMMENT '毕业时间',
-  `education` varchar(2) DEFAULT NULL COMMENT '学历',
-  `majorclass` varchar(100) DEFAULT NULL COMMENT '主修课程',
-  `certificate` varchar(255) DEFAULT NULL COMMENT '证书',
-  `awards` varchar(255) DEFAULT NULL COMMENT '奖项',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='教育经历子表';
 
 #
 # Table structure for table resume
@@ -158,13 +125,22 @@ CREATE TABLE `resedu` (
 
 CREATE TABLE `resume` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `openid` varchar(50) DEFAULT NULL COMMENT '用户id',
+  `openid` varchar(50) NOT NULL DEFAULT '' COMMENT '用户id',
   `skills` varchar(255) DEFAULT NULL COMMENT '技能描述',
   `hobbies` varchar(255) DEFAULT NULL COMMENT '爱好描述',
   `selfevaluation` varchar(255) DEFAULT NULL COMMENT '个人评价',
   `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `schoolname` varchar(20) DEFAULT NULL COMMENT '学校',
+  `major` varchar(20) DEFAULT NULL COMMENT '专业',
+  `startschooltime` datetime DEFAULT NULL COMMENT '入学时间',
+  `endschooltime` datetime DEFAULT NULL COMMENT '毕业时间',
+  `education` varchar(5) DEFAULT NULL COMMENT '学历',
+  `majorclass` varchar(50) DEFAULT NULL COMMENT '主修课程',
+  `certificate` varchar(255) DEFAULT '' COMMENT '所获证书',
+  `awards` varchar(255) DEFAULT '' COMMENT '所获奖项',
+  `campusexp` varchar(255) DEFAULT '' COMMENT '校园经历',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='简历表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='简历表';
 
 #
 # Table structure for table tagproperty
@@ -208,7 +184,7 @@ CREATE TABLE `usercollection` (
   `openid` varchar(50) DEFAULT NULL COMMENT '用户id',
   `joid` int(11) DEFAULT NULL COMMENT '招聘信息id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='用户收藏表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户收藏表';
 INSERT INTO `usercollection` VALUES (1,'asdasdwqeqr324234sadad12',1);
 INSERT INTO `usercollection` VALUES (2,'asdasdwqeqr324234sadad12',2);
 INSERT INTO `usercollection` VALUES (3,'asdasdwqeqr324234sadad12',4);
