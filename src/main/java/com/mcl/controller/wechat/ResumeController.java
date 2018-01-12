@@ -36,8 +36,19 @@ public class ResumeController {
      * @return
      */
     @RequestMapping(value = "delresume.do" ,method = RequestMethod.POST)
-    public ServerResponse delResume(Integer id){
-        return iResumeService.delResume(id);
+    public ServerResponse delResume(String openid,Integer id){
+        return iResumeService.delResume(openid,id);
+    }
+
+
+    /**
+     * 查看简历详情
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "detail.do",method = RequestMethod.POST)
+    public ServerResponse detail(Integer id){
+        return iResumeService.detail(id);
     }
 
 }

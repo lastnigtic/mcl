@@ -9,5 +9,7 @@ import com.mcl.pojo.Resume;
 public interface IResumeService {
     ServerResponse saveOrUpdateResume(Resume resume);
 
-    ServerResponse delResume(Integer id);
+    ServerResponse delResume(String openid, Integer id);
+
+    ServerResponse detail(Integer id);
 }

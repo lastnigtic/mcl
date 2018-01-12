@@ -22,8 +22,8 @@ public class CompanyController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "detail.do" ,method = RequestMethod.GET)
-    public ServerResponse getCompanyDetail(Integer id){
+    @RequestMapping(value = "detail.do" ,method = RequestMethod.POST)
+    public ServerResponse detail(Integer id){
         return iCompanyService.getCompanyDetail(id);
     }
 

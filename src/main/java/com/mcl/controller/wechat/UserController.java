@@ -32,7 +32,7 @@ public class UserController {
      * @param openid
      * @return
      */
-    @RequestMapping(value = "isfirstlogin",method = RequestMethod.POST)
+    @RequestMapping(value = "isfirstlogin.do",method = RequestMethod.POST)
     public ServerResponse isUserFirstLogin(String openid){
         return iUserService.isUserFirstLogin(openid);
     }
@@ -42,7 +42,7 @@ public class UserController {
      * @param openid
      * @return
      */
-    @RequestMapping(value = "getusercollectjobcount.do" ,method = RequestMethod.GET)
+    @RequestMapping(value = "getusercollectjobcount.do" ,method = RequestMethod.POST)
     public ServerResponse getUserCollectJobCount(String openid){
         return iUserService.getUserCollectJobCount(openid) ;
     }
@@ -54,7 +54,7 @@ public class UserController {
      * @param pageSize
      * @return
      */
-    @RequestMapping(value = "getusercollectjoblist.do" ,method = RequestMethod.GET)
+    @RequestMapping(value = "getusercollectjoblist.do" ,method = RequestMethod.POST)
     public ServerResponse<PageInfo> getUserCollectJobList(
             @RequestParam(value="openid")String openid,
             @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
@@ -68,7 +68,7 @@ public class UserController {
      * @param joid
      * @return
      */
-    @RequestMapping(value = "checkjobiscollect.do" ,method = RequestMethod.GET)
+    @RequestMapping(value = "checkjobiscollect.do" ,method = RequestMethod.POST)
     public ServerResponse checkJobIsCollect(String openid,Integer joid){
         return iUserService.checkJobIsCollect(openid,joid) ;
     }
@@ -79,7 +79,7 @@ public class UserController {
      * @param joid
      * @return
      */
-    @RequestMapping(value = "checkjobisdeliver.do" ,method = RequestMethod.GET)
+    @RequestMapping(value = "checkjobisdeliver.do" ,method = RequestMethod.POST)
     public ServerResponse<Integer> checkJobIsDeliver(String openid,Integer joid){
         return iUserService.checkJobIsDeliver(openid,joid) ;
     }

@@ -29,7 +29,7 @@ public class OffersController {
      * @param keywords
      * @return
      */
-    @RequestMapping(value = "list.do" ,method = RequestMethod.GET)
+    @RequestMapping(value = "list.do" ,method = RequestMethod.POST)
     public ServerResponse<PageInfo> getOfferList(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                                  @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
                                                  JobOffers jobOffers,@RequestParam(value = "keywords",required = false) String keywords){
@@ -43,7 +43,7 @@ public class OffersController {
      * @param pageSize
      * @return
      */
-    @RequestMapping(value = "recommendlist.do" ,method = RequestMethod.GET)
+    @RequestMapping(value = "recommendlist.do" ,method = RequestMethod.POST)
     public ServerResponse<PageInfo> recommendList(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                                  @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
         return iOffersService.recommendList(pageNum,pageSize);
@@ -51,12 +51,12 @@ public class OffersController {
 
     /**
      * 查看具体的招聘信息
-     * @param joid
+     * @param id
      * @return
      */
     @RequestMapping(value = "detail.do" ,method = RequestMethod.POST)
-    public ServerResponse getOfferDetail(Integer joid){
-        return iOffersService.getOfferDetail(joid);
+    public ServerResponse getOfferDetail(Integer id){
+        return iOffersService.getOfferDetail(id);
     }
 
 

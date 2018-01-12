@@ -60,24 +60,49 @@ public class IResumeServiceImpl implements IResumeService {
 
     /**
      * 删除简历
+     *
+     * @param openid
      * @param id
      * @return
      */
     @Override
-    public ServerResponse delResume(Integer id) {
+    public ServerResponse delResume(String openid, Integer id) {
         if(id!=null){
             //参数不为空
             int rowResume = resumeMapper.checkResumeExist(id);
             if(rowResume>0){
                 //存在该简历
-                int rowDel = resumeMapper.deleteByPrimaryKey(id);
-                if(rowDel>0){
-                    return ServerResponse.createBySuccess("删除成功");
+                Resume resume = resumeMapper.selectByPrimaryKey(id);
+                if(resume.getOpenid().equals(openid)){
+                    int rowDel = resumeMapper.deleteByPrimaryKey(id);
+                    if(rowDel>0){
+                        return ServerResponse.createBySuccess("删除成功");
+                    }
+                    return ServerResponse.createByErrorMessage("删除失败");
                 }
-                return ServerResponse.createByErrorMessage("删除失败");
+                return ServerResponse.createByErrorMessage("不存在该简历");
             }
             return ServerResponse.createByErrorMessage("不存在该简历");
         }
         return ServerResponse.createByErrorMessage("参数错误");
+    }
+
+
+    /**
+     * 查看简历详情
+     * @param id
+     * @return
+     */
+    @Override
+    public ServerResponse detail(Integer id) {
+        if(id!=null){
+            int rowResume = resumeMapper.checkResumeExist(id);
+            if(rowResume>0){
+                Resume resume = resumeMapper.selectByPrimaryKey(id);
+                return ServerResponse.createBySuccess(resume);
+            }
+            return ServerResponse.createByErrorMessage("不存在该简历");
+        }
+        return ServerResponse.createByErrorMessage("传入参数错误");
     }
 }
