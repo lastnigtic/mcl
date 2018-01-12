@@ -110,45 +110,24 @@
 
 ##### 4.简历表-resume
 
-| 变量名            | 类型       | 长度   | 备注   |
-| -------------- | -------- | ---- | ---- |
-| id             | int      | 11   | -    |
-| openid         | varchar  | 50   | 用户id |
-| skills         | varchar  | 255  | 技能描述 |
-| hobbies        | varchar  | 255  | 爱好描述 |
-| selfevaluation | varchar  | 255  | 个人评价 |
-| updatetime     | datetime | -    | 更新时间 |
-
-
-
-###### 4.1 教育经历子表-resedu
-
 | 变量名             | 类型       | 长度   | 备注   |
 | --------------- | -------- | ---- | ---- |
-| id              | int      | 11   |      |
-| reid            | int      | 11   | 简历id |
+| id              | int      | 11   | -    |
+| openid          | varchar  | 50   | 用户id |
+| skills          | varchar  | 255  | 技能描述 |
+| hobbies         | varchar  | 255  | 爱好描述 |
+| selfevaluation  | varchar  | 255  | 个人评价 |
+| updatetime      | datetime | -    | 更新时间 |
 | schoolname      | varchar  | 20   | 学校名称 |
-| major           | varchar  | 10   | 专业   |
+| major           | varchar  | 20   | 专业   |
 | startschooltime | datetime | -    | 入学时间 |
 | endschooltime   | datetime | -    | 毕业时间 |
 | education       | varchar  | 2    | 学历   |
 | majorclass      | varchar  | 100  | 主修课程 |
 | certificate     | varchar  | 255  | 证书   |
 | awards          | varchar  | 255  | 奖项   |
-
-
-
-###### 4.2 校园经历子表-rescampus
-
-| 变量名              | 类型       | 长度   | 备注   |
-| ---------------- | -------- | ---- | ---- |
-| id               | int      | 11   | -    |
-| reid             | int      | 11   | 简历id |
-| organizationname | varchar  | 20   | 组织名称 |
-| position         | varchar  | 20   | 职位   |
-| starttime        | datetime | -    | 开始时间 |
-| endtime          | datetime | -    | 结束时间 |
-| description      | text     | -    | 经历描述 |
+| campusexp       | varchar  | 255  | 校园经历 |
+|                 |          |      |      |
 
 
 
@@ -161,13 +140,13 @@
 | temptation    | varchar  | 30   | 职位诱惑               |
 | tag           | varchar  | 30   | 职位标签               |
 | type          | varchar  | 30   | 类型（互联网/通信）         |
-| wage          | varchar  | 10   | 工资（10k-20k）        |
+| wage          | int      | 6    | 工资                 |
 | companyid     | int      | 11   | 公司id               |
 | city/county   | varchar  | 10   | 城市（广东-广州）          |
 | address       | varchar  | 30   | 地址                 |
 | education     | varchar  | 2    | 学历限制（本科）           |
-| duration      | varchar  | 10   | 时间长度（10个月）         |
-| workfrequency | varchar  | 10   | 上班频率（4天/周）         |
+| duration      | int      | 2    | 时间长度（n个月）          |
+| workfrequency | int      | 1    | 上班频率（n天/周）         |
 | description   | text     | -    | 描述                 |
 | updatetime    | datetime | -    | 更新时间               |
 | checked(++)   | int      | 1    | 审核状态，1通过 2不通过 0待审核 |
@@ -303,413 +282,30 @@
 
 ### 接口描述
 
-#### 用户
-
-##### 1.进入小程序后存储或更新用户基本信息
-
-url: /user/saveorupdateuser.do
-
-param: openid,nickname,avatarurl,gender,language,place,province,city,country
-
-method:post
-
-return: 1成功 0 失败
-
-```java
-@RequestMapping(value = "saveorupdateuser.do" ,method = RequestMethod.POST)
-@ResponseBody
-public ServerResponse<Integer> saveOrUpdateUser(UserBaseInfo user){
-    //判断是否存在openid
-  		//存在就更新
-  		//不存在就新增
-}
-```
-
-
-
-##### 2.查询用户收藏的招聘信息条数
-
-url: /user/getusercollectjobcount.do
-
-param: openid
-
-method:get
-
-return: 成功则返回条数
-
-```java
-@RequestMapping(value = "getusercollectjobcount.do" ,method = RequestMethod.GET)
-@ResponseBody
-public ServerResponse<Integer> getUserCollectJobCount(String openid){
-    //判断是否存在openid
-  		//存在就查询
-  		//不存在就返回error
-}
-```
-
-
-
-##### 3.查询用户收藏的招聘信息列表
-
-url: /user/getusercollectjoblist.do
-
-param: openid,pageNum(默认为1),pageSize(默认为10，可不填)
-
-method: get
-
-return:  pageInfo(分页object)
-
-```java
-@RequestMapping(value = "getusercollectjoblist.do" ,method = RequestMethod.GET)
-@ResponseBody
-public ServerResponse<PageInfo> getUserCollectJobCount(
-  @RequestParam(value="openid")String openid,
-  @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
-  @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,){
-    //判断是否存在openid
-  		//存在就查询(联表查询)
-  		//不存在就返回error
-}
-```
-
-
-
-##### 4.本用户查看该条招聘信息是否已收藏
-
-url: /user/checkjobiscollect.do
-
-param: openid,joid
-
-method: get
-
-return: 1已收藏 0未收藏
-
-```java
-@RequestMapping(value = "checkjobiscollect.do" ,method = RequestMethod.GET)
-@ResponseBody
-public ServerResponse<Integer> checkJobIsCollect(String openid,int joid){
-    //判断是否存在openid,joid
-  		//都存在就查询(联表查询)
-  		//不存在就返回error
-}
-```
-
-
-
-##### 5.本用户查看该条招聘信息是否已投递
-
-url: /user/checkjobisdeliver.do
-
-param: openid,joid
-
-method: get
-
-return: 1已投递 0未投递
-
-```java
-@RequestMapping(value = "checkjobisdeliver.do" ,method = RequestMethod.GET)
-@ResponseBody
-public ServerResponse<Integer> checkJobIsDeliver(String openid,int joid){
-    //判断是否存在openid,joid
-  		//都存在就查询(联表查询)
-  		//不存在就返回error
-}
-```
-
-
-
-##### 6.1用户收藏某条招聘信息
-
-url: /user/collectjob.do
-
-param: openid,joid
-
-method: post
-
-return: 1成功 0失败
-
-```java
-@RequestMapping(value = "collectjob.do" ,method = RequestMethod.POST)
-@ResponseBody
-public ServerResponse<Integer> collectJob(String openid,int joid){
-    //判断是否存在openid,joid
-  		//都存在就新增一条记录
-  		//不存在就返回error
-}
-```
-
-
-
-##### 6.2用户取消收藏某条招聘信息
-
-url: /user/uncollectjob.do
-
-param: openid,joid
-
-method: post
-
-return: 1成功 0失败
-
-```java
-@RequestMapping(value = "uncollectjob.do" ,method = RequestMethod.POST)
-@ResponseBody
-public ServerResponse<Integer> uncollectJob(String openid,int joid){
-    //判断是否存在openid,joid
-  		//判断存在这条关联记录
-  		//都存在就删除这一条记录
-  		//不存在就返回error
-}
-```
-
-
-
-##### 7.用户给某条招聘信息投递简历
-
-url: /user/deliverresume.do
-
-param: openid,joid(招聘信息的id),reid(简历的id)
-
-method: post
-
-return: 1成功 0失败
-
-```java
-@RequestMapping(value = "deliverresume.do" ,method = RequestMethod.POST)
-@ResponseBody
-public ServerResponse<Integer> deliverResume(String openid,int joid,int reid){
-    //判断并验证openid,joid,reid
-  		//都通过就新增一条记录,用户消息那里也新增一条记录
-  		//不然就返回error
-}
-```
-
-
-
-##### 8.用户提交意见反馈
-
-url: /user/submitopinion.do
-
-param: openid,description
-
-method: post
-
-return: 1成功 0失败
-
-```java
-@RequestMapping(value = "submitopinion.do" ,method = RequestMethod.POST)
-@ResponseBody
-public ServerResponse<Integer> submitOpinion(String openid,String description){
-    
-}
-```
-
-
-
-##### 9.用户查看投递过的招聘信息
-
-url: /user/getdeliveredjob.do
-
-param: openid,pageNum,pageSize,status(投递，查看，面试，通过，未通过)
-
-method: post
-
-return: pageInfo
-
-```java
-/**
-* 用户查看投递过的招聘信息
-* @param openid
-* @return
-*/
-@RequestMapping(value = "getuserdeliveredlist.do" ,method = RequestMethod.POST)
-public ServerResponse getUserDeliveredList(@RequestParam(value="openid")String openid,
-                                           @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
-                                           @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
-                                           @RequestParam(required = false)Integer status){
-  return iUserService.getUserDeliveredList(openid,pageNum,pageSize,status);
-}
-```
-
-
-
-##### 10.用户给公司评分
-
-url:/user/ratetocompany.do
-
-param:openid,companyid,credit(分数)
-
-method:post
-
-return: 0/1 失败/成功
-
-```java
-@RequestMapping(value = "ratetocompany.do" ,method = RequestMethod.POST)
-@ResponseBody
-public ServerResponse rateToCompany(String openid,int companyid,double credit){
-    //判断openid是否存在
-  	//判断是否有过面试完成记录
-  	//如有，则可以评分
-}
-```
-
-
-
-
-
-#### 简历
-
-##### 1. 创建、修改简历
-
-url: /resume/saveorupdateresume.do
-
-param: openid,reid(简历的id)...待定
-
-method: post
-
-return: 1成功 0失败
-
-```
-@RequestMapping(value = "saveorupdateresume.do" ,method = RequestMethod.POST)
-@ResponseBody
-public ServerResponse<Integer> saveOrUpdateResume(String openid,int reid,待定...){
-   	//判断reid是否为空，空则新建，不空则修改
-}
-```
-
-
-
-##### 2. 删除简历(待定关联删除)
-
-url: /resume/delresume.do
-
-param: openid,reid(简历的id)
-
-method: post
-
-return: 1成功 0失败
-
-```java
-@RequestMapping(value = "delresume.do" ,method = RequestMethod.POST)
-@ResponseBody
-public ServerResponse<Integer> delResume(String openid,int reid,待定...){
-   	//判断reid，openid是否为空，空则error，不空则删除
-}
-```
-
-##### 3.查看简历
-
-
-
-
-
-#### 招聘信息
-
-##### 1. 获取招聘信息列表
-
-url: /offers/list.do
-
-param: openid,pageNum(默认为1),pageSize(默认为10，可不填),待定筛选tag,type,city,wage
-
-method: post
-
-return:pageInfo
-
-```java
-@RequestMapping(value = "list.do" ,method = RequestMethod.GET)
-public ServerResponse<PageInfo> getOfferList(String openid,pageNum,pageSize,String city,待定筛选字段...){
-   	
-}
-```
-
-
-
-##### 2. 查看具体的招聘信息
-
-url: /offers/detail.do
-
-param: joid
-
-method: post
-
-return: object
-
-```java
-@RequestMapping(value = "detail.do" ,method = RequestMethod.POST)
-@ResponseBody
-public ServerResponse getOfferDetail(Integer joid){
-   	//这里记得还要返回多一个公司的id
-}
-```
-
-##### 3.发布一条招聘信息
-
-##### 4.删除一条招聘信息
-
-
-
-#### 公司
-
-##### 1. 查看公司的信息
-
-url: /company/detail.do
-
-param: id
-
-method: post
-
-return: object
-
-```java
-@RequestMapping(value = "detail.do" ,method = RequestMethod.POST)
-@ResponseBody
-public ServerResponse getCompanyDetail(Integer id){
-
-}
-```
-
-##### 2.公司给用户评分(可能在web端操作)
-
-url:/company/ratetouser.do
-
-param:openid,companyid,credit(分数)
-
-method:post
-
-return: 0/1 失败/成功
-
-```java
-@RequestMapping(value = "ratetouser.do" ,method = RequestMethod.POST)
-@ResponseBody
-public ServerResponse rateToUser(String openid,int companyid,double credit){
-    //判断openid是否存在
-  	//判断是否有过面试完成记录
-  	//如有，则可以评分
-}
-```
-
-##### 3.HR给一份投递到自己公司的简历变更状态(投递->查看->邀约面试/筛掉->通过/不通过)
-
-url:/company/changeuserdeliveredstatus.do
-
-param:companyid,openid,rdsid,status
-
-method:post
-
-return:
-
-
-
-##### 
-
-
-
-#### 管理员
-
-##### 1.审核HR注册
-
-##### 2.审核HR发布的招聘信息
-
-##### 3.查看用户提交的意见
-
-
-
+| function          | url                             | method | param                                    | return          |
+| ----------------- | ------------------------------- | ------ | ---------------------------------------- | --------------- |
+| 查看商家的详细信息         | /company/detail.do              | POST   | id                                       | obj             |
+| 公司给用户评分(还没写)      | /company/ratetouser.do          | POST   |                                          | -               |
+| 获取招聘列表/包含搜索，筛选功能  | /offers/list.do                 | POST   | （参数全部选填）pageNum,pageSize,keywords(搜索关键词),wage（月工资下限）,type,city,duration（工作几个月）,workfrequency（一周几天） | pageinfo        |
+| 获取推荐招聘列表（按工资高的在前） | /offers/recommendlist.do        | POST   | （参数全部选填）pageNum,pageSize                 | pageinfo        |
+| 获取某个招聘信息的详情       | /offers/detail.do               | POST   | id                                       | obj             |
+| 进入小程序后存储或更新用户基本信息 | /user/saveorupdateuser.do       | POST   | openid,nickname,avatarurl,gender,language,city,province,country,realname,birthday("yyyy-MM-dd"),email,phone | 成功status=0 失败=1 |
+| 判断是否初次登录          | /user/isfirstlogin.do           | POST   | openid                                   | 成功status=0 失败=1 |
+| 查询用户收藏的招聘信息条数     | /user/getusercollectjobcount.do | POST   | openid                                   | 成功则返回一个数        |
+| 查询用户收藏的招聘信息列表     | /user/getusercollectjoblist.do  | POST   | openid,(pageNum,pageSize选填)              | pageinfo        |
+| 本用户查看该条招聘信息是否已收藏  | /user/checkjobiscollect.do      | POST   | openid,joid                              | 成功status=0 失败=1 |
+| 本用户查看该条招聘信息是否已投递  | /user/checkjobisdeliver.do      | POST   | openid,joid                              | 成功status=0 失败=1 |
+| 用户收藏某条招聘信息        | /user/collectjob.do             | POST   | openid,joid                              | 成功status=0 失败=1 |
+| 用户取消收藏某条招聘信息      | /user/uncollectjob.do           | POST   | openid,joid                              | 成功status=0 失败=1 |
+| 用户给某条招聘信息投递简历     | /user/deliverresume.do          | POST   | openid,joid,reid                         | 成功status=0 失败=1 |
+| 用户提交意见反馈          | /user/submitopinion.do          | POST   | openid,contactinfo,description           | 成功status=0 失败=1 |
+| 用户查看投递过的招聘信息      | /user/getuserdeliveredlist.do   | POST   | openid,pageNum,pageSize,status(选填)       | pageinfo        |
+| 获取个人基本信息          | /user/info.do                   | POST   | openid                                   | obj             |
+| 获取个人简历列表          | /user/myresumelist.do           | POST   | openid                                   | pageinfo        |
+| 获取个人消息            | /user/mymsg.do                  | POST   | openid,pageNum,pageSize,readstatus(选填)   | pageinfo        |
+| 获取个人消息详情          | /user/msg.do                    | POST   | id,openid                                | obj             |
+| 删除自己的某条消息         | /user/delmsg.do                 | POST   | id,openid                                | 成功status=0 失败=1 |
+| 用户给公司评分(还没写)      | /user/ratetocompany.do          | POST   |                                          | -               |
+| 用户创建或修改简历         | /resume/saveorupdateresume.do   | POST   | id(选),openid,skills,hobbies,selfevaluation,schoolname,major,startschooltime,endschooltime,education,majorclass,certificate,awards,campusexp | 成功status=0 失败=1 |
+| 用户删除简历            | /resume/delresume.do            | POST   | openid,id                                | 成功status=0 失败=1 |
+| 查看某份简历详情          | /resume/detail.do               | POST   | id                                       | obj             |
