@@ -140,6 +140,61 @@ public class UserController {
         return iUserService.getUserDeliveredList(openid,pageNum,pageSize,status);
     }
 
+    /**
+     * 获取个人基本信息
+     * @param openid
+     * @return
+     */
+    @RequestMapping(value = "info.do",method = RequestMethod.POST)
+    public ServerResponse info(String openid){
+        return iUserService.info(openid);
+    }
+
+    /**
+     * 获取个人简历列表
+     * @param openid
+     * @return
+     */
+    @RequestMapping(value = "myresumelist.do",method = RequestMethod.POST)
+    public ServerResponse myResumeList(String openid){
+        return iUserService.myResumeList(openid);
+    }
+
+    /**
+     * 获取个人消息
+     * @param pageNum
+     * @param pageSize
+     * @param openid
+     * @param readstatus
+     * @return
+     */
+    @RequestMapping(value = "mymsg.do",method = RequestMethod.POST)
+    public ServerResponse myMsg(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
+                                @RequestParam(value = "openid") String openid,@RequestParam(required = false)Integer readstatus){
+        return iUserService.myMsg(openid,pageNum,pageSize,readstatus);
+    }
+
+    /**
+     * 获取个人消息
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "msg.do",method = RequestMethod.POST)
+    public ServerResponse msg(Integer id,String openid){
+        return iUserService.msg(id,openid);
+    }
+
+    /**
+     * 删除自己的某条消息
+     * @param id
+     * @param openid
+     * @return
+     */
+    @RequestMapping(value = "delmsg.do",method = RequestMethod.POST)
+    public ServerResponse delMsg(Integer id,String openid){
+        return iUserService.delMsg(id,openid);
+    }
 
     /**
      * 用户给公司评分
@@ -156,4 +211,6 @@ public class UserController {
         //如有，则可以评分
         return null;
     }
+
+
 }

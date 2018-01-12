@@ -85,6 +85,27 @@ public class IOffersServiceImpl implements IOffersService {
     }
 
 
+    /**
+     * 获取推荐招聘信息列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public ServerResponse<PageInfo> recommendList(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.orderBy("wage desc");
+        List<JobOffers> jobOffersList = jobOffersMapper.recommendList();
+        List<JobOffersListVO> list = Lists.newArrayList();
+        for(JobOffers jo:jobOffersList){
+            JobOffersListVO vo = assembleJobOffersListVO(jo);
+            list.add(vo);
+        }
+        PageInfo pageResult = new PageInfo(jobOffersList);
+        //将封装好的volist放进去
+        pageResult.setList(list);
+        return ServerResponse.createBySuccess(pageResult);
+    }
 
 
     private JobOffersListVO assembleJobOffersListVO(JobOffers jobOffers){

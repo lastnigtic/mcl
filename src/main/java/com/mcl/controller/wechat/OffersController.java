@@ -36,6 +36,19 @@ public class OffersController {
         return iOffersService.getOfferList(pageNum,pageSize,jobOffers,keywords);
     }
 
+
+    /**
+     * 获取推荐招聘信息列表(按工资高的在前)
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "recommendlist.do" ,method = RequestMethod.GET)
+    public ServerResponse<PageInfo> recommendList(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                                 @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
+        return iOffersService.recommendList(pageNum,pageSize);
+    }
+
     /**
      * 查看具体的招聘信息
      * @param joid

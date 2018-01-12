@@ -25,4 +25,6 @@ public interface JobOffersMapper {
     List<JobOffers> selectUserDeliveredJobOffersListByStatus(@Param("openid") String openid,@Param("status") Integer status);
 
     List<JobOffers> selectList(JobOffers record);
+
+    List<JobOffers> recommendList();
 }

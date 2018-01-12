@@ -87,6 +87,12 @@
       </if>
     </trim>
   </insert>
+  <select id="selectByPrimaryKey" resultType="com.mcl.pojo.UserMsg" parameterType="java.lang.Integer">
+    SELECT <include refid="Base_Column_List"/>
+    FROM
+    usermsg
+    WHERE id = #{id,jdbcType=INTEGER}
+  </select>
   <update id="updateByPrimaryKeySelective" parameterType="com.mcl.pojo.UserMsg" >
     update usermsg
     <set >
@@ -125,4 +131,12 @@
       updatetime = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectList" resultType="com.mcl.pojo.UserMsg">
+    SELECT <include refid="Base_Column_List"/>
+    FROM usermsg
+    WHERE openid = #{openid}
+    <if test="readstatus!=null">
+      AND readstatus = #{readstatus}
+    </if>
+  </select>
 </mapper>

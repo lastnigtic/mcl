@@ -30,4 +30,14 @@ public interface IUserService {
     ServerResponse getUserDeliveredList(String openid, int pageNum, int pageSize, Integer status);
 
     ServerResponse isUserFirstLogin(String openid);
+
+    ServerResponse info(String openid);
+
+    ServerResponse myResumeList(String openid);
+
+    ServerResponse myMsg(String openid, int pageNum, int pageSize, Integer readstatus);
+
+    ServerResponse msg(Integer id, String openid);
+
+    ServerResponse delMsg(Integer id, String openid);
 }

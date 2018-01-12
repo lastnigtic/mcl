@@ -38,6 +38,12 @@ public class IUserServiceImpl implements IUserService {
     @Autowired
     private OpinionMapper opinionMapper ;
 
+    @Autowired
+    private ResumeMapper resumeMapper ;
+
+    @Autowired
+    private UserMsgMapper userMsgMapper ;
+
     /**
      * 更新或新增用户的基础信息
      * @param userBaseInfo
@@ -368,13 +374,176 @@ public class IUserServiceImpl implements IUserService {
         return ServerResponse.createByErrorMessage("传入参数错误！");
     }
 
+
     /**
-     * 检查某用户的某个简历是否完善，是否可以投递（规则待补充，记得查重）
+     * 查询个人基本信息
      * @param openid
-     * @param reid
      * @return
      */
-    private boolean checkResumeCompleted(String openid,Integer reid){
+    @Override
+    public ServerResponse info(String openid) {
+        if(StringUtils.isBlank(openid)){
+            return ServerResponse.createByErrorMessage("传入参数错误");
+        }
+        int rowUser = userBaseInfoMapper.checkUserByOpenid(openid);
+        if(rowUser>0){
+            //存在
+            UserBaseInfo u = userBaseInfoMapper.selectByPrimaryKey(openid);
+            if(u!=null){
+                return ServerResponse.createBySuccess(u);
+            }
+            return ServerResponse.createByErrorMessage("查询失败");
+        }
+        return ServerResponse.createByErrorMessage("查询失败");
+    }
+
+    /**
+     * 获取个人简历列表
+     * @param openid
+     * @return
+     */
+    @Override
+    public ServerResponse myResumeList(String openid) {
+        if (StringUtils.isBlank(openid)){
+            return ServerResponse.createByErrorMessage("传入参数错误");
+        }
+        int rowUser = userBaseInfoMapper.checkUserByOpenid(openid);
+        if(rowUser>0) {
+            //存在
+            List<Resume> list = resumeMapper.selectList(openid);
+            if(list!=null){
+                return ServerResponse.createBySuccess(list);
+            }
+            return ServerResponse.createByErrorMessage("该用户简历为空");
+        }
+        return ServerResponse.createByErrorMessage("找不到用户信息");
+    }
+
+    /**
+     * 获取个人消息列表（可以筛选已读未读）
+     * @param openid
+     * @param pageNum
+     * @param pageSize
+     * @param readstatus
+     * @return
+     */
+    @Override
+    public ServerResponse<PageInfo> myMsg(String openid, int pageNum, int pageSize, Integer readstatus) {
+        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.orderBy("updatetime desc");
+        List<UserMsg> list = userMsgMapper.selectList(openid,readstatus);
+        PageInfo pageResult = new PageInfo(list);
+        //将封装好的volist放进去
+        return ServerResponse.createBySuccess(pageResult);
+    }
+
+    /**
+     * 获取个人某条信息（并自动设置为已读）
+     * @param id
+     * @param openid
+     * @return
+     */
+    @Override
+    public ServerResponse msg(Integer id, String openid) {
+        if(StringUtils.isNotBlank(openid)&&id!=null){
+            int rowUser = userBaseInfoMapper.checkUserByOpenid(openid);
+            if(rowUser>0){
+                //存在
+                UserMsg userMsg = userMsgMapper.selectByPrimaryKey(id);
+                if(userMsg!=null){
+                    userMsg.setReadstatus(1);
+                    userMsgMapper.updateByPrimaryKey(userMsg);
+                    return ServerResponse.createBySuccess(userMsg);
+                }
+                return ServerResponse.createByErrorMessage("不存在的消息");
+            }
+            return ServerResponse.createByErrorMessage("找不到用户信息");
+        }
+        return ServerResponse.createByErrorMessage("传入参数错误");
+    }
+
+    @Override
+    public ServerResponse delMsg(Integer id, String openid) {
+        if(StringUtils.isNotBlank(openid)&&id!=null) {
+            int rowUser = userBaseInfoMapper.checkUserByOpenid(openid);
+            if (rowUser > 0) {
+                //存在
+                UserMsg userMsg = userMsgMapper.selectByPrimaryKey(id);
+                if (userMsg != null&&userMsg.getOpenid().equals(openid)) {
+                    int rowDel = userMsgMapper.deleteByPrimaryKey(id);
+                    if (rowDel > 0) {
+                        return ServerResponse.createBySuccess("删除成功");
+                    }
+                    return ServerResponse.createByErrorMessage("删除失败");
+                }
+                return ServerResponse.createByErrorMessage("不存在的消息");
+            }
+            return ServerResponse.createByErrorMessage("找不到用户信息");
+        }
+        return ServerResponse.createByErrorMessage("传入参数错误");
+    }
+
+    /**
+     * 检查某用户的某个简历是否完善，是否可以投递
+     * @param openid
+     * @param id
+     * @return
+     */
+    private boolean checkResumeCompleted(String openid,Integer id){
+        //检查简历是否完整
+        Resume resume = resumeMapper.selectByPrimaryKey(id);
+        if(resume==null){
+            return false ;
+        }else {
+            if(StringUtils.isBlank(resume.getOpenid())){
+                return false;
+            }
+            if(StringUtils.isBlank(resume.getEducation())){
+                return false;
+            }
+            if(StringUtils.isBlank(resume.getMajor())){
+                return false;
+            }
+            if(StringUtils.isBlank(resume.getSchoolname())){
+                return false;
+            }
+            if(resume.getStartschooltime()==null){
+                return false;
+            }
+            if(resume.getEndschooltime()==null){
+                return false;
+            }
+            if(StringUtils.isBlank(resume.getSkills())){
+                return false;
+            }
+            if(StringUtils.isBlank(resume.getSelfevaluation())){
+                return false;
+            }
+        }
+        //检查个人基本信息是否完整
+        if(StringUtils.isBlank(openid)){
+            return false;
+        }else {
+            UserBaseInfo u = userBaseInfoMapper.selectByPrimaryKey(openid);
+            if(u==null){
+                return false;
+            }
+            if(StringUtils.isBlank(u.getCity())){
+                return false;
+            }
+            if(StringUtils.isBlank(u.getEmail())){
+                return false;
+            }
+            if(StringUtils.isBlank(u.getPhone())){
+                return false;
+            }
+            if(StringUtils.isBlank(u.getRealname())){
+                return false;
+            }
+            if(u.getBirthday()==null){
+                return false;
+            }
+        }
         return true ;
     }
 

@@ -36,6 +36,10 @@
   <select id="selectUserDeliveredJobOffersListByStatus" resultType="com.mcl.pojo.JobOffers">
         select * from joboffers where id in (select joid from resdeliverstatus where openid = #{openid} and status = #{status}) and checked=1 order by updatetime desc
   </select>
+  <select id="recommendList" resultType="com.mcl.pojo.JobOffers" >
+    SELECT <include refid="Base_Column_List"/>
+    FROM joboffers WHERE checked = 1
+  </select>
   <select id="selectList" resultType="com.mcl.pojo.JobOffers" parameterType="com.mcl.pojo.JobOffers">
     SELECT
     <include refid="Base_Column_List"/>
@@ -57,6 +61,9 @@
     </if>
     <if test="type!=null">
       AND type=#{type,jdbcType=VARCHAR}
+    </if>
+    <if test="tag!=null">
+      AND tag=#{tag,jdbcType=VARCHAR}
     </if>
     ORDER BY updatetime desc
   </select>

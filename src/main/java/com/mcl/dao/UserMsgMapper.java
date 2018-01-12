@@ -1,6 +1,9 @@
 package com.mcl.dao;
 
 import com.mcl.pojo.UserMsg;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface UserMsgMapper {
     int deleteByPrimaryKey(Integer id);
@@ -15,4 +18,6 @@ public interface UserMsgMapper {
 
 
     int updateByPrimaryKey(UserMsg record);
+
+    List<UserMsg> selectList(@Param("openid") String openid,@Param("readstatus") Integer readstatus);
 }

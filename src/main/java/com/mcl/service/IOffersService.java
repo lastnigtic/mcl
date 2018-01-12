@@ -12,4 +12,5 @@ public interface IOffersService {
 
     ServerResponse getOfferDetail(Integer joid);
 
+    ServerResponse<PageInfo> recommendList(int pageNum, int pageSize);
 }

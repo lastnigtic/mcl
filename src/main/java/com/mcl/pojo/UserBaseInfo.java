@@ -1,5 +1,7 @@
 package com.mcl.pojo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class UserBaseInfo {
@@ -21,6 +23,7 @@ public class UserBaseInfo {
 
     private String realname;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     private String email;

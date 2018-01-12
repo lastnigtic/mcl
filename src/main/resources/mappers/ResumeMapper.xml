@@ -214,4 +214,8 @@
   <select id="checkResumeExist" parameterType="java.lang.Integer" resultType="java.lang.Integer">
     SELECT COUNT(1) from resume WHERE id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectList" parameterType="java.lang.String" resultType="com.mcl.pojo.Resume">
+    SELECT <include refid="Base_Column_List"/>
+    FROM resume WHERE openid = #{openid,jdbcType=VARCHAR}
+  </select>
 </mapper>
