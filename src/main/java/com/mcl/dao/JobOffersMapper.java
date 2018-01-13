@@ -27,4 +27,6 @@ public interface JobOffersMapper {
     List<JobOffers> selectList(JobOffers record);
 
     List<JobOffers> recommendList();
+
+    List<JobOffers> myJobList(JobOffers jobOffers);
 }

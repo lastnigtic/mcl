@@ -567,7 +567,7 @@ public class IUserServiceImpl implements IUserService {
         vo.setTemptation(temptations);
         if(jobOffers.getCompanyid()!=null){
             vo.setCompanyid(jobOffers.getCompanyid());
-            Company company = companyMapper.selectByPrimaryKey(jobOffers.getId());
+            Company company = companyMapper.selectByPrimaryKey(jobOffers.getCompanyid());
             if(company!=null){
                 vo.setCompany(company);
             }

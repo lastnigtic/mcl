@@ -21,4 +21,8 @@ public interface ResumeMapper {
     int checkResumeExist(@Param("id") Integer id);
 
     List<Resume> selectList(String openid);
+
+    List<Resume> getResumeBox(@Param("companyid") String companyid);
+
+    int checkResumeCanGet(@Param("id") Integer id,@Param("companyid") String companyid);
 }

@@ -23,7 +23,7 @@ public class CompanyController {
      * @return
      */
     @RequestMapping(value = "detail.do" ,method = RequestMethod.POST)
-    public ServerResponse detail(Integer id){
+    public ServerResponse detail(String id){
         return iCompanyService.getCompanyDetail(id);
     }
 

@@ -9,7 +9,7 @@
       <arg column="tag" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="type" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="wage" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="companyid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="companyid" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="city" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="education" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -35,6 +35,28 @@
   </select>
   <select id="selectUserDeliveredJobOffersListByStatus" resultType="com.mcl.pojo.JobOffers">
         select * from joboffers where id in (select joid from resdeliverstatus where openid = #{openid} and status = #{status}) and checked=1 order by updatetime desc
+  </select>
+  <select id="myJobList" resultType="com.mcl.pojo.JobOffers" parameterType="com.mcl.pojo.JobOffers">
+    SELECT <include refid="Base_Column_List"/>
+    FROM joboffers WHERE companyid=#{companyid,jdbcType=VARCHAR}
+    <if test="jobname!=null">
+      AND (jobname like #{jobname,jdbcType=VARCHAR} OR description like #{description,jdbcType=VARCHAR})
+    </if>
+    <if test="wage!=null">
+      AND wage>=#{wage,jdbcType=INTEGER}
+    </if>
+    <if test="duration!=null">
+      AND duration=#{duration,jdbcType=INTEGER}
+    </if>
+    <if test="workfrequency!=null">
+      AND workfrequency=#{workfrequency,jdbcType=INTEGER}
+    </if>
+    <if test="type!=null">
+      AND type=#{type,jdbcType=VARCHAR}
+    </if>
+    <if test="tag!=null">
+      AND tag=#{tag,jdbcType=VARCHAR}
+    </if>
   </select>
   <select id="recommendList" resultType="com.mcl.pojo.JobOffers" >
     SELECT <include refid="Base_Column_List"/>
@@ -78,7 +100,7 @@
       duration, workfrequency, updatetime, 
       checked, description)
     values (#{id,jdbcType=INTEGER}, #{jobname,jdbcType=VARCHAR}, #{temptation,jdbcType=VARCHAR}, 
-      #{tag,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{wage,jdbcType=INTEGER}, #{companyid,jdbcType=INTEGER},
+      #{tag,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{wage,jdbcType=INTEGER}, #{companyid,jdbcType=VARCHAR},
       #{city,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR},
       #{duration,jdbcType=INTEGER}, #{workfrequency,jdbcType=INTEGER}, now(),
       #{checked,jdbcType=INTEGER}, #{description,jdbcType=LONGVARCHAR})
@@ -152,7 +174,7 @@
         #{wage,jdbcType=INTEGER},
       </if>
       <if test="companyid != null" >
-        #{companyid,jdbcType=INTEGER},
+        #{companyid,jdbcType=VARCHAR},
       </if>
       <if test="city != null" >
         #{city,jdbcType=VARCHAR},
@@ -180,6 +202,10 @@
       </if>
     </trim>
   </insert>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.mcl.pojo.JobOffers">
+    SELECT <include refid="Base_Column_List"/>
+    FROM joboffers WHERE id = #{id,jdbcType=INTEGER}
+  </select>
   <update id="updateByPrimaryKeySelective" parameterType="com.mcl.pojo.JobOffers" >
     update joboffers
     <set >
@@ -199,7 +225,7 @@
         wage = #{wage,jdbcType=INTEGER},
       </if>
       <if test="companyid != null" >
-        companyid = #{companyid,jdbcType=INTEGER},
+        companyid = #{companyid,jdbcType=VARCHAR},
       </if>
       <if test="city != null" >
         city = #{city,jdbcType=VARCHAR},
@@ -236,7 +262,7 @@
       tag = #{tag,jdbcType=VARCHAR},
       type = #{type,jdbcType=VARCHAR},
       wage = #{wage,jdbcType=INTEGER},
-      companyid = #{companyid,jdbcType=INTEGER},
+      companyid = #{companyid,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       education = #{education,jdbcType=VARCHAR},

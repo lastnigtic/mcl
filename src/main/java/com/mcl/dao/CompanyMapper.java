@@ -3,13 +3,13 @@ package com.mcl.dao;
 import com.mcl.pojo.Company;
 
 public interface CompanyMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(String id);
 
     int insert(Company record);
 
     int insertSelective(Company record);
 
-    Company selectByPrimaryKey(Integer id);
+    Company selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(Company record);
 

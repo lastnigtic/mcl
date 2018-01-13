@@ -22,7 +22,7 @@ public class ICompanyServiceImpl implements ICompanyService {
      * @return
      */
     @Override
-    public ServerResponse getCompanyDetail(Integer id) {
+    public ServerResponse getCompanyDetail(String id) {
         if(id!=null){
             Company c = companyMapper.selectByPrimaryKey(id);
             if(c!=null){
@@ -32,5 +32,14 @@ public class ICompanyServiceImpl implements ICompanyService {
         }
         return ServerResponse.createByErrorMessage("传入参数错误！");
 
+    }
+
+    /**
+     * 更新公司信息
+     * @param company
+     */
+    @Override
+    public void updateCompany(Company company) {
+        companyMapper.updateByPrimaryKeySelective(company);
     }
 }

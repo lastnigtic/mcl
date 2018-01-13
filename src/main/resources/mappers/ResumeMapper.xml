@@ -218,4 +218,10 @@
     SELECT <include refid="Base_Column_List"/>
     FROM resume WHERE openid = #{openid,jdbcType=VARCHAR}
   </select>
+  <select id="getResumeBox" resultType="com.mcl.pojo.Resume" parameterType="java.lang.String">
+    select <include refid="Base_Column_List"/> from resume where id in (select reid from resdeliverstatus left join joboffers on resdeliverstatus.joid=joboffers.id where joboffers.companyid=#{companyid})
+  </select>
+  <select id="checkResumeCanGet" resultType="java.lang.Integer">
+    SELECT COUNT(1) FROM  resdeliverstatus left join joboffers on resdeliverstatus.joid = joboffers.id and  joboffers.companyid= #{companyid} and resdeliverstatus.reid = #{id}
+  </select>
 </mapper>

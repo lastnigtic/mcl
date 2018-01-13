@@ -17,4 +17,8 @@ public interface ResDeliverStatusMapper {
     int updateByPrimaryKey(ResDeliverStatus record);
 
     int checkUserDelivered(@Param("openid") String openid,@Param("joid") Integer joid);
+
+    int viewedByResumeId(Integer id);
+
+    ResDeliverStatus selectByResumeId(Integer id);
 }

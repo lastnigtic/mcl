@@ -19,7 +19,14 @@
   <sql id="Blob_Column_List" >
     description
   </sql>
+  <select id="selectByResumeId" parameterType="java.lang.Integer" resultType="com.mcl.pojo.ResDeliverStatus">
+    SELECT <include refid="Base_Column_List"/> FROM resdeliverstatus WHERE reid=#{id}
+  </select>
+  <update id="viewedByResumeId" parameterType="java.lang.Integer">
+    UPDATE resdeliverstatus SET
+    viewed = 1 AND status = 1 WHERE id = #{id}
 
+  </update>
     <select id="checkUserDelivered" resultType="java.lang.Integer">
       SELECT COUNT(1) FROM resdeliverstatus WHERE openid=#{openid,jdbcType=VARCHAR} and joid=#{joid,jdbcType=INTEGER} and status>0
     </select>

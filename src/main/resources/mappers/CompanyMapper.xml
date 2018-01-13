@@ -3,7 +3,7 @@
 <mapper namespace="com.mcl.dao.CompanyMapper" >
   <resultMap id="BaseResultMap" type="com.mcl.pojo.Company" >
     <constructor >
-      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="city" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="imgurl" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="companysize" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -11,28 +11,30 @@
       <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="checked" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="credit" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="companyname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="companylicense" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, city, imgurl, companysize, address, updatetime, checked, credit,introduction
+    id, city, imgurl, companysize, address, updatetime, checked, credit,introduction ,companyname,companylicense
   </sql>
   <sql id="Blob_Column_List" >
     introduction
   </sql>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from company
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.mcl.pojo.Company" >
     insert into company (id, city, imgurl, 
       companysize, address, updatetime, 
-      checked, credit, introduction
+      checked, credit, introduction,companyname,companylicense
       )
-    values (#{id,jdbcType=INTEGER}, #{city,jdbcType=VARCHAR}, #{imgurl,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{imgurl,jdbcType=VARCHAR},
       #{companysize,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},now(),
-      #{checked,jdbcType=INTEGER}, #{credit,jdbcType=DOUBLE}, #{introduction,jdbcType=LONGVARCHAR}
+      #{checked,jdbcType=INTEGER}, #{credit,jdbcType=DOUBLE}, #{introduction,jdbcType=LONGVARCHAR},#{companyname,jdbcType=VARCHAR},#{companylicense,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.mcl.pojo.Company" >
@@ -40,6 +42,12 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="companyname!=null">
+        companyname,
+      </if>
+      <if test="companylicense!=null">
+        companylicense,
       </if>
       <if test="city != null" >
         city,
@@ -68,8 +76,13 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=VARCHAR},
       </if>
+      <if test="companyname!=null">
+        #{companyname,jdbcType=VARCHAR},
+      </if>
+      <if test="companylicense!=null">
+        #{companylicense,jdbcType=VARCHAR},      </if>
       <if test="city != null" >
         #{city,jdbcType=VARCHAR},
       </if>
@@ -123,22 +136,30 @@
       <if test="introduction != null" >
         introduction = #{introduction,jdbcType=LONGVARCHAR},
       </if>
+      <if test="companyname!=null">
+        companyname = #{companyname,jdbcType=VARCHAR},
+      </if>
+      <if test="companylicense!=null">
+        companylicense = #{companylicense,jdbcType=VARCHAR}
+      </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectByPrimaryKey" resultType="com.mcl.pojo.Company" parameterType="java.lang.Integer">
+  <select id="selectByPrimaryKey" resultType="com.mcl.pojo.Company" parameterType="java.lang.String">
     SELECT <include refid="Base_Column_List"/>
-    FROM company WHERE id = #{id,jdbcType=INTEGER}
+    FROM company WHERE id = #{id,jdbcType=VARCHAR}
   </select>
   <update id="updateByPrimaryKey" parameterType="com.mcl.pojo.Company" >
     update company
     set city = #{city,jdbcType=VARCHAR},
+      companyname = #{companyname,jdbcType=VARCHAR},
+      companylicense = #{companylicense,jdbcType=VARCHAR},
       imgurl = #{imgurl,jdbcType=VARCHAR},
       companysize = #{companysize,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       updatetime = now(),
       checked = #{checked,jdbcType=INTEGER},
       credit = #{credit,jdbcType=DOUBLE}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

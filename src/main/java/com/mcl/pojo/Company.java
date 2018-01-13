@@ -3,7 +3,7 @@ package com.mcl.pojo;
 import java.util.Date;
 
 public class Company {
-    private Integer id;
+    private String id;
 
     private String city;
 
@@ -21,27 +21,15 @@ public class Company {
 
     private String introduction;
 
-    public Company(Integer id, String city, String imgurl, String companysize, String address, Date updatetime, Integer checked, Double credit, String introduction) {
-        this.id = id;
-        this.city = city;
-        this.imgurl = imgurl;
-        this.companysize = companysize;
-        this.address = address;
-        this.updatetime = updatetime;
-        this.checked = checked;
-        this.credit = credit;
-        this.introduction = introduction;
-    }
+    private String companyname ;
 
-    public Company() {
-        super();
-    }
+    private String companylicense ;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -50,7 +38,7 @@ public class Company {
     }
 
     public void setCity(String city) {
-        this.city = city == null ? null : city.trim();
+        this.city = city;
     }
 
     public String getImgurl() {
@@ -58,7 +46,7 @@ public class Company {
     }
 
     public void setImgurl(String imgurl) {
-        this.imgurl = imgurl == null ? null : imgurl.trim();
+        this.imgurl = imgurl;
     }
 
     public String getCompanysize() {
@@ -66,7 +54,7 @@ public class Company {
     }
 
     public void setCompanysize(String companysize) {
-        this.companysize = companysize == null ? null : companysize.trim();
+        this.companysize = companysize;
     }
 
     public String getAddress() {
@@ -74,7 +62,7 @@ public class Company {
     }
 
     public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
+        this.address = address;
     }
 
     public Date getUpdatetime() {
@@ -106,6 +94,22 @@ public class Company {
     }
 
     public void setIntroduction(String introduction) {
-        this.introduction = introduction == null ? null : introduction.trim();
+        this.introduction = introduction;
+    }
+
+    public String getCompanyname() {
+        return companyname;
+    }
+
+    public void setCompanyname(String companyname) {
+        this.companyname = companyname;
+    }
+
+    public String getCompanylicense() {
+        return companylicense;
+    }
+
+    public void setCompanylicense(String companylicense) {
+        this.companylicense = companylicense;
     }
 }

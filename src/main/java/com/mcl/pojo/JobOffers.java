@@ -15,7 +15,7 @@ public class JobOffers {
 
     private Integer wage;
 
-    private Integer companyid;
+    private String companyid;
 
     private String city;
 
@@ -81,11 +81,11 @@ public class JobOffers {
         this.wage = wage;
     }
 
-    public Integer getCompanyid() {
+    public String getCompanyid() {
         return companyid;
     }
 
-    public void setCompanyid(Integer companyid) {
+    public void setCompanyid(String companyid) {
         this.companyid = companyid;
     }
 
