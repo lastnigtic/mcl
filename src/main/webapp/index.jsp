@@ -1,6 +1,13 @@
-<!doctype html>
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="com.mcl.pojo.Account" %>
+<%@ page import="com.mcl.common.Const" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%
+    Account account = (Account)session.getAttribute(Const.CURRENT_USER);
+    if(account!=null) response.sendRedirect("/company/index.jsp");
+%>
+<!DOCTYPE HTML>
 <html lang="en" class="fullscreen-bg">
-
 <head>
 	<title>登录 | Life+</title>
 	<meta charset="utf-8">
@@ -19,6 +26,7 @@
 	<!-- ICONS -->
 	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="assets/img/life.png">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -33,18 +41,18 @@
 								<div class="logo text-center"><img src="assets/img/life__.png" alt="Klorofil Logo"></div>
 								<p class="lead">欢迎来到Life+登录页</p>
 							</div>
-							<form class="form-auth-small" action="login.do" method="post">
+							<form class="form-auth-small" action="" method="post" id="login-form">
 								<div class="form-group">
-									<label for="signin-email" class="control-label sr-only">账号</label>
-									<input name="uname"  class="form-control" id="signin-email" value="" placeholder="账号">
+									<label for="signin-uanme" class="control-label sr-only">账号</label>
+									<input name="uname"  class="form-control" id="signin-uanme" value="" placeholder="账号">
 								</div>
 								<div class="form-group">
 									<label for="signin-password" class="control-label sr-only">密码</label>
 									<input name="upass" type="password" class="form-control" id="signin-password" value="" placeholder="密码">
 								</div>
-								<button type="submit" class="btn btn-primary btn-lg btn-block">登录</button>
+								<button type="button" class="btn btn-primary btn-lg btn-block" id="button-login">登录</button>
 								<div class="bottom">
-									<span class="helper-text"><i class="lnr lnr-user"></i> <a href="#">没有账号?注册一个！</a></span>
+									<span class="helper-text"><i class="lnr lnr-user"></i> <a href="#">没有账号 ? 注册一个 ！</a></span>
 								</div>
 							</form>
 						</div>
@@ -63,5 +71,34 @@
 	</div>
 	<!-- END WRAPPER -->
 </body>
-
 </html>
+<script>
+	$(function(){
+        $("#button-login").click(function(){
+            var name = $("#signin-uanme").val();
+            var pass = $("#signin-password").val();
+            if(name==null||pass==null||name==''||pass==''){
+                alert("未输入账号密码");
+                return ;
+            }
+            $.ajax({
+                url: "login.do",
+                type: "POST",
+                data:{
+                    uname:name,
+                    upass:pass
+                },
+                success: function(res){
+                    if(res.status==0){
+                        $(window).attr('location','/company/index.jsp');
+                    }else{
+                        alert(res.msg);
+                        $("#signin-uanme").val("");
+                        $("#signin-password").val("");
+                    }
+                }
+            })
+        });
+        
+    })
+</script>

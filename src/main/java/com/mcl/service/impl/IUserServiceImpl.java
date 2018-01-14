@@ -551,7 +551,7 @@ public class IUserServiceImpl implements IUserService {
     private JobOffersListVO assembleJobOffersListVO(JobOffers jobOffers){
         JobOffersListVO vo = new JobOffersListVO();
         vo.setAddress(jobOffers.getAddress());
-        vo.setCheckd(jobOffers.getChecked());
+        vo.setChecked(jobOffers.getChecked());
         vo.setCity(jobOffers.getCity());
         vo.setDescription(jobOffers.getDescription());
         vo.setDuration(jobOffers.getDuration());

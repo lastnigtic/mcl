@@ -34,7 +34,7 @@ public class JobOffersListVO {
 
     private Date updatetime;
 
-    private Integer checkd;
+    private Integer checked;
 
     private String description;
 
@@ -144,12 +144,12 @@ public class JobOffersListVO {
         this.updatetime = updatetime;
     }
 
-    public Integer getCheckd() {
-        return checkd;
+    public Integer getChecked() {
+        return checked;
     }
 
-    public void setCheckd(Integer checkd) {
-        this.checkd = checkd;
+    public void setChecked(Integer checked) {
+        this.checked = checked;
     }
 
     public String getDescription() {

@@ -12,7 +12,6 @@ import com.mcl.pojo.JobOffers;
 import com.mcl.service.IOffersService;
 import com.mcl.vo.JobOffersListVO;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -111,7 +110,7 @@ public class IOffersServiceImpl implements IOffersService {
     private JobOffersListVO assembleJobOffersListVO(JobOffers jobOffers){
         JobOffersListVO vo = new JobOffersListVO();
         vo.setAddress(jobOffers.getAddress());
-        vo.setCheckd(jobOffers.getChecked());
+        vo.setChecked(jobOffers.getChecked());
         vo.setCity(jobOffers.getCity());
         vo.setDescription(jobOffers.getDescription());
         vo.setDuration(jobOffers.getDuration());
