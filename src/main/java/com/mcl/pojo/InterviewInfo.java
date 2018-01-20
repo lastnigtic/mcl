@@ -1,10 +1,13 @@
 package com.mcl.pojo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class InterviewInfo {
     private Integer id;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date interviewtime;
 
     private Integer joid;

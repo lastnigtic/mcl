@@ -486,6 +486,16 @@ public class IUserServiceImpl implements IUserService {
     }
 
     /**
+     * 是否存在用户
+     * @param openid
+     * @return
+     */
+    @Override
+    public boolean checkOpenid(String openid) {
+        return  userBaseInfoMapper.checkUserByOpenid(openid)>0?true:false;
+    }
+
+    /**
      * 检查某用户的某个简历是否完善，是否可以投递
      * @param openid
      * @param id

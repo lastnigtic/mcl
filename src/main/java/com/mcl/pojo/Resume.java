@@ -1,5 +1,7 @@
 package com.mcl.pojo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Resume {
@@ -23,6 +25,7 @@ public class Resume {
 
     private String major;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date graduationtime;
 
     private String education;

@@ -66,19 +66,20 @@
         </javaClientGenerator>
 
 
-        <table tableName="userbaseinfo" domainObjectName="UserBaseInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="company" domainObjectName="Company" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <table tableName="companyusercredit" domainObjectName="CompanyUserCredit" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <!--<table tableName="interviewinfo" domainObjectName="InterviewInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
-        <table tableName="joboffers" domainObjectName="JobOffers" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <!--<table tableName="opinion" domainObjectName="Opinion" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
-        <!--<table tableName="resdeliverstatus" domainObjectName="ResDeliverStatus" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
-        <table tableName="resume" domainObjectName="Resume" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <!--<table tableName="tagproperty" domainObjectName="TagProperty" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
-        <!--<table tableName="usercollection" domainObjectName="UserCollection" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
-        <table tableName="usercompanycredit" domainObjectName="UserCompanyCredit" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-        <!--<table tableName="usermsg" domainObjectName="UserMsg" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
-        <!--<table tableName="account" domainObjectName="Account" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="userbaseinfo" domainObjectName="UserBaseInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="company" domainObjectName="Company" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="companyusercredit" domainObjectName="CompanyUserCredit" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+        <!--&lt;!&ndash;<table tableName="interviewinfo" domainObjectName="InterviewInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>&ndash;&gt;-->
+        <!--<table tableName="joboffers" domainObjectName="JobOffers" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+        <!--&lt;!&ndash;<table tableName="opinion" domainObjectName="Opinion" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>&ndash;&gt;-->
+        <!--&lt;!&ndash;<table tableName="resdeliverstatus" domainObjectName="ResDeliverStatus" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>&ndash;&gt;-->
+        <!--<table tableName="resume" domainObjectName="Resume" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+        <!--&lt;!&ndash;<table tableName="tagproperty" domainObjectName="TagProperty" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>&ndash;&gt;-->
+        <!--&lt;!&ndash;<table tableName="usercollection" domainObjectName="UserCollection" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>&ndash;&gt;-->
+        <!--<table tableName="usercompanycredit" domainObjectName="UserCompanyCredit" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>-->
+        <!--&lt;!&ndash;<table tableName="usermsg" domainObjectName="UserMsg" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>&ndash;&gt;-->
+        <!--&lt;!&ndash;<table tableName="account" domainObjectName="Account" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>&ndash;&gt;-->
+        <table tableName="admin" domainObjectName="Admin" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
 
 
 

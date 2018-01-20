@@ -40,4 +40,6 @@ public interface IUserService {
     ServerResponse msg(Integer id, String openid);
 
     ServerResponse delMsg(Integer id, String openid);
+
+    boolean checkOpenid(String openid);
 }

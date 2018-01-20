@@ -31,4 +31,7 @@ public interface JobOffersMapper {
     List<JobOffers> recommendList();
 
     List<JobOffers> myJobList(JobOffers jobOffers);
+
+    Integer count();
+
 }

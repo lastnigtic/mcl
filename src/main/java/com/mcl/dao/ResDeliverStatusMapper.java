@@ -21,4 +21,7 @@ public interface ResDeliverStatusMapper {
     int viewedByResumeId(Integer id);
 
     ResDeliverStatus selectByResumeId(Integer id);
+
+    Integer count();
+
 }

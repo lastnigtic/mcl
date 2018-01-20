@@ -23,7 +23,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, city, imgurl, companysize, introduction, address, updatetime, checked, credit, 
+    id, city, imgurl, companysize, introduction, address, updatetime, checked, credit,
     companyname, companylicense, setuptime, registeredcapital, legalrepresentative, website, 
     financingstage, industry
   </sql>
@@ -32,6 +32,33 @@
     <include refid="Base_Column_List" />
     from company
     where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectList" resultType="com.mcl.pojo.Company">
+    SELECT <include refid="Base_Column_List"/>
+    FROM company 
+    <where>
+      <if test="city!=null">
+        city = #{city}
+      </if>
+      <if test="companysize!=null">
+        and companysize = #{companysize}
+      </if>
+      <if test="checked!=null">
+        and checked = #{checked}
+      </if>
+      <if test="industry!=null">
+        and industry = #{industry}
+      </if>
+      <if test="financingstage!=null">
+        and financingstage =#{financingstage}
+      </if>
+      <if test="introduction!=null">
+        and introduction like #{introduction}
+      </if>
+    </where>
+  </select>
+  <select id="count" resultType="java.lang.Integer">
+    SELECT COUNT(1) FROM company
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from company

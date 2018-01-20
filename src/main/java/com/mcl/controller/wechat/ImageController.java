@@ -75,12 +75,12 @@ public class ImageController {
      * @param request
      * @param response
      */
-    @RequestMapping(value = "getimg.do",method = RequestMethod.POST)
+    @RequestMapping(value = "getimg.do",method = RequestMethod.GET)
     @ResponseBody
     public void downloadImg(String imgpath, HttpServletRequest request, HttpServletResponse response) {
         if(!StringUtils.isBlank(imgpath)){
             //查看是否已经有这个图片了，有就直接下载
-            File f = new File(request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("ftp.uploadimg.rootpath"))+"/"+imgpath);
+            File f = new File(request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("upload.avatar.rootpath"))+"/"+imgpath);
             if(f.exists()){
                 OutputStream outputStream = null ;
                 FileInputStream fileInputStream = null ;

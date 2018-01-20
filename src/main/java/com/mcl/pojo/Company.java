@@ -1,5 +1,7 @@
 package com.mcl.pojo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Company {
@@ -25,6 +27,7 @@ public class Company {
 
     private String companylicense;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date setuptime;
 
     private Integer registeredcapital;

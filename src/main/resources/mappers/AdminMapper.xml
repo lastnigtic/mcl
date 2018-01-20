@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcl.dao.AdminMapper" >
+  <resultMap id="BaseResultMap" type="com.mcl.pojo.Admin" >
+    <constructor >
+      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pass" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pass
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from admin
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+    <select id="checkId" resultType="java.lang.Integer">
+      SELECT COUNT(1) FROM admin WHERE id=#{id}
+    </select>
+  <select id="selectLogin" resultType="com.mcl.pojo.Admin">
+    SELECT <include refid="Base_Column_List"/>
+    FROM admin WHERE id=#{id} and pass=#{pass}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from admin
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mcl.pojo.Admin" >
+    insert into admin (id, pass)
+    values (#{id,jdbcType=VARCHAR}, #{pass,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mcl.pojo.Admin" >
+    insert into admin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pass != null" >
+        pass,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="pass != null" >
+        #{pass,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mcl.pojo.Admin" >
+    update admin
+    <set >
+      <if test="pass != null" >
+        pass = #{pass,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mcl.pojo.Admin" >
+    update admin
+    set pass = #{pass,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

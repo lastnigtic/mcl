@@ -25,7 +25,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    openid, nickname, avatarurl, gender, language, city, province, realname, birthday, 
+    openid, nickname, avatarurl, gender, language, city, province, realname, birthday,
     email, phone, credit, startschooltime, education, schoolname, majortype, endschooltime, 
     updatetime, isworking
   </sql>
@@ -37,6 +37,35 @@
     <include refid="Base_Column_List" />
     from userbaseinfo
     where openid = #{openid,jdbcType=VARCHAR}
+  </select>
+  <select id="selectList" resultType="com.mcl.pojo.UserBaseInfo">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM userbaseinfo
+    <where>
+      <if test="gender!=null">
+        gender = #{gender}
+      </if>
+      <if test="city!=null">
+        and city = #{city}
+      </if>
+      <if test="schoolname!=null">
+        and schoolname = #{schoolname}
+      </if>
+      <if test="isworking!=null">
+        and isworking = #{isworking}
+      </if>
+      <if test="province!=null">
+        and province = #{province}
+      </if>
+      <if test="realname!=null">
+        and realname like #{realname}
+      </if>
+    </where>
+
+  </select>
+  <select id="count" resultType="java.lang.Integer">
+    SELECT COUNT(1) FROM userbaseinfo
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from userbaseinfo

@@ -5,8 +5,17 @@ import com.mcl.common.ServerResponse;
 import com.mcl.pojo.Opinion;
 import com.mcl.pojo.UserBaseInfo;
 import com.mcl.service.IUserService;
+import com.mcl.util.DateTimeUtil;
+import com.mcl.util.PropertiesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by Administrator on 2018/1/9 0009.
@@ -212,5 +221,45 @@ public class UserController {
         return null;
     }
 
+    /**
+     * 上传头像
+     * @param file
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "uploadavatar.do",method = RequestMethod.POST)
+    public ServerResponse uploadAvatar(@RequestParam(value = "uploadfile",required = false) MultipartFile file, HttpServletRequest request){
+        String openid = request.getParameter("openid");
+        if(!iUserService.checkOpenid(openid))
+            return ServerResponse.createByErrorMessage("用户不存在");
+        //存放路径
+        String uploadpath = request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("upload.avatar.rootpath"))+"/"+ DateTimeUtil.dateToStr(new Date(),"yyyyMMdd");
+        //文件原始名
+        String fileName = file.getOriginalFilename();
+        //扩展名
+        String fileExtensionName = fileName.substring(fileName.lastIndexOf(".")+1);
+        //上传后的文件名
+        String uploadFileName = UUID.randomUUID().toString()+"."+fileExtensionName;
+        //上传临时路径是否存在，不存在则要创建
+        File fileDir = new File(uploadpath);
+        if(!fileDir.exists()){
+            fileDir.setWritable(true);
+            fileDir.mkdirs();
+        }
+        File targetFile = new File(uploadpath,uploadFileName);
+        try {
+            file.transferTo(targetFile);
+        } catch (IOException e) {
+            return null;
+        }
+        //返回一个路径
+        String backpath = DateTimeUtil.dateToStr(new Date(),"yyyyMMdd")+"/"+targetFile.getName();
+        //保存或更新到数据库
+        UserBaseInfo userBaseInfo = new UserBaseInfo();
+        userBaseInfo.setAvatarurl(backpath);
+        userBaseInfo.setOpenid(openid);
+        iUserService.saveOrUpdateUser(userBaseInfo);
+        return ServerResponse.createBySuccess(backpath);
+    }
 
 }

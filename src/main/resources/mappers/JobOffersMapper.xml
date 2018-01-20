@@ -82,29 +82,33 @@
   <select id="selectList" resultType="com.mcl.pojo.JobOffers" parameterType="com.mcl.pojo.JobOffers">
     SELECT
     <include refid="Base_Column_List"/>
-    FROM joboffers WHERE checked=1
-    <if test="city!=null" >
-      AND city=#{city,jdbcType=VARCHAR}
-    </if>
-    <if test="jobname!=null">
-      AND (jobname like #{jobname,jdbcType=VARCHAR} OR description like #{description,jdbcType=VARCHAR})
-    </if>
-    <if test="wage!=null">
-      AND wage>=#{wage,jdbcType=INTEGER}
-    </if>
-    <if test="duration!=null">
-      AND duration=#{duration,jdbcType=INTEGER}
-    </if>
-    <if test="workfrequency!=null">
-      AND workfrequency=#{workfrequency,jdbcType=INTEGER}
-    </if>
-    <if test="type!=null">
-      AND type=#{type,jdbcType=VARCHAR}
-    </if>
-    <if test="tag!=null">
-      AND tag=#{tag,jdbcType=VARCHAR}
-    </if>
-    ORDER BY updatetime desc
+    FROM joboffers
+    <where>
+      <if test="city!=null" >
+        city=#{city,jdbcType=VARCHAR}
+      </if>
+      <if test="jobname!=null">
+        AND jobname like #{jobname,jdbcType=VARCHAR}
+      </if>
+      <if test="wage!=null">
+        AND wage>=#{wage,jdbcType=INTEGER}
+      </if>
+      <if test="duration!=null">
+        AND duration=#{duration,jdbcType=INTEGER}
+      </if>
+      <if test="workfrequency!=null">
+        AND workfrequency=#{workfrequency,jdbcType=INTEGER}
+      </if>
+      <if test="type!=null">
+        AND type=#{type,jdbcType=VARCHAR}
+      </if>
+      <if test="tag!=null">
+        AND tag=#{tag,jdbcType=VARCHAR}
+      </if>
+      <if test="checked!=null">
+        and checked = #{checked}
+      </if>
+    </where>
   </select>
   <select id="checkOffersByJoid" resultType="java.lang.Integer">
     SELECT COUNT(1) FROM joboffers where id = #{id}
@@ -116,6 +120,9 @@
     <include refid="Blob_Column_List" />
     from joboffers
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="count" resultType="java.lang.Integer">
+    SELECT COUNT(1) FROM joboffers
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from joboffers
