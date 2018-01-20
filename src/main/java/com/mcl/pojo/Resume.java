@@ -1,7 +1,5 @@
 package com.mcl.pojo;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.Date;
 
 public class Resume {
@@ -9,25 +7,25 @@ public class Resume {
 
     private String openid;
 
+    private String resumename;
+
+    private String avatarurl;
+
+    private String province;
+
+    private String city;
+
     private String skills;
 
-    private String hobbies;
-
     private String selfevaluation;
-
-    private Date updatetime;
 
     private String schoolname;
 
     private String major;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date startschooltime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date endschooltime;
+    private Date graduationtime;
 
     private String education;
-
 
     private String majorclass;
 
@@ -37,22 +35,59 @@ public class Resume {
 
     private String campusexp;
 
-    public Resume(Integer id, String openid, String skills, String hobbies, String selfevaluation, Date updatetime, String schoolname, String major, Date startschooltime, Date endschooltime, String education, String majorclass, String certificate, String awards, String campusexp) {
+    private String jobapplied;
+
+    private String cityapplied;
+
+    private Integer wageapplied;
+
+    private Integer frequencyapplied;
+
+    private Integer durationapplied;
+
+    private Date entrytime;
+
+    private String companyname;
+
+    private String jobname;
+
+    private String jobdesc;
+
+    private Date updatetime;
+
+    private Date jobstarttime;
+
+    private Date jobendtime;
+
+    public Resume(Integer id, String openid, String resumename, String avatarurl, String province, String city, String skills, String selfevaluation, String schoolname, String major, Date graduationtime, String education, String majorclass, String certificate, String awards, String campusexp, String jobapplied, String cityapplied, Integer wageapplied, Integer frequencyapplied, Integer durationapplied, Date entrytime, String companyname, String jobname, String jobdesc, Date updatetime, Date jobstarttime, Date jobendtime) {
         this.id = id;
         this.openid = openid;
+        this.resumename = resumename;
+        this.avatarurl = avatarurl;
+        this.province = province;
+        this.city = city;
         this.skills = skills;
-        this.hobbies = hobbies;
         this.selfevaluation = selfevaluation;
-        this.updatetime = updatetime;
         this.schoolname = schoolname;
         this.major = major;
-        this.startschooltime = startschooltime;
-        this.endschooltime = endschooltime;
+        this.graduationtime = graduationtime;
         this.education = education;
         this.majorclass = majorclass;
         this.certificate = certificate;
         this.awards = awards;
         this.campusexp = campusexp;
+        this.jobapplied = jobapplied;
+        this.cityapplied = cityapplied;
+        this.wageapplied = wageapplied;
+        this.frequencyapplied = frequencyapplied;
+        this.durationapplied = durationapplied;
+        this.entrytime = entrytime;
+        this.companyname = companyname;
+        this.jobname = jobname;
+        this.jobdesc = jobdesc;
+        this.updatetime = updatetime;
+        this.jobstarttime = jobstarttime;
+        this.jobendtime = jobendtime;
     }
 
     public Resume() {
@@ -75,6 +110,38 @@ public class Resume {
         this.openid = openid == null ? null : openid.trim();
     }
 
+    public String getResumename() {
+        return resumename;
+    }
+
+    public void setResumename(String resumename) {
+        this.resumename = resumename == null ? null : resumename.trim();
+    }
+
+    public String getAvatarurl() {
+        return avatarurl;
+    }
+
+    public void setAvatarurl(String avatarurl) {
+        this.avatarurl = avatarurl == null ? null : avatarurl.trim();
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
+    }
+
     public String getSkills() {
         return skills;
     }
@@ -83,28 +150,12 @@ public class Resume {
         this.skills = skills == null ? null : skills.trim();
     }
 
-    public String getHobbies() {
-        return hobbies;
-    }
-
-    public void setHobbies(String hobbies) {
-        this.hobbies = hobbies == null ? null : hobbies.trim();
-    }
-
     public String getSelfevaluation() {
         return selfevaluation;
     }
 
     public void setSelfevaluation(String selfevaluation) {
         this.selfevaluation = selfevaluation == null ? null : selfevaluation.trim();
-    }
-
-    public Date getUpdatetime() {
-        return updatetime;
-    }
-
-    public void setUpdatetime(Date updatetime) {
-        this.updatetime = updatetime;
     }
 
     public String getSchoolname() {
@@ -123,20 +174,12 @@ public class Resume {
         this.major = major == null ? null : major.trim();
     }
 
-    public Date getStartschooltime() {
-        return startschooltime;
+    public Date getGraduationtime() {
+        return graduationtime;
     }
 
-    public void setStartschooltime(Date startschooltime) {
-        this.startschooltime = startschooltime;
-    }
-
-    public Date getEndschooltime() {
-        return endschooltime;
-    }
-
-    public void setEndschooltime(Date endschooltime) {
-        this.endschooltime = endschooltime;
+    public void setGraduationtime(Date graduationtime) {
+        this.graduationtime = graduationtime;
     }
 
     public String getEducation() {
@@ -177,5 +220,101 @@ public class Resume {
 
     public void setCampusexp(String campusexp) {
         this.campusexp = campusexp == null ? null : campusexp.trim();
+    }
+
+    public String getJobapplied() {
+        return jobapplied;
+    }
+
+    public void setJobapplied(String jobapplied) {
+        this.jobapplied = jobapplied == null ? null : jobapplied.trim();
+    }
+
+    public String getCityapplied() {
+        return cityapplied;
+    }
+
+    public void setCityapplied(String cityapplied) {
+        this.cityapplied = cityapplied == null ? null : cityapplied.trim();
+    }
+
+    public Integer getWageapplied() {
+        return wageapplied;
+    }
+
+    public void setWageapplied(Integer wageapplied) {
+        this.wageapplied = wageapplied;
+    }
+
+    public Integer getFrequencyapplied() {
+        return frequencyapplied;
+    }
+
+    public void setFrequencyapplied(Integer frequencyapplied) {
+        this.frequencyapplied = frequencyapplied;
+    }
+
+    public Integer getDurationapplied() {
+        return durationapplied;
+    }
+
+    public void setDurationapplied(Integer durationapplied) {
+        this.durationapplied = durationapplied;
+    }
+
+    public Date getEntrytime() {
+        return entrytime;
+    }
+
+    public void setEntrytime(Date entrytime) {
+        this.entrytime = entrytime;
+    }
+
+    public String getCompanyname() {
+        return companyname;
+    }
+
+    public void setCompanyname(String companyname) {
+        this.companyname = companyname == null ? null : companyname.trim();
+    }
+
+    public String getJobname() {
+        return jobname;
+    }
+
+    public void setJobname(String jobname) {
+        this.jobname = jobname == null ? null : jobname.trim();
+    }
+
+    public String getJobdesc() {
+        return jobdesc;
+    }
+
+    public void setJobdesc(String jobdesc) {
+        this.jobdesc = jobdesc == null ? null : jobdesc.trim();
+    }
+
+    public Date getUpdatetime() {
+        return updatetime;
+    }
+
+    public void setUpdatetime(Date updatetime) {
+        this.updatetime = updatetime;
+    }
+
+    public Date getJobstarttime() {
+        return jobstarttime;
+    }
+
+    public void setJobstarttime(Date jobstarttime) {
+        this.jobstarttime = jobstarttime;
+    }
+
+    public Date getJobendtime() {
+        return jobendtime;
+    }
+
+    public void setJobendtime(Date jobendtime) {
+        this.jobendtime = jobendtime;
     }
 }

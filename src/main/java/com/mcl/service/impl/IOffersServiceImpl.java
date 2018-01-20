@@ -41,7 +41,7 @@ public class IOffersServiceImpl implements IOffersService {
      * @return
      */
     @Override
-    public ServerResponse<PageInfo> getOfferList(int pageNum, int pageSize,JobOffers jobOffers, String keywords) {
+    public ServerResponse<PageInfo> getOfferList(int pageNum, int pageSize, JobOffers jobOffers, String keywords) {
         PageHelper.startPage(pageNum,pageSize);
         //看看keywords有没有
         if(StringUtils.isNotBlank(keywords)){

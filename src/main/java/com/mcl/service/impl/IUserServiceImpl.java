@@ -7,6 +7,7 @@ import com.mcl.common.ServerResponse;
 import com.mcl.dao.*;
 import com.mcl.pojo.*;
 import com.mcl.service.IUserService;
+import com.mcl.util.PropertiesUtil;
 import com.mcl.vo.JobOffersListVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -435,6 +436,7 @@ public class IUserServiceImpl implements IUserService {
         PageInfo pageResult = new PageInfo(list);
         //将封装好的volist放进去
         return ServerResponse.createBySuccess(pageResult);
+
     }
 
     /**
@@ -507,10 +509,7 @@ public class IUserServiceImpl implements IUserService {
             if(StringUtils.isBlank(resume.getSchoolname())){
                 return false;
             }
-            if(resume.getStartschooltime()==null){
-                return false;
-            }
-            if(resume.getEndschooltime()==null){
+            if(resume.getGraduationtime()==null){
                 return false;
             }
             if(StringUtils.isBlank(resume.getSkills())){

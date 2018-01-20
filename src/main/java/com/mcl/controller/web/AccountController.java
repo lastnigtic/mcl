@@ -13,16 +13,11 @@ import com.mcl.service.IJobOffersServcie;
 import com.mcl.service.IResumeService;
 import com.mcl.util.DateTimeUtil;
 import com.mcl.util.PropertiesUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
@@ -81,7 +76,7 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "saveorupdatecompany.do",method = RequestMethod.POST)
-    public ServerResponse saveOrUpdateCompany(Company company,HttpSession session){
+    public ServerResponse saveOrUpdateCompany(Company company, HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
         if(account == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
@@ -112,7 +107,7 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "addjob.do",method = RequestMethod.POST)
-    public ServerResponse addJob(JobOffers jobOffers,HttpSession session){
+    public ServerResponse addJob(JobOffers jobOffers, HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
         if(account == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");

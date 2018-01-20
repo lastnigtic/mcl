@@ -3,7 +3,7 @@
 <mapper namespace="com.mcl.dao.AccountMapper" >
   <resultMap id="BaseResultMap" type="com.mcl.pojo.Account" >
     <constructor >
-      <idArg column="Id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="uname" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="upass" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="companyid" jdbcType="VARCHAR" javaType="java.lang.String" />

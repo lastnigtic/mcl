@@ -21,6 +21,7 @@
     delete from opinion
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.mcl.pojo.Opinion" >
     insert into opinion (id, openid, updatetime, 
       contactinfo, description)

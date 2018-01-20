@@ -10,42 +10,53 @@
       <arg column="language" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="city" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="province" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="country" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="realname" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="birthday" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="credit" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="startschooltime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="education" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="schoolname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="majortype" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="endschooltime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="isworking" jdbcType="INTEGER" javaType="java.lang.Integer" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    openid, nickname, avatarurl, gender, language, city, province, country, realname, 
-    birthday, email, phone, credit
+    openid, nickname, avatarurl, gender, language, city, province, realname, birthday, 
+    email, phone, credit, startschooltime, education, schoolname, majortype, endschooltime, 
+    updatetime, isworking
   </sql>
+  <select id="checkUserByOpenid" resultType="java.lang.Integer">
+    select COUNT(1) FROM userbaseinfo where openid=#{openid,jdbcType=VARCHAR}
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from userbaseinfo
     where openid = #{openid,jdbcType=VARCHAR}
   </select>
-    <select id="checkUserByOpenid" resultType="java.lang.Integer">
-      select COUNT(1) FROM userbaseinfo where openid=#{openid,jdbcType=VARCHAR}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from userbaseinfo
     where openid = #{openid,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.mcl.pojo.UserBaseInfo" >
     insert into userbaseinfo (openid, nickname, avatarurl, 
       gender, language, city, 
-      province, country, realname, 
-      birthday, email, phone, 
-      credit)
+      province, realname, birthday, 
+      email, phone, credit, 
+      startschooltime, education, schoolname, 
+      majortype, endschooltime, updatetime, 
+      isworking)
     values (#{openid,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{avatarurl,jdbcType=VARCHAR}, 
       #{gender,jdbcType=INTEGER}, #{language,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
-      #{province,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, 
-      #{birthday,jdbcType=TIMESTAMP}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{credit,jdbcType=DOUBLE})
+      #{province,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, 
+      #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{credit,jdbcType=DOUBLE}, 
+      #{startschooltime,jdbcType=TIMESTAMP}, #{education,jdbcType=VARCHAR}, #{schoolname,jdbcType=VARCHAR}, 
+      #{majortype,jdbcType=VARCHAR}, #{endschooltime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{isworking,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.mcl.pojo.UserBaseInfo" >
     insert into userbaseinfo
@@ -71,9 +82,6 @@
       <if test="province != null" >
         province,
       </if>
-      <if test="country != null" >
-        country,
-      </if>
       <if test="realname != null" >
         realname,
       </if>
@@ -88,6 +96,27 @@
       </if>
       <if test="credit != null" >
         credit,
+      </if>
+      <if test="startschooltime != null" >
+        startschooltime,
+      </if>
+      <if test="education != null" >
+        education,
+      </if>
+      <if test="schoolname != null" >
+        schoolname,
+      </if>
+      <if test="majortype != null" >
+        majortype,
+      </if>
+      <if test="endschooltime != null" >
+        endschooltime,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="isworking != null" >
+        isworking,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -112,9 +141,6 @@
       <if test="province != null" >
         #{province,jdbcType=VARCHAR},
       </if>
-      <if test="country != null" >
-        #{country,jdbcType=VARCHAR},
-      </if>
       <if test="realname != null" >
         #{realname,jdbcType=VARCHAR},
       </if>
@@ -129,6 +155,27 @@
       </if>
       <if test="credit != null" >
         #{credit,jdbcType=DOUBLE},
+      </if>
+      <if test="startschooltime != null" >
+        #{startschooltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="education != null" >
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolname != null" >
+        #{schoolname,jdbcType=VARCHAR},
+      </if>
+      <if test="majortype != null" >
+        #{majortype,jdbcType=VARCHAR},
+      </if>
+      <if test="endschooltime != null" >
+        #{endschooltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isworking != null" >
+        #{isworking,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -153,9 +200,6 @@
       <if test="province != null" >
         province = #{province,jdbcType=VARCHAR},
       </if>
-      <if test="country != null" >
-        country = #{country,jdbcType=VARCHAR},
-      </if>
       <if test="realname != null" >
         realname = #{realname,jdbcType=VARCHAR},
       </if>
@@ -171,6 +215,27 @@
       <if test="credit != null" >
         credit = #{credit,jdbcType=DOUBLE},
       </if>
+      <if test="startschooltime != null" >
+        startschooltime = #{startschooltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="education != null" >
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolname != null" >
+        schoolname = #{schoolname,jdbcType=VARCHAR},
+      </if>
+      <if test="majortype != null" >
+        majortype = #{majortype,jdbcType=VARCHAR},
+      </if>
+      <if test="endschooltime != null" >
+        endschooltime = #{endschooltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isworking != null" >
+        isworking = #{isworking,jdbcType=INTEGER},
+      </if>
     </set>
     where openid = #{openid,jdbcType=VARCHAR}
   </update>
@@ -182,12 +247,18 @@
       language = #{language,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       province = #{province,jdbcType=VARCHAR},
-      country = #{country,jdbcType=VARCHAR},
       realname = #{realname,jdbcType=VARCHAR},
       birthday = #{birthday,jdbcType=TIMESTAMP},
       email = #{email,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
-      credit = #{credit,jdbcType=DOUBLE}
+      credit = #{credit,jdbcType=DOUBLE},
+      startschooltime = #{startschooltime,jdbcType=TIMESTAMP},
+      education = #{education,jdbcType=VARCHAR},
+      schoolname = #{schoolname,jdbcType=VARCHAR},
+      majortype = #{majortype,jdbcType=VARCHAR},
+      endschooltime = #{endschooltime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      isworking = #{isworking,jdbcType=INTEGER}
     where openid = #{openid,jdbcType=VARCHAR}
   </update>
 </mapper>

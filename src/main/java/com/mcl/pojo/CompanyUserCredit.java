@@ -5,7 +5,7 @@ import java.util.Date;
 public class CompanyUserCredit {
     private Integer id;
 
-    private Integer companyid;
+    private String companyid;
 
     private String openid;
 
@@ -13,12 +13,15 @@ public class CompanyUserCredit {
 
     private Date updatetime;
 
-    public CompanyUserCredit(Integer id, Integer companyid, String openid, Float credit, Date updatetime) {
+    private String comment;
+
+    public CompanyUserCredit(Integer id, String companyid, String openid, Float credit, Date updatetime, String comment) {
         this.id = id;
         this.companyid = companyid;
         this.openid = openid;
         this.credit = credit;
         this.updatetime = updatetime;
+        this.comment = comment;
     }
 
     public CompanyUserCredit() {
@@ -33,12 +36,12 @@ public class CompanyUserCredit {
         this.id = id;
     }
 
-    public Integer getCompanyid() {
+    public String getCompanyid() {
         return companyid;
     }
 
-    public void setCompanyid(Integer companyid) {
-        this.companyid = companyid;
+    public void setCompanyid(String companyid) {
+        this.companyid = companyid == null ? null : companyid.trim();
     }
 
     public String getOpenid() {
@@ -63,5 +66,13 @@ public class CompanyUserCredit {
 
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment == null ? null : comment.trim();
     }
 }

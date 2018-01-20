@@ -4,14 +4,15 @@
   <resultMap id="BaseResultMap" type="com.mcl.pojo.CompanyUserCredit" >
     <constructor >
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="companyid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="companyid" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="openid" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="credit" jdbcType="REAL" javaType="java.lang.Float" />
       <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="comment" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, companyid, openid, credit, updatetime
+    id, companyid, openid, credit, updatetime, comment
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -25,9 +26,11 @@
   </delete>
   <insert id="insert" parameterType="com.mcl.pojo.CompanyUserCredit" >
     insert into companyusercredit (id, companyid, openid, 
-      credit, updatetime)
-    values (#{id,jdbcType=INTEGER}, #{companyid,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, 
-      #{credit,jdbcType=REAL}, #{updatetime,jdbcType=TIMESTAMP})
+      credit, updatetime, comment
+      )
+    values (#{id,jdbcType=INTEGER}, #{companyid,jdbcType=VARCHAR}, #{openid,jdbcType=VARCHAR}, 
+      #{credit,jdbcType=REAL}, #{updatetime,jdbcType=TIMESTAMP}, #{comment,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.mcl.pojo.CompanyUserCredit" >
     insert into companyusercredit
@@ -47,13 +50,16 @@
       <if test="updatetime != null" >
         updatetime,
       </if>
+      <if test="comment != null" >
+        comment,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
       <if test="companyid != null" >
-        #{companyid,jdbcType=INTEGER},
+        #{companyid,jdbcType=VARCHAR},
       </if>
       <if test="openid != null" >
         #{openid,jdbcType=VARCHAR},
@@ -64,13 +70,16 @@
       <if test="updatetime != null" >
         #{updatetime,jdbcType=TIMESTAMP},
       </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.mcl.pojo.CompanyUserCredit" >
     update companyusercredit
     <set >
       <if test="companyid != null" >
-        companyid = #{companyid,jdbcType=INTEGER},
+        companyid = #{companyid,jdbcType=VARCHAR},
       </if>
       <if test="openid != null" >
         openid = #{openid,jdbcType=VARCHAR},
@@ -81,15 +90,19 @@
       <if test="updatetime != null" >
         updatetime = #{updatetime,jdbcType=TIMESTAMP},
       </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.mcl.pojo.CompanyUserCredit" >
     update companyusercredit
-    set companyid = #{companyid,jdbcType=INTEGER},
+    set companyid = #{companyid,jdbcType=VARCHAR},
       openid = #{openid,jdbcType=VARCHAR},
       credit = #{credit,jdbcType=REAL},
-      updatetime = #{updatetime,jdbcType=TIMESTAMP}
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      comment = #{comment,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

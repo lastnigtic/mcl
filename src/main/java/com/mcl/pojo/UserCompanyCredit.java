@@ -5,20 +5,23 @@ import java.util.Date;
 public class UserCompanyCredit {
     private Integer id;
 
-    private Integer companyid;
+    private String companyid;
 
     private String openid;
 
     private Double credit;
 
-    private Date uodatetime;
+    private Date updatetime;
 
-    public UserCompanyCredit(Integer id, Integer companyid, String openid, Double credit, Date uodatetime) {
+    private String comment;
+
+    public UserCompanyCredit(Integer id, String companyid, String openid, Double credit, Date updatetime, String comment) {
         this.id = id;
         this.companyid = companyid;
         this.openid = openid;
         this.credit = credit;
-        this.uodatetime = uodatetime;
+        this.updatetime = updatetime;
+        this.comment = comment;
     }
 
     public UserCompanyCredit() {
@@ -33,12 +36,12 @@ public class UserCompanyCredit {
         this.id = id;
     }
 
-    public Integer getCompanyid() {
+    public String getCompanyid() {
         return companyid;
     }
 
-    public void setCompanyid(Integer companyid) {
-        this.companyid = companyid;
+    public void setCompanyid(String companyid) {
+        this.companyid = companyid == null ? null : companyid.trim();
     }
 
     public String getOpenid() {
@@ -57,11 +60,19 @@ public class UserCompanyCredit {
         this.credit = credit;
     }
 
-    public Date getUodatetime() {
-        return uodatetime;
+    public Date getUpdatetime() {
+        return updatetime;
     }
 
-    public void setUodatetime(Date uodatetime) {
-        this.uodatetime = uodatetime;
+    public void setUpdatetime(Date updatetime) {
+        this.updatetime = updatetime;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment == null ? null : comment.trim();
     }
 }

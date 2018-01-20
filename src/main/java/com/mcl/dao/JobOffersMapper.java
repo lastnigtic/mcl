@@ -16,13 +16,15 @@ public interface JobOffersMapper {
 
     int updateByPrimaryKeySelective(JobOffers record);
 
+    int updateByPrimaryKeyWithBLOBs(JobOffers record);
+
     int updateByPrimaryKey(JobOffers record);
 
     int checkOffersByJoid(@Param("id") Integer joid);  //查看是否存在该条记录
 
     List<JobOffers> selectUserDeliveredJobOffersList(String openid);
 
-    List<JobOffers> selectUserDeliveredJobOffersListByStatus(@Param("openid") String openid,@Param("status") Integer status);
+    List<JobOffers> selectUserDeliveredJobOffersListByStatus(@Param("openid") String openid, @Param("status") Integer status);
 
     List<JobOffers> selectList(JobOffers record);
 

@@ -32,7 +32,7 @@ public class OffersController {
     @RequestMapping(value = "list.do" ,method = RequestMethod.POST)
     public ServerResponse<PageInfo> getOfferList(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                                  @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
-                                                 JobOffers jobOffers,@RequestParam(value = "keywords",required = false) String keywords){
+                                                 JobOffers jobOffers, @RequestParam(value = "keywords",required = false) String keywords){
         return iOffersService.getOfferList(pageNum,pageSize,jobOffers,keywords);
     }
 

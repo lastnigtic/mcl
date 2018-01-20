@@ -32,7 +32,7 @@
     delete from usercollection
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByOpenidJoid">
+  <delete id="deleteByOpenidJoid" >
     DELETE FROM usercollection WHERE openid = #{openid} and joid = #{joid}
   </delete>
   <insert id="insert" parameterType="com.mcl.pojo.UserCollection" >

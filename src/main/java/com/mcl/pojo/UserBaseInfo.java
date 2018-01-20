@@ -1,7 +1,5 @@
 package com.mcl.pojo;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.Date;
 
 public class UserBaseInfo {
@@ -19,11 +17,8 @@ public class UserBaseInfo {
 
     private String province;
 
-    private String country;
-
     private String realname;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     private String email;
@@ -32,7 +27,21 @@ public class UserBaseInfo {
 
     private Double credit;
 
-    public UserBaseInfo(String openid, String nickname, String avatarurl, Integer gender, String language, String city, String province, String country, String realname, Date birthday, String email, String phone, Double credit) {
+    private Date startschooltime;
+
+    private String education;
+
+    private String schoolname;
+
+    private String majortype;
+
+    private Date endschooltime;
+
+    private Date updatetime;
+
+    private Integer isworking;
+
+    public UserBaseInfo(String openid, String nickname, String avatarurl, Integer gender, String language, String city, String province, String realname, Date birthday, String email, String phone, Double credit, Date startschooltime, String education, String schoolname, String majortype, Date endschooltime, Date updatetime, Integer isworking) {
         this.openid = openid;
         this.nickname = nickname;
         this.avatarurl = avatarurl;
@@ -40,12 +49,18 @@ public class UserBaseInfo {
         this.language = language;
         this.city = city;
         this.province = province;
-        this.country = country;
         this.realname = realname;
         this.birthday = birthday;
         this.email = email;
         this.phone = phone;
         this.credit = credit;
+        this.startschooltime = startschooltime;
+        this.education = education;
+        this.schoolname = schoolname;
+        this.majortype = majortype;
+        this.endschooltime = endschooltime;
+        this.updatetime = updatetime;
+        this.isworking = isworking;
     }
 
     public UserBaseInfo() {
@@ -108,14 +123,6 @@ public class UserBaseInfo {
         this.province = province == null ? null : province.trim();
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country == null ? null : country.trim();
-    }
-
     public String getRealname() {
         return realname;
     }
@@ -154,5 +161,61 @@ public class UserBaseInfo {
 
     public void setCredit(Double credit) {
         this.credit = credit;
+    }
+
+    public Date getStartschooltime() {
+        return startschooltime;
+    }
+
+    public void setStartschooltime(Date startschooltime) {
+        this.startschooltime = startschooltime;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education == null ? null : education.trim();
+    }
+
+    public String getSchoolname() {
+        return schoolname;
+    }
+
+    public void setSchoolname(String schoolname) {
+        this.schoolname = schoolname == null ? null : schoolname.trim();
+    }
+
+    public String getMajortype() {
+        return majortype;
+    }
+
+    public void setMajortype(String majortype) {
+        this.majortype = majortype == null ? null : majortype.trim();
+    }
+
+    public Date getEndschooltime() {
+        return endschooltime;
+    }
+
+    public void setEndschooltime(Date endschooltime) {
+        this.endschooltime = endschooltime;
+    }
+
+    public Date getUpdatetime() {
+        return updatetime;
+    }
+
+    public void setUpdatetime(Date updatetime) {
+        this.updatetime = updatetime;
+    }
+
+    public Integer getIsworking() {
+        return isworking;
+    }
+
+    public void setIsworking(Integer isworking) {
+        this.isworking = isworking;
     }
 }

@@ -7,34 +7,50 @@
       <arg column="city" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="imgurl" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="companysize" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="introduction" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="checked" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="credit" jdbcType="DOUBLE" javaType="java.lang.Double" />
       <arg column="companyname" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="companylicense" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="setuptime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="registeredcapital" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="legalrepresentative" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="website" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="financingstage" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="industry" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
-
   <sql id="Base_Column_List" >
-    id, city, imgurl, companysize, address, updatetime, checked, credit,introduction ,companyname,companylicense
+    id, city, imgurl, companysize, introduction, address, updatetime, checked, credit, 
+    companyname, companylicense, setuptime, registeredcapital, legalrepresentative, website, 
+    financingstage, industry
   </sql>
-  <sql id="Blob_Column_List" >
-    introduction
-  </sql>
-
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from company
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from company
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.mcl.pojo.Company" >
     insert into company (id, city, imgurl, 
-      companysize, address, updatetime, 
-      checked, credit, introduction,companyname,companylicense
+      companysize, introduction, address, 
+      updatetime, checked, credit, 
+      companyname, companylicense, setuptime, 
+      registeredcapital, legalrepresentative, 
+      website, financingstage, industry
       )
-    values (#{id,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{imgurl,jdbcType=VARCHAR},
-      #{companysize,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},now(),
-      #{checked,jdbcType=INTEGER}, #{credit,jdbcType=DOUBLE}, #{introduction,jdbcType=LONGVARCHAR},#{companyname,jdbcType=VARCHAR},#{companylicense,jdbcType=VARCHAR}
+    values (#{id,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{imgurl,jdbcType=VARCHAR}, 
+      #{companysize,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      now(), #{checked,jdbcType=INTEGER}, #{credit,jdbcType=DOUBLE},
+      #{companyname,jdbcType=VARCHAR}, #{companylicense,jdbcType=VARCHAR}, #{setuptime,jdbcType=TIMESTAMP}, 
+      #{registeredcapital,jdbcType=INTEGER}, #{legalrepresentative,jdbcType=VARCHAR}, 
+      #{website,jdbcType=VARCHAR}, #{financingstage,jdbcType=VARCHAR}, #{industry,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.mcl.pojo.Company" >
@@ -42,12 +58,6 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
-      </if>
-      <if test="companyname!=null">
-        companyname,
-      </if>
-      <if test="companylicense!=null">
-        companylicense,
       </if>
       <if test="city != null" >
         city,
@@ -58,11 +68,14 @@
       <if test="companysize != null" >
         companysize,
       </if>
+      <if test="introduction != null" >
+        introduction,
+      </if>
       <if test="address != null" >
         address,
       </if>
       <if test="updatetime != null" >
-        now(),
+        updatetime,
       </if>
       <if test="checked != null" >
         checked,
@@ -70,19 +83,35 @@
       <if test="credit != null" >
         credit,
       </if>
-      <if test="introduction != null" >
-        introduction,
+      <if test="companyname != null" >
+        companyname,
+      </if>
+      <if test="companylicense != null" >
+        companylicense,
+      </if>
+      <if test="setuptime != null" >
+        setuptime,
+      </if>
+      <if test="registeredcapital != null" >
+        registeredcapital,
+      </if>
+      <if test="legalrepresentative != null" >
+        legalrepresentative,
+      </if>
+      <if test="website != null" >
+        website,
+      </if>
+      <if test="financingstage != null" >
+        financingstage,
+      </if>
+      <if test="industry != null" >
+        industry,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="companyname!=null">
-        #{companyname,jdbcType=VARCHAR},
-      </if>
-      <if test="companylicense!=null">
-        #{companylicense,jdbcType=VARCHAR},      </if>
       <if test="city != null" >
         #{city,jdbcType=VARCHAR},
       </if>
@@ -91,6 +120,9 @@
       </if>
       <if test="companysize != null" >
         #{companysize,jdbcType=VARCHAR},
+      </if>
+      <if test="introduction != null" >
+        #{introduction,jdbcType=VARCHAR},
       </if>
       <if test="address != null" >
         #{address,jdbcType=VARCHAR},
@@ -104,8 +136,29 @@
       <if test="credit != null" >
         #{credit,jdbcType=DOUBLE},
       </if>
-      <if test="introduction != null" >
-        #{introduction,jdbcType=LONGVARCHAR},
+      <if test="companyname != null" >
+        #{companyname,jdbcType=VARCHAR},
+      </if>
+      <if test="companylicense != null" >
+        #{companylicense,jdbcType=VARCHAR},
+      </if>
+      <if test="setuptime != null" >
+        #{setuptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registeredcapital != null" >
+        #{registeredcapital,jdbcType=INTEGER},
+      </if>
+      <if test="legalrepresentative != null" >
+        #{legalrepresentative,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null" >
+        #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="financingstage != null" >
+        #{financingstage,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null" >
+        #{industry,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -121,6 +174,9 @@
       <if test="companysize != null" >
         companysize = #{companysize,jdbcType=VARCHAR},
       </if>
+      <if test="introduction != null" >
+        introduction = #{introduction,jdbcType=VARCHAR},
+      </if>
       <if test="address != null" >
         address = #{address,jdbcType=VARCHAR},
       </if>
@@ -133,33 +189,51 @@
       <if test="credit != null" >
         credit = #{credit,jdbcType=DOUBLE},
       </if>
-      <if test="introduction != null" >
-        introduction = #{introduction,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="companyname!=null">
+      <if test="companyname != null" >
         companyname = #{companyname,jdbcType=VARCHAR},
       </if>
-      <if test="companylicense!=null">
-        companylicense = #{companylicense,jdbcType=VARCHAR}
+      <if test="companylicense != null" >
+        companylicense = #{companylicense,jdbcType=VARCHAR},
+      </if>
+      <if test="setuptime != null" >
+        setuptime = #{setuptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registeredcapital != null" >
+        registeredcapital = #{registeredcapital,jdbcType=INTEGER},
+      </if>
+      <if test="legalrepresentative != null" >
+        legalrepresentative = #{legalrepresentative,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null" >
+        website = #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="financingstage != null" >
+        financingstage = #{financingstage,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null" >
+        industry = #{industry,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectByPrimaryKey" resultType="com.mcl.pojo.Company" parameterType="java.lang.String">
-    SELECT <include refid="Base_Column_List"/>
-    FROM company WHERE id = #{id,jdbcType=VARCHAR}
-  </select>
   <update id="updateByPrimaryKey" parameterType="com.mcl.pojo.Company" >
     update company
     set city = #{city,jdbcType=VARCHAR},
-      companyname = #{companyname,jdbcType=VARCHAR},
-      companylicense = #{companylicense,jdbcType=VARCHAR},
       imgurl = #{imgurl,jdbcType=VARCHAR},
       companysize = #{companysize,jdbcType=VARCHAR},
+      introduction = #{introduction,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       updatetime = now(),
       checked = #{checked,jdbcType=INTEGER},
-      credit = #{credit,jdbcType=DOUBLE}
+      credit = #{credit,jdbcType=DOUBLE},
+      companyname = #{companyname,jdbcType=VARCHAR},
+      companylicense = #{companylicense,jdbcType=VARCHAR},
+      setuptime = #{setuptime,jdbcType=TIMESTAMP},
+      registeredcapital = #{registeredcapital,jdbcType=INTEGER},
+      legalrepresentative = #{legalrepresentative,jdbcType=VARCHAR},
+      website = #{website,jdbcType=VARCHAR},
+      financingstage = #{financingstage,jdbcType=VARCHAR},
+      industry = #{industry,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

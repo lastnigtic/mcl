@@ -31,7 +31,32 @@ public class JobOffers {
 
     private Integer checked;
 
+    private String requirements;
+
     private String description;
+
+    public JobOffers(Integer id, String jobname, String temptation, String tag, String type, Integer wage, String companyid, String city, String address, String education, Integer duration, Integer workfrequency, Date updatetime, Integer checked, String requirements, String description) {
+        this.id = id;
+        this.jobname = jobname;
+        this.temptation = temptation;
+        this.tag = tag;
+        this.type = type;
+        this.wage = wage;
+        this.companyid = companyid;
+        this.city = city;
+        this.address = address;
+        this.education = education;
+        this.duration = duration;
+        this.workfrequency = workfrequency;
+        this.updatetime = updatetime;
+        this.checked = checked;
+        this.requirements = requirements;
+        this.description = description;
+    }
+
+    public JobOffers() {
+        super();
+    }
 
     public Integer getId() {
         return id;
@@ -46,7 +71,7 @@ public class JobOffers {
     }
 
     public void setJobname(String jobname) {
-        this.jobname = jobname;
+        this.jobname = jobname == null ? null : jobname.trim();
     }
 
     public String getTemptation() {
@@ -54,7 +79,7 @@ public class JobOffers {
     }
 
     public void setTemptation(String temptation) {
-        this.temptation = temptation;
+        this.temptation = temptation == null ? null : temptation.trim();
     }
 
     public String getTag() {
@@ -62,7 +87,7 @@ public class JobOffers {
     }
 
     public void setTag(String tag) {
-        this.tag = tag;
+        this.tag = tag == null ? null : tag.trim();
     }
 
     public String getType() {
@@ -70,7 +95,7 @@ public class JobOffers {
     }
 
     public void setType(String type) {
-        this.type = type;
+        this.type = type == null ? null : type.trim();
     }
 
     public Integer getWage() {
@@ -86,7 +111,7 @@ public class JobOffers {
     }
 
     public void setCompanyid(String companyid) {
-        this.companyid = companyid;
+        this.companyid = companyid == null ? null : companyid.trim();
     }
 
     public String getCity() {
@@ -94,7 +119,7 @@ public class JobOffers {
     }
 
     public void setCity(String city) {
-        this.city = city;
+        this.city = city == null ? null : city.trim();
     }
 
     public String getAddress() {
@@ -102,7 +127,7 @@ public class JobOffers {
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address = address == null ? null : address.trim();
     }
 
     public String getEducation() {
@@ -110,7 +135,7 @@ public class JobOffers {
     }
 
     public void setEducation(String education) {
-        this.education = education;
+        this.education = education == null ? null : education.trim();
     }
 
     public Integer getDuration() {
@@ -145,11 +170,19 @@ public class JobOffers {
         this.checked = checked;
     }
 
+    public String getRequirements() {
+        return requirements;
+    }
+
+    public void setRequirements(String requirements) {
+        this.requirements = requirements == null ? null : requirements.trim();
+    }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = description == null ? null : description.trim();
     }
 }

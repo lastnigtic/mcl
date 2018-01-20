@@ -17,24 +17,41 @@
       <arg column="workfrequency" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="checked" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="requirements" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.mcl.pojo.JobOffers" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="jobname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="temptation" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="tag" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="wage" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="companyid" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="city" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="education" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="duration" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="workfrequency" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="checked" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="requirements" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="description" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, jobname, temptation, tag, type, wage, companyid, city, address, education,
-    duration, workfrequency, updatetime, checked,description
+    id, jobname, temptation, tag, type, wage, companyid, city, address, education, duration, 
+    workfrequency, updatetime, checked, requirements,description
   </sql>
   <sql id="Blob_Column_List" >
     description
   </sql>
-
-  <select id="checkOffersByJoid" resultType="java.lang.Integer">
-    SELECT COUNT(1) FROM joboffers where id = #{id}
-  </select>
   <select id="selectUserDeliveredJobOffersList" resultType="com.mcl.pojo.JobOffers">
     select * from joboffers where id in (select joid from resdeliverstatus where openid = #{openid}) and checked=1 order by updatetime desc
   </select>
   <select id="selectUserDeliveredJobOffersListByStatus" resultType="com.mcl.pojo.JobOffers">
-        select * from joboffers where id in (select joid from resdeliverstatus where openid = #{openid} and status = #{status}) and checked=1 order by updatetime desc
+    select * from joboffers where id in (select joid from resdeliverstatus where openid = #{openid} and status = #{status}) and checked=1 order by updatetime desc
   </select>
   <select id="myJobList" resultType="com.mcl.pojo.JobOffers" parameterType="com.mcl.pojo.JobOffers">
     SELECT <include refid="Base_Column_List"/>
@@ -89,6 +106,17 @@
     </if>
     ORDER BY updatetime desc
   </select>
+  <select id="checkOffersByJoid" resultType="java.lang.Integer">
+    SELECT COUNT(1) FROM joboffers where id = #{id}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from joboffers
+    where id = #{id,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from joboffers
     where id = #{id,jdbcType=INTEGER}
@@ -96,14 +124,16 @@
   <insert id="insert" parameterType="com.mcl.pojo.JobOffers" >
     insert into joboffers (id, jobname, temptation, 
       tag, type, wage, companyid, 
-      city, address, education,
+      city, address, education, 
       duration, workfrequency, updatetime, 
-      checked, description)
+      checked, requirements, description
+      )
     values (#{id,jdbcType=INTEGER}, #{jobname,jdbcType=VARCHAR}, #{temptation,jdbcType=VARCHAR}, 
-      #{tag,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{wage,jdbcType=INTEGER}, #{companyid,jdbcType=VARCHAR},
-      #{city,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR},
+      #{tag,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{wage,jdbcType=INTEGER}, #{companyid,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{education,jdbcType=VARCHAR}, 
       #{duration,jdbcType=INTEGER}, #{workfrequency,jdbcType=INTEGER}, now(),
-      #{checked,jdbcType=INTEGER}, #{description,jdbcType=LONGVARCHAR})
+      #{checked,jdbcType=INTEGER}, #{requirements,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.mcl.pojo.JobOffers" >
     insert into joboffers
@@ -145,10 +175,13 @@
         workfrequency,
       </if>
       <if test="updatetime != null" >
-        now(),
+        updatetime,
       </if>
       <if test="checked != null" >
         checked,
+      </if>
+      <if test="requirements != null" >
+        requirements,
       </if>
       <if test="description != null" >
         description,
@@ -197,15 +230,14 @@
       <if test="checked != null" >
         #{checked,jdbcType=INTEGER},
       </if>
+      <if test="requirements != null" >
+        #{requirements,jdbcType=VARCHAR},
+      </if>
       <if test="description != null" >
         #{description,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.mcl.pojo.JobOffers">
-    SELECT <include refid="Base_Column_List"/>
-    FROM joboffers WHERE id = #{id,jdbcType=INTEGER}
-  </select>
   <update id="updateByPrimaryKeySelective" parameterType="com.mcl.pojo.JobOffers" >
     update joboffers
     <set >
@@ -248,13 +280,34 @@
       <if test="checked != null" >
         checked = #{checked,jdbcType=INTEGER},
       </if>
+      <if test="requirements != null" >
+        requirements = #{requirements,jdbcType=VARCHAR},
+      </if>
       <if test="description != null" >
         description = #{description,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mcl.pojo.JobOffers" >
+    update joboffers
+    set jobname = #{jobname,jdbcType=VARCHAR},
+      temptation = #{temptation,jdbcType=VARCHAR},
+      tag = #{tag,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      wage = #{wage,jdbcType=INTEGER},
+      companyid = #{companyid,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      education = #{education,jdbcType=VARCHAR},
+      duration = #{duration,jdbcType=INTEGER},
+      workfrequency = #{workfrequency,jdbcType=INTEGER},
+      updatetime = now(),
+      checked = #{checked,jdbcType=INTEGER},
+      requirements = #{requirements,jdbcType=VARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
   <update id="updateByPrimaryKey" parameterType="com.mcl.pojo.JobOffers" >
     update joboffers
     set jobname = #{jobname,jdbcType=VARCHAR},
@@ -269,7 +322,9 @@
       duration = #{duration,jdbcType=INTEGER},
       workfrequency = #{workfrequency,jdbcType=INTEGER},
       updatetime = now(),
-      checked = #{checked,jdbcType=INTEGER}
+      checked = #{checked,jdbcType=INTEGER},
+      description = #{description,jdbcType=LONGVARCHAR},
+      requirements = #{requirements,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
