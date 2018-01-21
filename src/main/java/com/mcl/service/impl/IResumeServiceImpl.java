@@ -2,18 +2,18 @@ package com.mcl.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.mcl.common.ServerResponse;
 import com.mcl.dao.*;
-import com.mcl.pojo.Account;
-import com.mcl.pojo.ResDeliverStatus;
-import com.mcl.pojo.Resume;
-import com.mcl.pojo.UserMsg;
+import com.mcl.pojo.*;
 import com.mcl.service.IResumeService;
+import com.mcl.vo.ResumeVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +36,9 @@ public class IResumeServiceImpl implements IResumeService {
 
     @Autowired
     private CompanyMapper companyMapper;
+
+    @Autowired
+    private JobOffersMapper jobOffersMapper;
 
     /**
      * 创建或修改简历
@@ -135,9 +138,65 @@ public class IResumeServiceImpl implements IResumeService {
 
         PageHelper.startPage(pageNum,pageSize);
         PageHelper.orderBy("updatetime desc");
-        List<Resume> list = resumeMapper.getResumeBox(account.getCompanyid());
-        PageInfo pageResult = new PageInfo(list);
+        List<ResDeliverStatus> list_deliver = resDeliverStatusMapper.getResumeStatusBox(account.getCompanyid());
+
+        //List<Resume> list = resumeMapper.getResumeBox(account.getCompanyid());
+        PageInfo pageResult = new PageInfo(list_deliver);
+        List<ResumeVO> rtlist = Lists.newArrayList();
+        for (ResDeliverStatus rds :list_deliver){
+            ResumeVO vo = getResumeVOlist(rds);
+            rtlist.add(vo);
+        }
+        pageResult.setList(rtlist);
         return ServerResponse.createBySuccess(pageResult);
+    }
+
+    /**
+     * 封装简历VO
+     * @param rds
+     * @return
+     */
+    private ResumeVO getResumeVOlist(ResDeliverStatus rds){
+        Resume r = resumeMapper.selectByPrimaryKey(rds.getReid());
+        JobOffers jobOffers = null ;
+        ResumeVO vo = new ResumeVO() ;
+        if(rds!=null){
+            jobOffers = jobOffersMapper.selectByPrimaryKey(rds.getJoid());
+            vo.setJobOffers(jobOffers);
+        }
+        vo.setResDeliverStatus(rds);
+        vo.setOpenid(r.getOpenid());
+        vo.setMajorclass(r.getMajorclass());
+        vo.setResumename(r.getResumename());
+        vo.setAvatarurl(r.getAvatarurl());
+        vo.setAwards(r.getAwards());
+        vo.setCampusexp(r.getCampusexp());
+        vo.setCertificate(r.getCertificate());
+        vo.setCity(r.getCity());
+        vo.setJobapplied(r.getJobapplied());
+        vo.setCityapplied(r.getCityapplied());
+        vo.setCompanyname(r.getCompanyname());
+        vo.setDurationapplied(r.getDurationapplied());
+        vo.setEducation(r.getEducation());
+        vo.setEntrytime(r.getEntrytime());
+        vo.setId(r.getId());
+        vo.setFrequencyapplied(r.getFrequencyapplied());
+        vo.setJobdesc(r.getJobdesc());
+        vo.setWageapplied(r.getWageapplied());
+        vo.setUpdatetime(r.getUpdatetime());
+        vo.setSkills(r.getSkills());
+        vo.setSchoolname(r.getSchoolname());
+        vo.setSelfevaluation(r.getSelfevaluation());
+        vo.setProvince(r.getProvince());
+        vo.setJobstarttime(r.getJobstarttime());
+        vo.setJobendtime(r.getJobendtime());
+        vo.setMajor(r.getMajor());
+        vo.setGraduationtime(r.getGraduationtime());
+        vo.setJobname(r.getJobname());
+        vo.setGraduationtime(r.getGraduationtime());
+        UserBaseInfo userBaseInfo = userBaseInfoMapper.selectByPrimaryKey(r.getOpenid());
+        vo.setUserBaseInfo(userBaseInfo);
+        return vo;
     }
 
     /**

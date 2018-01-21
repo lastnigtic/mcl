@@ -1,5 +1,6 @@
 package com.mcl.service;
 
+import com.github.pagehelper.PageInfo;
 import com.mcl.common.ServerResponse;
 import com.mcl.pojo.Account;
 import com.mcl.pojo.JobOffers;
@@ -17,4 +18,6 @@ public interface IJobOffersServcie {
     ServerResponse list(int pageNum, int pageSize, Account account, JobOffers jobOffers);
 
     ServerResponse getJob(Integer id, String companyid);
+
+    PageInfo list4jsp(int pageNum, int pageSize, Account account, JobOffers jobOffers);
 }

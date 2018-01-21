@@ -507,6 +507,9 @@ public class IUserServiceImpl implements IUserService {
         if(resume==null){
             return false ;
         }else {
+            if(StringUtils.isBlank(resume.getResumename())){
+                return false;
+            }
             if(StringUtils.isBlank(resume.getOpenid())){
                 return false;
             }
@@ -516,18 +519,36 @@ public class IUserServiceImpl implements IUserService {
             if(StringUtils.isBlank(resume.getMajor())){
                 return false;
             }
+            if(StringUtils.isBlank(resume.getAvatarurl())){
+                return false;
+            }
             if(StringUtils.isBlank(resume.getSchoolname())){
                 return false;
             }
             if(resume.getGraduationtime()==null){
                 return false;
             }
-            if(StringUtils.isBlank(resume.getSkills())){
+            if(resume.getFrequencyapplied()==null){
                 return false;
             }
-            if(StringUtils.isBlank(resume.getSelfevaluation())){
+            if(resume.getDurationapplied()==null){
                 return false;
             }
+            if(StringUtils.isBlank(resume.getCityapplied())){
+                return false;
+            }
+            if(resume.getWageapplied()==null){
+                return false;
+            }
+            if(StringUtils.isBlank(resume.getJobapplied())){
+                return false;
+            }
+//            if(StringUtils.isBlank(resume.getSkills())){
+//                return false;
+//            }
+//            if(StringUtils.isBlank(resume.getSelfevaluation())){
+//                return false;
+//            }
         }
         //检查个人基本信息是否完整
         if(StringUtils.isBlank(openid)){
@@ -537,21 +558,27 @@ public class IUserServiceImpl implements IUserService {
             if(u==null){
                 return false;
             }
-            if(StringUtils.isBlank(u.getCity())){
-                return false;
-            }
-            if(StringUtils.isBlank(u.getEmail())){
-                return false;
-            }
-            if(StringUtils.isBlank(u.getPhone())){
-                return false;
-            }
-            if(StringUtils.isBlank(u.getRealname())){
-                return false;
-            }
-            if(u.getBirthday()==null){
-                return false;
-            }
+//            if(StringUtils.isBlank(u.getCity())){
+//                return false;
+//            }
+//            if (u.getEndschooltime()!=null){
+//                return false;
+//            }
+//            if(StringUtils.isBlank(u.getMajortype())){
+//                return false;
+//            }
+//            if(StringUtils.isBlank(u.getEmail())){
+//                return false;
+//            }
+//            if(StringUtils.isBlank(u.getPhone())){
+//                return false;
+//            }
+//            if(StringUtils.isBlank(u.getRealname())){
+//                return false;
+//            }
+//            if(u.getBirthday()==null){
+//                return false;
+//            }
         }
         return true ;
     }

@@ -3,6 +3,8 @@ package com.mcl.dao;
 import com.mcl.pojo.ResDeliverStatus;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface ResDeliverStatusMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -24,4 +26,5 @@ public interface ResDeliverStatusMapper {
 
     Integer count();
 
+    List<ResDeliverStatus> getResumeStatusBox(@Param("companyid") String companyid);
 }

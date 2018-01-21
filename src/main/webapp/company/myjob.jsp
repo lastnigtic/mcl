@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
+<%@ include file="/public/isLogin.jsp"%>
 <!doctype html>
 <html lang="en">
 <head>
@@ -51,93 +52,93 @@
 												<th>操作</th>
 											</tr>
 										</thead>
-										<tbody>
-											<tr>
-												<td>1</td>
-												<td>JavaScript前端开发</td>
-												<td>30份</td>
-												<td><span class="label label-danger">未通过</span></td>
-												<td>2017-01-04</td>
-												<td><a href="/company/jobinfo.jsp">查看</a> &nbsp; <a href="#">删除</a></td>
-											</tr>
-											<tr>
-												<td>2</td>
-												<td>Java Web后端</td>
-												<td>30份</td>
-												<td><span class="label label-danger">未通过</span></td>
-												<td>2017-01-03</td>
-												<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>
-											</tr>
-											<tr>
-												<td>3</td>
-												<td>Python开发工程师</td>
-												<td>30份</td>
-												<td><span class="label label-danger">未通过</span></td>
-												<td>2017-01-02</td>
-												<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>
-											</tr>
-											<tr>
-												<td>4</td>
-												<td>JavaScript前端开发</td>
-												<td>30份</td>
-												<td><span class="label label-success">通过</span></td>
-												<td>2017-01-04</td>
-												<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>
-											</tr>
-											<tr>
-												<td>5</td>
-												<td>Java Web后端</td>
-												<td>30份</td>
-												<td><span class="label label-danger">未通过</span></td>
-												<td>2017-01-03</td>
-												<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>
-											</tr>
-											<tr>
-												<td>6</td>
-												<td>Python开发工程师</td>
-												<td>30份</td>
-												<td><span class="label label-danger">未通过</span></td>
-												<td>2017-01-02</td>
-												<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>
-											</tr>
-											<tr>
-												<td>7</td>
-												<td>JavaScript前端开发</td>
-												<td>30份</td>
-												<td><span class="label label-danger">未通过</span></td>
-												<td>2017-01-04</td>
-												<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>
-											</tr>
-											<tr>
-												<td>8</td>
-												<td>Java Web后端</td>
-												<td>30份</td>
-												<td><span class="label label-danger">未通过</span></td>
-												<td>2017-01-03</td>
-												<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>
-											</tr>
-											<tr>
-												<td>9</td>
-												<td>Python开发工程师</td>
-												<td>30份</td>
-												<td><span class="label label-danger">未通过</span></td>
-												<td>2017-01-02</td>
-												<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>
-											</tr>
-											<tr>
-												<td>10</td>
-												<td>Python开发工程师</td>
-												<td>30份</td>
-												<td><span class="label label-danger">未通过</span></td>
-												<td>2017-01-02</td>
-												<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>
-											</tr>
+										<tbody id="table-body">
+											<%--<tr>--%>
+												<%--<td>1</td>--%>
+												<%--<td>JavaScript前端开发</td>--%>
+												<%--<td>30份</td>--%>
+												<%--<td><span class="label label-danger">未通过</span></td>--%>
+												<%--<td>2017-01-04</td>--%>
+												<%--<td><a href="/company/jobinfo.jsp">查看</a> &nbsp; <a href="#">删除</a></td>--%>
+											<%--</tr>--%>
+											<%--<tr>--%>
+												<%--<td>2</td>--%>
+												<%--<td>Java Web后端</td>--%>
+												<%--<td>30份</td>--%>
+												<%--<td><span class="label label-danger">未通过</span></td>--%>
+												<%--<td>2017-01-03</td>--%>
+												<%--<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>--%>
+											<%--</tr>--%>
+											<%--<tr>--%>
+												<%--<td>3</td>--%>
+												<%--<td>Python开发工程师</td>--%>
+												<%--<td>30份</td>--%>
+												<%--<td><span class="label label-danger">未通过</span></td>--%>
+												<%--<td>2017-01-02</td>--%>
+												<%--<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>--%>
+											<%--</tr>--%>
+											<%--<tr>--%>
+												<%--<td>4</td>--%>
+												<%--<td>JavaScript前端开发</td>--%>
+												<%--<td>30份</td>--%>
+												<%--<td><span class="label label-success">通过</span></td>--%>
+												<%--<td>2017-01-04</td>--%>
+												<%--<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>--%>
+											<%--</tr>--%>
+											<%--<tr>--%>
+												<%--<td>5</td>--%>
+												<%--<td>Java Web后端</td>--%>
+												<%--<td>30份</td>--%>
+												<%--<td><span class="label label-danger">未通过</span></td>--%>
+												<%--<td>2017-01-03</td>--%>
+												<%--<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>--%>
+											<%--</tr>--%>
+											<%--<tr>--%>
+												<%--<td>6</td>--%>
+												<%--<td>Python开发工程师</td>--%>
+												<%--<td>30份</td>--%>
+												<%--<td><span class="label label-danger">未通过</span></td>--%>
+												<%--<td>2017-01-02</td>--%>
+												<%--<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>--%>
+											<%--</tr>--%>
+											<%--<tr>--%>
+												<%--<td>7</td>--%>
+												<%--<td>JavaScript前端开发</td>--%>
+												<%--<td>30份</td>--%>
+												<%--<td><span class="label label-danger">未通过</span></td>--%>
+												<%--<td>2017-01-04</td>--%>
+												<%--<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>--%>
+											<%--</tr>--%>
+											<%--<tr>--%>
+												<%--<td>8</td>--%>
+												<%--<td>Java Web后端</td>--%>
+												<%--<td>30份</td>--%>
+												<%--<td><span class="label label-danger">未通过</span></td>--%>
+												<%--<td>2017-01-03</td>--%>
+												<%--<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>--%>
+											<%--</tr>--%>
+											<%--<tr>--%>
+												<%--<td>9</td>--%>
+												<%--<td>Python开发工程师</td>--%>
+												<%--<td>30份</td>--%>
+												<%--<td><span class="label label-danger">未通过</span></td>--%>
+												<%--<td>2017-01-02</td>--%>
+												<%--<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>--%>
+											<%--</tr>--%>
+											<%--<tr>--%>
+												<%--<td>10</td>--%>
+												<%--<td>Python开发工程师</td>--%>
+												<%--<td>30份</td>--%>
+												<%--<td><span class="label label-danger">未通过</span></td>--%>
+												<%--<td>2017-01-02</td>--%>
+												<%--<td><a href="#">查看</a> &nbsp; <a href="#">删除</a></td>--%>
+											<%--</tr>--%>
 										</tbody>
 									</table>
 									<ul class="pagination">
 									    <li><a href="#">&laquo;</a></li>
 									    <li class="active"><a href="#">1</a></li>
-									    <li class="disabled"><a href="#">2</a></li>
+									    <li><a href="#">2</a></li>
 									    <li><a href="#">3</a></li>
 									    <li><a href="#">4</a></li>
 									    <li><a href="#">5</a></li>
@@ -168,6 +169,43 @@
 	<script src="../assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script src="../assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	<script src="../assets/scripts/klorofil-common.js"></script>
+	<script src="../assets/js/public.js"></script>
+	<script>
+		$(function () {
+            $.ajax({
+				url:"/joblist.do",
+                type: "POST",
+                data:{
+                    pageNum:1
+                },
+                success: function(res){
+				    if(res.status==0){
+				        //成功
+						var list = res.data.list ;
+						for (var i in list){
+						    if(list[i].checked==1){
+                                var tr = $(
+                                    "<tr><td>" + i+ "</td><td>" + list[i].jobname + "</td>"
+                                    + "<td>" + '20份'+ "</td><td>" + "<span class='label label-success'>通过</span>" + "</td>"
+									+ "<td>" + filterDate(list[i].updatetime) + "</td><td><a href='jobinfo.jsp?id="+list[i].id+"'>查看</a> &nbsp; <a href='#'>删除</a></td></tr>"
+                                );
+							}else {
+                                var tr = $(
+                                    "<tr><td>" + i+ "</td><td>" + list[i].jobname + "</td>"
+                                    + "<td>" + '20份'+ "</td><td>" + "<span class='label label-danger'>未通过</span>" + "</td>"
+                                    + "<td>" + filterDate(list[i].updatetime) + "</td><td><a href='jobinfo.jsp?id="+list[i].id+"'>查看</a> &nbsp; <a href='#'>删除</a></td></tr>"
+                                );
+							}
+                            //动态生成列表
+                            $("#table-body").append(tr);
+                            console.log(list[i].jobname);
+						}
+					}
+				    console.log(res);
+                }
+			})
+        })
+	</script>
 </body>
 
 </html>

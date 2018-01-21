@@ -1,6 +1,7 @@
 package com.mcl.dao;
 
 import com.mcl.pojo.Resume;
+import com.mcl.vo.ResumeVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public interface ResumeMapper {
     List<Resume> selectList(String openid);
 
     List<Resume> getResumeBox(@Param("companyid") String companyid);
+
 
     int checkResumeCanGet(@Param("id") Integer id,@Param("companyid") String companyid);
 }

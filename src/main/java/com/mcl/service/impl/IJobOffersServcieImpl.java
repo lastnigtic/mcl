@@ -111,6 +111,22 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
         return ServerResponse.createBySuccess(pageResult);
     }
 
+    /**
+     * 获取我发布的招聘列表
+     * @param pageNum
+     * @param pageSize
+     * @param account
+     * @param jobOffers
+     * @return
+     */
+    public PageInfo list4jsp(int pageNum, int pageSize, Account account, JobOffers jobOffers) {
+        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.orderBy("updatetime desc");
+        jobOffers.setCompanyid(account.getCompanyid());
+        List<JobOffers> list = jobOffersMapper.myJobList(jobOffers);
+        PageInfo pageResult = new PageInfo(list);
+        return pageResult;
+    }
 
     /**
      * 获取招聘信息详情

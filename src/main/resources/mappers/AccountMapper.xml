@@ -81,7 +81,7 @@
       companyid = #{companyid,jdbcType=INTEGER}
     where Id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="checkUame" parameterType="java.lang.String" resultType="java.lang.Integer">
+  <select id="checkUname" parameterType="java.lang.String" resultType="java.lang.Integer">
     SELECT COUNT(1) FROM account WHERE uname = #{uname,jdbcType=VARCHAR}
   </select>
   <select id="selectLogin" resultType="com.mcl.pojo.Account">

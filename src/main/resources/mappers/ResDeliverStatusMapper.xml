@@ -33,7 +33,17 @@
     <select id="count" resultType="java.lang.Integer">
       select COUNT(1) from resdeliverstatus;
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultType="com.mcl.pojo.ResDeliverStatus">
+    SELECT <include refid="Base_Column_List"/>
+    FROM resdeliverstatus
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getResumeStatusBox" resultType="com.mcl.pojo.ResDeliverStatus">
+    select resdeliverstatus.*
+    from resdeliverstatus left join (select * from joboffers where companyid=#{companyid}) as j
+    on resdeliverstatus.joid=j.id
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from resdeliverstatus
     where id = #{id,jdbcType=INTEGER}
   </delete>

@@ -1,10 +1,17 @@
-package com.mcl.pojo;
+package com.mcl.vo;
 
+import com.mcl.pojo.Company;
+import com.mcl.pojo.JobOffers;
+import com.mcl.pojo.ResDeliverStatus;
+import com.mcl.pojo.UserBaseInfo;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-public class Resume {
+/**
+ * Created by Administrator on 2018/1/21 0021.
+ */
+public class ResumeVO {
     private Integer id;
 
     private String openid;
@@ -65,41 +72,20 @@ public class Resume {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date jobendtime;
 
+    private UserBaseInfo userBaseInfo ;
 
+    private ResDeliverStatus resDeliverStatus ;
 
-    public Resume(Integer id, String openid, String resumename, String avatarurl, String province, String city, String skills, String selfevaluation, String schoolname, String major, Date graduationtime, String education, String majorclass, String certificate, String awards, String campusexp, String jobapplied, String cityapplied, Integer wageapplied, Integer frequencyapplied, Integer durationapplied, Date entrytime, String companyname, String jobname, String jobdesc, Date updatetime, Date jobstarttime, Date jobendtime) {
-        this.id = id;
-        this.openid = openid;
-        this.resumename = resumename;
-        this.avatarurl = avatarurl;
-        this.province = province;
-        this.city = city;
-        this.skills = skills;
-        this.selfevaluation = selfevaluation;
-        this.schoolname = schoolname;
-        this.major = major;
-        this.graduationtime = graduationtime;
-        this.education = education;
-        this.majorclass = majorclass;
-        this.certificate = certificate;
-        this.awards = awards;
-        this.campusexp = campusexp;
-        this.jobapplied = jobapplied;
-        this.cityapplied = cityapplied;
-        this.wageapplied = wageapplied;
-        this.frequencyapplied = frequencyapplied;
-        this.durationapplied = durationapplied;
-        this.entrytime = entrytime;
-        this.companyname = companyname;
-        this.jobname = jobname;
-        this.jobdesc = jobdesc;
-        this.updatetime = updatetime;
-        this.jobstarttime = jobstarttime;
-        this.jobendtime = jobendtime;
+    private Company company ;
+
+    private JobOffers jobOffers ;
+
+    public Company getCompany() {
+        return company;
     }
 
-    public Resume() {
-        super();
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public Integer getId() {
@@ -115,7 +101,7 @@ public class Resume {
     }
 
     public void setOpenid(String openid) {
-        this.openid = openid == null ? null : openid.trim();
+        this.openid = openid;
     }
 
     public String getResumename() {
@@ -123,7 +109,7 @@ public class Resume {
     }
 
     public void setResumename(String resumename) {
-        this.resumename = resumename == null ? null : resumename.trim();
+        this.resumename = resumename;
     }
 
     public String getAvatarurl() {
@@ -131,7 +117,7 @@ public class Resume {
     }
 
     public void setAvatarurl(String avatarurl) {
-        this.avatarurl = avatarurl == null ? null : avatarurl.trim();
+        this.avatarurl = avatarurl;
     }
 
     public String getProvince() {
@@ -139,7 +125,7 @@ public class Resume {
     }
 
     public void setProvince(String province) {
-        this.province = province == null ? null : province.trim();
+        this.province = province;
     }
 
     public String getCity() {
@@ -147,7 +133,7 @@ public class Resume {
     }
 
     public void setCity(String city) {
-        this.city = city == null ? null : city.trim();
+        this.city = city;
     }
 
     public String getSkills() {
@@ -155,7 +141,7 @@ public class Resume {
     }
 
     public void setSkills(String skills) {
-        this.skills = skills == null ? null : skills.trim();
+        this.skills = skills;
     }
 
     public String getSelfevaluation() {
@@ -163,7 +149,7 @@ public class Resume {
     }
 
     public void setSelfevaluation(String selfevaluation) {
-        this.selfevaluation = selfevaluation == null ? null : selfevaluation.trim();
+        this.selfevaluation = selfevaluation;
     }
 
     public String getSchoolname() {
@@ -171,7 +157,7 @@ public class Resume {
     }
 
     public void setSchoolname(String schoolname) {
-        this.schoolname = schoolname == null ? null : schoolname.trim();
+        this.schoolname = schoolname;
     }
 
     public String getMajor() {
@@ -179,7 +165,7 @@ public class Resume {
     }
 
     public void setMajor(String major) {
-        this.major = major == null ? null : major.trim();
+        this.major = major;
     }
 
     public Date getGraduationtime() {
@@ -195,7 +181,7 @@ public class Resume {
     }
 
     public void setEducation(String education) {
-        this.education = education == null ? null : education.trim();
+        this.education = education;
     }
 
     public String getMajorclass() {
@@ -203,7 +189,7 @@ public class Resume {
     }
 
     public void setMajorclass(String majorclass) {
-        this.majorclass = majorclass == null ? null : majorclass.trim();
+        this.majorclass = majorclass;
     }
 
     public String getCertificate() {
@@ -211,7 +197,7 @@ public class Resume {
     }
 
     public void setCertificate(String certificate) {
-        this.certificate = certificate == null ? null : certificate.trim();
+        this.certificate = certificate;
     }
 
     public String getAwards() {
@@ -219,7 +205,7 @@ public class Resume {
     }
 
     public void setAwards(String awards) {
-        this.awards = awards == null ? null : awards.trim();
+        this.awards = awards;
     }
 
     public String getCampusexp() {
@@ -227,7 +213,7 @@ public class Resume {
     }
 
     public void setCampusexp(String campusexp) {
-        this.campusexp = campusexp == null ? null : campusexp.trim();
+        this.campusexp = campusexp;
     }
 
     public String getJobapplied() {
@@ -235,7 +221,7 @@ public class Resume {
     }
 
     public void setJobapplied(String jobapplied) {
-        this.jobapplied = jobapplied == null ? null : jobapplied.trim();
+        this.jobapplied = jobapplied;
     }
 
     public String getCityapplied() {
@@ -243,7 +229,7 @@ public class Resume {
     }
 
     public void setCityapplied(String cityapplied) {
-        this.cityapplied = cityapplied == null ? null : cityapplied.trim();
+        this.cityapplied = cityapplied;
     }
 
     public Integer getWageapplied() {
@@ -283,7 +269,7 @@ public class Resume {
     }
 
     public void setCompanyname(String companyname) {
-        this.companyname = companyname == null ? null : companyname.trim();
+        this.companyname = companyname;
     }
 
     public String getJobname() {
@@ -291,7 +277,7 @@ public class Resume {
     }
 
     public void setJobname(String jobname) {
-        this.jobname = jobname == null ? null : jobname.trim();
+        this.jobname = jobname;
     }
 
     public String getJobdesc() {
@@ -299,7 +285,7 @@ public class Resume {
     }
 
     public void setJobdesc(String jobdesc) {
-        this.jobdesc = jobdesc == null ? null : jobdesc.trim();
+        this.jobdesc = jobdesc;
     }
 
     public Date getUpdatetime() {
@@ -324,5 +310,29 @@ public class Resume {
 
     public void setJobendtime(Date jobendtime) {
         this.jobendtime = jobendtime;
+    }
+
+    public UserBaseInfo getUserBaseInfo() {
+        return userBaseInfo;
+    }
+
+    public void setUserBaseInfo(UserBaseInfo userBaseInfo) {
+        this.userBaseInfo = userBaseInfo;
+    }
+
+    public ResDeliverStatus getResDeliverStatus() {
+        return resDeliverStatus;
+    }
+
+    public void setResDeliverStatus(ResDeliverStatus resDeliverStatus) {
+        this.resDeliverStatus = resDeliverStatus;
+    }
+
+    public JobOffers getJobOffers() {
+        return jobOffers;
+    }
+
+    public void setJobOffers(JobOffers jobOffers) {
+        this.jobOffers = jobOffers;
     }
 }

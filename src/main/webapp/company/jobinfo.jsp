@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
+<%@ include file="/public/isLogin.jsp"%>
 <!doctype html>
 <html lang="en">
 <head>
@@ -42,48 +43,22 @@
 									<div class="profile-info">
 										<h4 class="heading">岗位信息</h4>
 										<ul class="list-unstyled list-justify">
-											<li>岗位名称 <span>JavaScript前端开发</span></li>
-											<li>月工资 <span>2500</span></li>
-											<li>类型<span>IT</span></li>
-											<li>学历限制 <span>大专</span></li>
-											<li>时间长度 <span>3个月</span></li>
-											<li>上班频率 <span>5天/周</span></li>
-											<li>职位诱惑 <span>五险一金</span></li>
-											<li>职位标签 <span>周末双休</span></li>
-											<li>更新时间 <span>2017-05-03</span></li>
-											<li>审核状态 <span>通过</span></li>
+											<li>岗位名称 <span id="job-jobname"></span></li>
+											<li>月工资 <span id="job-wage"></span></li>
+											<li>类型<span id="job-type"></span></li>
+											<li>学历限制 <span id="job-education"></span></li>
+											<li>时间长度 <span id="job-duration"></span>月</li>
+											<li>上班频率 <span id="job-workfrequency"></span>天/周</li>
+											<li>职位诱惑 <span id="job-temptation"></span></li>
+											<li>职位标签 <span id="job-tag"></span></li>
+											<li>更新时间 <span id="job-updatetime"></span></li>
+											<li>审核状态 <span id="job-checked"></span></li>
 										</ul>
 									</div>
 									
 									<div class="profile-info">
 										<h4 class="heading">岗位描述</h4>
-										<p>职位职责：
-											工作职责
-											在移动设备上，追求极致的⽤户体验
-											负责开发与⽤户和服务器的交互界面
-											建设企业级和移动前端的技术和工程架构
-											知识分享者，善于总结、乐于对内外分享
-											低级别⼯程师的导师，辅导新人
-
-											基本要求
-											2年以上前端领域开发经验
-											熟练阅读英⽂原版技术⽂档和书刊
-											深⼊掌握HTML+CSS+JavaScript等前端技术，代码符合W3C标准、兼容主流浏览器
-											熟练使⽤⾄少⼀种JS框架，掌握其原理
-											掌握⾄少⼀种其他语⾔（如Java/PHP/Python/Ruby/Go），有实战经验
-											本科及以上学历，计算机相关专业毕业（或计算机基础⾮常扎实）
-											做事认真细心，有一份用心的简历
-
-											优先条件
-											熟悉Mobile Web/Hybrid Web App/小程序开发/基于Canvas的游戏等开发
-											利⽤开源代码打造⾃有效率⼯具的经验
-											熟悉Linux/Unix/Mac平台下的软件开发环境
-											多终端的开发经验（Android/iOS/Mac/Windows）
-											Nodejs下项目开发经验
-											技术社区的活跃份⼦
-											品质优秀的开源作品
-											妥善经营的技术博客
-											团队管理经验
+										<p id="job-description">
 										</p>
 									</div>
 									<div class="text-center"><a href="#" class="btn btn-primary">修改</a></div>
@@ -179,6 +154,40 @@
 	<script src="../assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script src="../assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	<script src="../assets/scripts/klorofil-common.js"></script>
+	<script src="../assets/js/public.js"></script>
+	<script>
+		$(function () {
+
+            var job_id = GetQueryString('id');
+			if(job_id!=null){
+                $.ajax({
+                    url:"/getjob.do",
+                    type: "POST",
+                    data:{
+                        id:job_id
+                    },
+                    success: function(res){
+                        if(res.status==0){
+                            var job = res.data ;
+                        	$("#job-jobname").text(job.jobname);
+                        	$("#job-description").text(job.description);
+                        	$("#job-duration").text(job.duration);
+                        	$("#job-education").text(job.education);
+                        	$("#job-tag").text(job.tag);
+                        	$("#job-temptation").text(job.temptation);
+                        	$("#job-type").text(job.type);
+                        	$("#job-wage").text(job.wage);
+                        	$("#job-updatetime").text(filterDate(job.updatetime));
+                        	$("#job-workfrequency").text(job.workfrequency);
+                            var c = job.checked==1?'通过':'未通过' ;
+                        	$("#job-checked").text(c);
+
+                        }
+                    }
+                })
+			}
+        })
+	</script>
 </body>
 
 </html>

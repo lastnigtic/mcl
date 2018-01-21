@@ -36,7 +36,7 @@ public class IAccountServiceImpl implements IAccountService {
      */
     @Override
     public ServerResponse<Account> login(String uname, String upass) {
-        int resultCount = accountMapper.checkUame(uname);
+        int resultCount = accountMapper.checkUname(uname);
         if(resultCount == 0 ){
             return ServerResponse.createByErrorMessage("用户不存在");
         }
@@ -58,7 +58,7 @@ public class IAccountServiceImpl implements IAccountService {
     @Override
     public ServerResponse<String> register(Account account) {
         if(account!=null&& StringUtils.isNotBlank(account.getUname())&&StringUtils.isNotBlank(account.getUpass())){
-            int rowCount = accountMapper.checkUame(account.getUname());
+            int rowCount = accountMapper.checkUname(account.getUname());
             if(rowCount>0){
                 return ServerResponse.createByErrorMessage("账号名已存在");
             }

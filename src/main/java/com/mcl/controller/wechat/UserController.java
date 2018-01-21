@@ -228,7 +228,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "uploadavatar.do",method = RequestMethod.POST)
-    public ServerResponse uploadAvatar(@RequestParam(value = "uploadfile",required = false) MultipartFile file, HttpServletRequest request){
+    public ServerResponse uploadAvatar(@RequestParam(value = "filePath",required = false) MultipartFile file, HttpServletRequest request){
         String openid = request.getParameter("openid");
         if(!iUserService.checkOpenid(openid))
             return ServerResponse.createByErrorMessage("用户不存在");

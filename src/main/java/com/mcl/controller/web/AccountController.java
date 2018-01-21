@@ -59,6 +59,21 @@ public class AccountController {
         return response;
     }
 
+
+    /**
+     * 判断是否登录
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "islogin.do",method = RequestMethod.POST)
+    public ServerResponse isLogin(HttpSession session){
+        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
+        if(account == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
+        }
+        return ServerResponse.createBySuccess();
+    }
+
     /**
      * 商家注册接口
      * @param account
