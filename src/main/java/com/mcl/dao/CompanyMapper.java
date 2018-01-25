@@ -1,6 +1,7 @@
 package com.mcl.dao;
 
 import com.mcl.pojo.Company;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,4 +22,5 @@ public interface CompanyMapper {
 
     Integer count();
 
+    int updateCredit(@Param("id") String id,@Param("credit") Double avgCredit);
 }

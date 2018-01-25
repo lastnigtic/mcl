@@ -42,4 +42,6 @@ public interface IUserService {
     ServerResponse delMsg(Integer id, String openid);
 
     boolean checkOpenid(String openid);
+
+    ServerResponse rateToCompany(String openid, String companyid, Double credit);
 }

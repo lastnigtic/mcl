@@ -1,17 +1,19 @@
 package com.mcl.service.impl;
 
 import com.mcl.common.ServerResponse;
-import com.mcl.dao.AccountMapper;
-import com.mcl.dao.CompanyMapper;
+import com.mcl.dao.*;
 import com.mcl.pojo.Account;
 import com.mcl.pojo.Company;
+import com.mcl.pojo.CompanyUserCredit;
 import com.mcl.service.IAccountService;
+import com.mcl.service.IDeliveredService;
 import com.mcl.util.MD5Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.UUID;
 
 /**
@@ -27,6 +29,14 @@ public class IAccountServiceImpl implements IAccountService {
     @Autowired
     private CompanyMapper companyMapper ;
 
+    @Autowired
+    private UserBaseInfoMapper userBaseInfoMapper;
+
+    @Autowired
+    private CompanyUserCreditMapper companyUserCreditMapper;
+
+    @Autowired
+    private ResDeliverStatusMapper resDeliverStatusMapper;
 
     /**
      * 商家登录
@@ -154,6 +164,49 @@ public class IAccountServiceImpl implements IAccountService {
             return ServerResponse.createBySuccess("未认证",0);
         }
         return ServerResponse.createByErrorMessage("错误！");
+    }
+
+    /**
+     * 对用户评分
+     * @param openid
+     * @param companyid
+     * @param credit
+     * @return
+     */
+    @Override
+    public ServerResponse rateToUser(String openid, String companyid, Double credit) {
+        if(StringUtils.isBlank(openid)||StringUtils.isBlank(companyid)||credit==null)
+            return ServerResponse.createByErrorMessage("参数错误");
+
+        int rowUser = userBaseInfoMapper.checkUserByOpenid(openid);
+
+        if(rowUser==0)
+            return ServerResponse.createByErrorMessage("找不到用户");
+
+        boolean havaAuthority = resDeliverStatusMapper.isUserHaveAuthorityScoreCompany(openid,companyid)==null?false:true;
+
+        if(havaAuthority){
+            //有权评分
+            CompanyUserCredit creditObj = new CompanyUserCredit();
+            creditObj.setCredit(credit.floatValue());
+            creditObj.setOpenid(openid);
+            creditObj.setCompanyid(companyid);
+
+            int rowInsert = companyUserCreditMapper.insert(creditObj);
+
+            if(rowInsert>0){
+                Double sum = companyUserCreditMapper.calSumCredit(openid);
+                Integer amount = companyUserCreditMapper.calAmount(openid);
+                Double avgCredit = Double.parseDouble(String.format("%.2f", sum/amount));//计算平均分，保留两位小数
+                int rowUpdate = userBaseInfoMapper.updateCredit(openid,avgCredit);
+                if(rowUpdate>0){
+                    return ServerResponse.createBySuccess("评分成功",avgCredit);
+                }
+                return ServerResponse.createByErrorMessage("评分失败");
+            }
+            return ServerResponse.createByErrorMessage("评分失败");
+        }
+        return ServerResponse.createByErrorMessage("无权评分");
     }
 
 

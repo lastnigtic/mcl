@@ -27,4 +27,6 @@ public interface ResDeliverStatusMapper {
     Integer count();
 
     List<ResDeliverStatus> getResumeStatusBox(@Param("companyid") String companyid);
+
+    ResDeliverStatus isUserHaveAuthorityScoreCompany(@Param("openid") String openid, @Param("companyid") String companyid);
 }

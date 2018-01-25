@@ -312,4 +312,20 @@ public class AccountController {
         return ServerResponse.createBySuccess(backpath);
     }
 
+    /**
+     * 公司向用户评分
+     * @param openid
+     * @param credit
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "ratetouser.do",method = RequestMethod.POST)
+    public ServerResponse rateToUser(String openid,Double credit,HttpSession session){
+        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
+        if(account == null){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
+        }
+        return iAccountService.rateToUser(openid,account.getCompanyid(),credit);
+    }
+
 }

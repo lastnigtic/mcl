@@ -38,6 +38,9 @@
     FROM resdeliverstatus
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="isUserHaveAuthorityScoreCompany">
+    select * from resdeliverstatus where joid in (select id from joboffers where companyid = #{companyid}) and reid in (select id from resume where openid=#{openid}) and status=3 order by updatetime desc limit 1,1
+  </select>
   <select id="getResumeStatusBox" resultType="com.mcl.pojo.ResDeliverStatus">
     select resdeliverstatus.*
     from resdeliverstatus left join (select * from joboffers where companyid=#{companyid}) as j

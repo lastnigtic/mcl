@@ -14,4 +14,9 @@ public interface UserCompanyCreditMapper {
     int updateByPrimaryKeySelective(UserCompanyCredit record);
 
     int updateByPrimaryKey(UserCompanyCredit record);
+
+    Double calSumCredit(String companyid);
+
+    Integer calAmount(String companyid);
+
 }

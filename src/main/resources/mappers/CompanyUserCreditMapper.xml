@@ -29,7 +29,7 @@
       credit, updatetime, comment
       )
     values (#{id,jdbcType=INTEGER}, #{companyid,jdbcType=VARCHAR}, #{openid,jdbcType=VARCHAR}, 
-      #{credit,jdbcType=REAL}, #{updatetime,jdbcType=TIMESTAMP}, #{comment,jdbcType=VARCHAR}
+      #{credit,jdbcType=REAL},now(), #{comment,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.mcl.pojo.CompanyUserCredit" >
@@ -68,7 +68,7 @@
         #{credit,jdbcType=REAL},
       </if>
       <if test="updatetime != null" >
-        #{updatetime,jdbcType=TIMESTAMP},
+        now(),
       </if>
       <if test="comment != null" >
         #{comment,jdbcType=VARCHAR},
@@ -88,7 +88,7 @@
         credit = #{credit,jdbcType=REAL},
       </if>
       <if test="updatetime != null" >
-        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+        updatetime = now(),
       </if>
       <if test="comment != null" >
         comment = #{comment,jdbcType=VARCHAR},
@@ -96,12 +96,18 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="calSumCredit" parameterType="java.lang.String">
+    select sum(credit) from companyusercredit where openid = #{openid}
+  </select>
+  <select id="calAmount" parameterType="java.lang.String">
+    select count(1) from companyusercredit where openid = #{openid}
+  </select>
   <update id="updateByPrimaryKey" parameterType="com.mcl.pojo.CompanyUserCredit" >
     update companyusercredit
     set companyid = #{companyid,jdbcType=VARCHAR},
       openid = #{openid,jdbcType=VARCHAR},
       credit = #{credit,jdbcType=REAL},
-      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      updatetime = now(),
       comment = #{comment,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

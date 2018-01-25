@@ -17,4 +17,6 @@ public interface IAccountService {
     Company getCompanyByAccount(Integer id);
 
     ServerResponse isPassVerified(Integer id);
+
+    ServerResponse rateToUser(String openid, String companyid, Double credit);
 }

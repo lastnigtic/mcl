@@ -57,6 +57,10 @@
       </if>
     </where>
   </select>
+  <update id="updateCredit" parameterType="java.lang.String">
+    UPDATE company set credit=#{credit}
+    WHERE id = #{id}
+  </update>
   <select id="count" resultType="java.lang.Integer">
     SELECT COUNT(1) FROM company
   </select>

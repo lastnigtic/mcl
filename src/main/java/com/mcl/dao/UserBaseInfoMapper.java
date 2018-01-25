@@ -1,6 +1,7 @@
 package com.mcl.dao;
 
 import com.mcl.pojo.UserBaseInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -23,4 +24,5 @@ public interface UserBaseInfoMapper {
 
     Integer count();
 
+    int updateCredit(@Param("openid") String openid,@Param("credit") Double avgCredit);
 }

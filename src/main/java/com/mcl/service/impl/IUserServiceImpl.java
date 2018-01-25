@@ -6,13 +6,16 @@ import com.google.common.collect.Lists;
 import com.mcl.common.ServerResponse;
 import com.mcl.dao.*;
 import com.mcl.pojo.*;
+import com.mcl.service.IDeliveredService;
 import com.mcl.service.IUserService;
 import com.mcl.util.PropertiesUtil;
 import com.mcl.vo.JobOffersListVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -44,6 +47,12 @@ public class IUserServiceImpl implements IUserService {
 
     @Autowired
     private UserMsgMapper userMsgMapper ;
+
+    @Autowired
+    private CompanyUserCreditMapper companyUserCreditMapper ;
+
+    @Autowired
+    private UserCompanyCreditMapper userCompanyCreditMapper;
 
     /**
      * 更新或新增用户的基础信息
@@ -368,9 +377,9 @@ public class IUserServiceImpl implements IUserService {
         if(StringUtils.isNotBlank(openid)){
             int rowUser = userBaseInfoMapper.checkUserByOpenid(openid);
             if(rowUser>0){
-                return ServerResponse.createBySuccess("是初次登录！");
+                return ServerResponse.createBySuccess("有这个人的信息了，可以做其他事情了！");
             }
-            return ServerResponse.createByErrorMessage("不是初次登录！");
+            return ServerResponse.createByErrorMessage("没有这个人，快写信息进来！");
         }
         return ServerResponse.createByErrorMessage("传入参数错误！");
     }
@@ -493,6 +502,62 @@ public class IUserServiceImpl implements IUserService {
     @Override
     public boolean checkOpenid(String openid) {
         return  userBaseInfoMapper.checkUserByOpenid(openid)>0?true:false;
+    }
+
+
+    /**
+     * 用户向公司评分
+     * @param openid
+     * @param companyid
+     * @param credit
+     * @return
+     */
+    @Override
+    @Transactional
+    public ServerResponse rateToCompany(String openid, String companyid, Double credit) {
+
+        if(StringUtils.isBlank(openid)||StringUtils.isBlank(companyid)||credit==null)
+            return ServerResponse.createByErrorMessage("参数错误");
+
+        int rowUser = userBaseInfoMapper.checkUserByOpenid(openid);
+
+        if(rowUser==0)
+            return ServerResponse.createByErrorMessage("找不到用户");
+
+        Company company = companyMapper.selectByPrimaryKey(companyid);
+
+        if(company==null)
+            return ServerResponse.createByErrorMessage("找不到公司");
+
+        boolean havaAuthority = resDeliverStatusMapper.isUserHaveAuthorityScoreCompany(openid,companyid)==null?false:true;
+
+        if(havaAuthority){
+            //有权评分
+            UserCompanyCredit creditObj = new UserCompanyCredit();
+            creditObj.setCompanyid(companyid);
+            creditObj.setOpenid(openid);
+            creditObj.setCredit(credit);
+
+            int rowInsert = userCompanyCreditMapper.insert(creditObj);//插入一条评分记录
+
+            if(rowInsert==0){
+                return ServerResponse.createByErrorMessage("评分失败");
+            }
+            Double sum = userCompanyCreditMapper.calSumCredit(companyid); //计算该公司总分
+
+            Integer amount = userCompanyCreditMapper.calAmount(companyid);//计算该公司评分记录数
+
+            Double avgCredit = Double.parseDouble(String.format("%.2f", sum/amount));//计算平均分，保留两位小数
+
+            int row = companyMapper.updateCredit(companyid,avgCredit);
+
+            if(row>0){
+                return ServerResponse.createBySuccess("评分成功",avgCredit);
+            }
+            return ServerResponse.createByErrorMessage("评分失败");
+        }else{
+            return ServerResponse.createByErrorMessage("无权评分");
+        }
     }
 
     /**

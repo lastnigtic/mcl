@@ -64,6 +64,10 @@
     </where>
 
   </select>
+<update id="updateCredit" >
+  UPDATE userbaseinfo set
+  credit = #{credit} WHERE  openid=#{openid}
+</update>
   <select id="count" resultType="java.lang.Integer">
     SELECT COUNT(1) FROM userbaseinfo
   </select>
@@ -84,7 +88,7 @@
       #{province,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, 
       #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{credit,jdbcType=DOUBLE}, 
       #{startschooltime,jdbcType=TIMESTAMP}, #{education,jdbcType=VARCHAR}, #{schoolname,jdbcType=VARCHAR}, 
-      #{majortype,jdbcType=VARCHAR}, #{endschooltime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{majortype,jdbcType=VARCHAR}, #{endschooltime,jdbcType=TIMESTAMP}, now(),
       #{isworking,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.mcl.pojo.UserBaseInfo" >
@@ -260,7 +264,7 @@
         endschooltime = #{endschooltime,jdbcType=TIMESTAMP},
       </if>
       <if test="updatetime != null" >
-        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+        updatetime = now(),
       </if>
       <if test="isworking != null" >
         isworking = #{isworking,jdbcType=INTEGER},
@@ -286,7 +290,7 @@
       schoolname = #{schoolname,jdbcType=VARCHAR},
       majortype = #{majortype,jdbcType=VARCHAR},
       endschooltime = #{endschooltime,jdbcType=TIMESTAMP},
-      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      updatetime = now(),
       isworking = #{isworking,jdbcType=INTEGER}
     where openid = #{openid,jdbcType=VARCHAR}
   </update>

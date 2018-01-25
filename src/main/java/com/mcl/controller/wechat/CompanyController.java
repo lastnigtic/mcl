@@ -27,18 +27,5 @@ public class CompanyController {
         return iCompanyService.getCompanyDetail(id);
     }
 
-    /**
-     * 公司给用户评分，这个接口的存放位置待定
-     * @param openid
-     * @param companyid
-     * @param credit
-     * @return
-     */
-    @RequestMapping(value = "ratetouser.do" ,method = RequestMethod.POST)
-    public ServerResponse rateToUser(String openid,int companyid,double credit){
-        //判断openid是否存在
-        //判断是否有过面试完成记录
-        //如有，则可以评分
-        return null;
-    }
+
 }

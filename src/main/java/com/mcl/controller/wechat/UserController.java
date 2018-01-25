@@ -214,11 +214,8 @@ public class UserController {
      */
     @RequestMapping(value = "ratetocompany.do" ,method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse rateToCompany(String openid,int companyid,double credit){
-        //判断openid是否存在
-        //判断是否有过面试完成记录
-        //如有，则可以评分
-        return null;
+    public ServerResponse rateToCompany(String openid,String companyid,Double credit){
+        return iUserService.rateToCompany(openid,companyid,credit);
     }
 
     /**
