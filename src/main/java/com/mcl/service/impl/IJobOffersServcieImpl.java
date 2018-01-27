@@ -156,7 +156,6 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
         if(jobOffers.getWage()==null)return false;
         if(jobOffers.getWorkfrequency()==null)return false;
         if(jobOffers.getDuration()==null)return false;
-        if(jobOffers.getCompanyid()==null)return false;
         return true;
     }
 }

@@ -17,6 +17,12 @@
     from tagproperty
     where id = #{id,jdbcType=INTEGER}
   </select>
+    <select id="selectEduList" resultType="java.lang.String">
+      SELECT name FROM tagproperty WHERE type='edu'
+    </select>
+  <select id="selectListByType" resultType="java.lang.String">
+    SELECT name FROM tagproperty WHERE type=#{type}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tagproperty
     where id = #{id,jdbcType=INTEGER}

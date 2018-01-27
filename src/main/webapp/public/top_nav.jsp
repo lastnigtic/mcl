@@ -3,7 +3,8 @@
 <!-- NAVBAR -->
 <nav class="navbar navbar-default navbar-fixed-top">
 	<div class="brand">
-		<a href="index.jsp"><img src="" alt="Life+ logo" class="img-responsive logo"></a>
+		<%--<img src="/assets/img/life.png" alt="Life+ logo" class="img-responsive logo">--%>
+		<a href="/comp/index.html"></a>
 	</div>
 	<div class="container-fluid">
 		<div class="navbar-btn">
@@ -26,12 +27,11 @@
 					</ul>
 				</li>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="../assets/img/user.png" class="img-circle" alt="Avatar"> <span>HR 您好！</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="/assets/img/user.png" class="img-circle" alt="Avatar"> <span>HR 您好！</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
 					<ul class="dropdown-menu">
 						<!-- <li><a href="#"><i class="lnr lnr-user"></i> <span>My Profile</span></a></li>
 						<li><a href="#"><i class="lnr lnr-envelope"></i> <span>Message</span></a></li> -->
-						<li><a href="#"><i class="lnr lnr-cog"></i> <span>设置</span></a></li>
-						<li><a href="#"><i class="lnr lnr-exit"></i> <span>登出</span></a></li>
+						<li><a href="/logout.do"><i class="lnr lnr-exit"></i> <span>登出</span></a></li>
 					</ul>
 				</li>				
 			</ul>

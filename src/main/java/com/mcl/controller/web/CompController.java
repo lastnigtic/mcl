@@ -1,5 +1,6 @@
 package com.mcl.controller.web;
 
+import com.github.pagehelper.PageInfo;
 import com.mcl.common.Const;
 import com.mcl.common.ResponseCode;
 import com.mcl.common.ServerResponse;
@@ -7,13 +8,14 @@ import com.mcl.pojo.Account;
 import com.mcl.pojo.Company;
 import com.mcl.pojo.JobOffers;
 import com.mcl.pojo.Resume;
-import com.mcl.service.IAccountService;
-import com.mcl.service.ICompanyService;
-import com.mcl.service.IJobOffersServcie;
-import com.mcl.service.IResumeService;
+import com.mcl.service.*;
 import com.mcl.util.DateTimeUtil;
 import com.mcl.util.PropertiesUtil;
+import com.mcl.vo.ResumeVO;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,8 +29,9 @@ import java.util.UUID;
 /**
  * Created by Administrator on 2018/1/13 0013.
  */
-@RestController
-public class AccountController {
+@Controller
+@RequestMapping(value = "/comp/")
+public class CompController {
 
 
     @Autowired
@@ -44,35 +47,192 @@ public class AccountController {
 
     @Autowired
     private IResumeService iResumeService;
+
+    @Autowired
+    private ITagPropertyService iTagPropertyService;
+
     /**
-     * 商家登录接口
-     * @param uname
-     * @param upass
+     * 取首页
      * @return
      */
-    @RequestMapping(value = "login.do",method = RequestMethod.POST)
-    public ServerResponse login(String uname, String upass, HttpSession session){
-        ServerResponse<Account> response = iAccountService.login(uname,upass);
-        if(response.isSuccess()){
-            session.setAttribute(Const.CURRENT_USER,response.getData());
-        }
-        return response;
+    @RequestMapping(value = "index.html")
+    public String compIndex(){
+        return "/company/index";
     }
 
-
     /**
-     * 判断是否登录
-     * @param session
+     * 新增岗位页面
      * @return
      */
-    @RequestMapping(value = "islogin.do",method = RequestMethod.POST)
-    public ServerResponse isLogin(HttpSession session){
+    @RequestMapping(value = "addjob.html")
+    public String addJob(Model model){
+
+        model.addAttribute("eduproperty",iTagPropertyService.getEduPropertyList());
+        model.addAttribute("cityproperty",iTagPropertyService.getCityPropertyList());
+        model.addAttribute("jobtagproperty",iTagPropertyService.getJobTageList());
+        model.addAttribute("jobtypeproperty",iTagPropertyService.getJobTypeList());
+
+        return "/company/addjob";
+    }
+
+    /**
+     * 岗位详细信息页面
+     * @return
+     */
+    @RequestMapping(value = "jobinfo.html")
+    public String jobInfo(HttpSession session , Integer id ,Model model){
+
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
+
+        ServerResponse serverResponse = iJobOffersServcie.getJob(id,account.getCompanyid());
+
+        JobOffers job = (JobOffers) serverResponse.getData();
+
+        if(serverResponse.isSuccess()){
+            model.addAttribute("job",job);
         }
-        return ServerResponse.createBySuccess();
+        return "/company/jobinfo";
     }
+
+
+    @RequestMapping(value = "resume.html")
+    public String resumeFromBox(Model model,Integer id,Integer resumeid,HttpSession session){
+        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
+        ServerResponse response = iResumeService.getResumeFromBox(id,resumeid,account.getCompanyid());
+        ResumeVO r = (ResumeVO)response.getData();
+        if(response.isSuccess()){
+            model.addAttribute("resume",r);
+            return "/company/resume";
+        }
+        return "/company/myresumebox";
+    }
+
+    /**
+     * 我发布的岗位信息页面
+     * @return
+     */
+    @RequestMapping(value = "myjob.html")
+    public String myJob(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                        @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
+                        JobOffers jobOffers,HttpSession session,Model model){
+
+        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
+
+        ServerResponse response = iJobOffersServcie.list(pageNum,pageSize,account,jobOffers);
+
+        if(response.isSuccess()){
+            PageInfo<JobOffers> pageInfo = (PageInfo<JobOffers>) response.getData();
+            model.addAttribute("pageInfo",pageInfo);
+            model.addAttribute("joblist",pageInfo.getList());
+        }
+
+        return "/company/myjob";
+    }
+
+    /**
+     * 我的简历箱页面
+     * @return
+     */
+    @RequestMapping(value = "myresumebox.html")
+    public String myResumeBox(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                              @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
+                              Resume resume, HttpSession session,Model model){
+        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
+
+        Company company = iAccountService.getCompanyByAccount(account.getId());
+        if(company==null){
+            model.addAttribute("msg","找不到公司");
+            return "/company/index" ;
+        }
+        if(company.getChecked()==0){
+            model.addAttribute("msg","未通过认证");
+            return "/company/index" ;
+        }
+
+        ServerResponse response =  iResumeService.getResumeBox(pageNum,pageSize,resume,account);
+
+        if(response.isSuccess()){
+            PageInfo<ResumeVO> pageInfo = (PageInfo<ResumeVO>)response.getData();
+            model.addAttribute("pageInfo",pageInfo);
+            model.addAttribute("resumelist",pageInfo.getList());
+        }
+
+        return "/company/myresumebox";
+
+
+    }
+
+    /**
+     * 验证页面
+     * @return
+     */
+    @RequestMapping(value = "verified.html")
+    public String verified(){
+        return "/company/verified";
+    }
+
+    /**
+     * 编辑信息
+     * @return
+     */
+    @RequestMapping(value = "editinfo.html")
+    public String editInfo(HttpSession session,Model model){
+        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
+        ServerResponse serverResponse = iCompanyService.getCompanyDetail(account.getCompanyid());
+        model.addAttribute("financings",iTagPropertyService.getFinancingsList());
+        model.addAttribute("compsize",iTagPropertyService.getCompSizeList());
+        model.addAttribute("industry",iTagPropertyService.getIndustryList());
+        model.addAttribute("city",iTagPropertyService.getCityPropertyList());
+
+        if(serverResponse.isSuccess()){
+            Company company = (Company)serverResponse.getData();
+            model.addAttribute("company",company);
+            return "/company/editinfo";
+        }
+
+        return "/company/index";
+    }
+
+
+    /**
+     * 更新岗位信息页面
+     * @param model
+     * @param session
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "updatejob.html")
+    public String updateJob(Model model,HttpSession session,Integer id){
+
+        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
+
+        Company company = iAccountService.getCompanyByAccount(account.getId());
+
+        if(company==null){
+            model.addAttribute("msg","未有公司信息");
+            return "/company/editinfo" ;
+        }
+
+        if(company.getChecked()==0){
+            model.addAttribute("msg","未通过认证");
+            return "/company/verified" ;
+        }
+
+        ServerResponse response = iJobOffersServcie.getJob(id,account.getCompanyid());
+
+        if(response.isSuccess()){
+            JobOffers job = (JobOffers)response.getData();
+            model.addAttribute("job",job);
+        }
+        model.addAttribute("eduproperty",iTagPropertyService.getEduPropertyList());
+        model.addAttribute("cityproperty",iTagPropertyService.getCityPropertyList());
+        model.addAttribute("jobtagproperty",iTagPropertyService.getJobTageList());
+        model.addAttribute("jobtypeproperty",iTagPropertyService.getJobTypeList());
+
+        return "company/updatejob";
+
+    }
+
 
     /**
      * 商家注册接口
@@ -80,6 +240,7 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "register.do",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse<String> register(Account account){
         return iAccountService.register(account);
     }
@@ -91,6 +252,7 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "saveorupdatecompany.do",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse saveOrUpdateCompany(Company company, HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
         if(account == null){
@@ -106,6 +268,7 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "ispassverified.do" ,method = RequestMethod.GET)
+    @ResponseBody
     public ServerResponse isPassVerified(HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
         if(account == null){
@@ -122,18 +285,15 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "addjob.do",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse addJob(JobOffers jobOffers, HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
         Company company = iAccountService.getCompanyByAccount(account.getId());
         if(company.getChecked()==0){
             return ServerResponse.createByErrorMessage("未通过认证");
         }
         jobOffers.setCompanyid(company.getId());
         return iJobOffersServcie.addJob(jobOffers);
-
     }
 
     /**
@@ -143,11 +303,10 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "updatejob.do",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse updateJob(JobOffers jobOffers,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
+
         Company company = iAccountService.getCompanyByAccount(account.getId());
         if(company==null)return ServerResponse.createByErrorMessage("未有公司信息");
         if(company.getChecked()==0){
@@ -164,6 +323,7 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "deljob.do",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse delJob(Integer id,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
         if(account == null){
@@ -185,6 +345,7 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "joblist.do",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse jobList(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                   @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
                                   JobOffers jobOffers,HttpSession session){
@@ -203,6 +364,7 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "getjob.do",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse getJob(Integer id,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
         if(account == null){
@@ -219,12 +381,13 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "getresume.do",method = RequestMethod.POST)
-    public ServerResponse getResume(Integer id,HttpSession session){
+    @ResponseBody
+    public ServerResponse getResume(Integer id,Integer resumeid,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
         if(account == null){
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
         }
-        return iResumeService.getResumeFromBox(id,account.getCompanyid());
+        return iResumeService.getResumeFromBox(id,resumeid,account.getCompanyid());
     }
 
     /**
@@ -234,6 +397,7 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "changeresumestatus.do",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse changeResumeStatus(@RequestParam("id") Integer id,@RequestParam("status") Integer status ,@RequestParam(value = "msg",required = false) String msg,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
         if(account == null){
@@ -251,6 +415,7 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "myresumebox.do",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse getResumeBox(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                        @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
                                        Resume resume, HttpSession session){
@@ -274,6 +439,7 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "verified",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse verified(@RequestParam(value = "uploadfile",required = false) MultipartFile file,HttpSession session, HttpServletRequest request){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
         if(account == null){
@@ -320,6 +486,7 @@ public class AccountController {
      * @return
      */
     @RequestMapping(value = "ratetouser.do",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse rateToUser(String openid,Double credit,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
         if(account == null){

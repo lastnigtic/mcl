@@ -16,7 +16,7 @@ public interface IResumeService {
 
     ServerResponse getResumeBox(int pageNum, int pageSize, Resume resume, Account account);
 
-    ServerResponse getResumeFromBox(Integer id, String companyid);
+    ServerResponse getResumeFromBox(Integer id,Integer resumeid, String companyid);
 
     ServerResponse changeResumeStatus(Integer id, String companyid, Integer status, String msg);
 }

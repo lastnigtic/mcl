@@ -1,3 +1,7 @@
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page isELIgnored="false"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE HTML>
 <html lang="en" class="fullscreen-bg">
 <head>
@@ -6,21 +10,20 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<!-- VENDOR CSS -->
-	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
-	<link rel="stylesheet" href="assets/vendor/font-awesome/css/font-awesome.min.css">
-	<link rel="stylesheet" href="assets/vendor/linearicons/style.css">
+	<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/assets/vendor/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/assets/vendor/linearicons/style.css">
 	<!-- MAIN CSS -->
-	<link rel="stylesheet" href="assets/css/main.css">
+	<link rel="stylesheet" href="/assets/css/main.css">
 	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-	<link rel="stylesheet" href="assets/css/demo.css">
+	<link rel="stylesheet" href="/assets/css/demo.css">
 	<!-- GOOGLE FONTS -->
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
 	<!-- ICONS -->
-	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="assets/img/life.png">
     <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 </head>
-
 <body>
 	<!-- WRAPPER -->
 	<div id="wrapper">
@@ -30,10 +33,10 @@
 					<div class="left">
 						<div class="content">
 							<div class="header">
-								<div class="logo text-center"><img src="assets/img/life__.png" alt="Klorofil Logo"></div>
-								<p class="lead">欢迎来到Life+登录页</p>
+								<%--<div class="logo text-center"><img src="/assets/img/life__.png" alt="Klorofil Logo"></div>--%>
+								<p class="lead">欢迎登陆大学生活 —— 企业端</p>
 							</div>
-							<form class="form-auth-small" action="" method="post" id="login-form">
+							<form class="form-auth-small" action="/login.do" method="post" id="login-form">
 								<div class="form-group">
 									<label for="signin-uanme" class="control-label sr-only">账号</label>
 									<input name="uname"  class="form-control" id="signin-uanme" value="" placeholder="账号">
@@ -42,18 +45,22 @@
 									<label for="signin-password" class="control-label sr-only">密码</label>
 									<input name="upass" type="password" class="form-control" id="signin-password" value="" placeholder="密码">
 								</div>
-								<button type="button" class="btn btn-primary btn-lg btn-block" id="button-login">登录</button>
+								<button type="submit" class="btn btn-primary btn-lg btn-block" id="button-login">登录</button>
 								<div class="bottom">
-									<span class="helper-text"><i class="lnr lnr-user"></i> <a href="#">没有账号 ? 注册一个 ！</a></span>
+									<span class="helper-text"><i class="lnr lnr-user"></i> <a href="/register.html">没有账号 ? 注册一个 ！</a></span>
 								</div>
+								<c:if test="${!empty msg}">
+									<br/>
+									<p style="color: red">错误:${msg}</p>
+								</c:if>
 							</form>
 						</div>
 					</div>
 					<div class="right">
 						<div class="overlay"></div>
 						<div class="content text">
-							<h1 class="heading">大学生活项目~~</h1>
-							<p>一个免费的招聘平台</p>
+							<h1 class="heading">大学生活</h1>
+							<p>为您提供特别的服务</p>
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -73,23 +80,7 @@
                 alert("未输入账号密码");
                 return ;
             }
-            $.ajax({
-                url: "login.do",
-                type: "POST",
-                data:{
-                    uname:name,
-                    upass:pass
-                },
-                success: function(res){
-                    if(res.status==0){
-                        $(window).attr('location','/company/index.jsp');
-                    }else{
-                        alert(res.msg);
-                        $("#signin-uanme").val("");
-                        $("#signin-password").val("");
-                    }
-                }
-            })
+            $("form").submit();
         });
         
     })

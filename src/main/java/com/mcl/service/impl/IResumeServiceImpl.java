@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -201,24 +200,24 @@ public class IResumeServiceImpl implements IResumeService {
 
     /**
      * 从简历箱中查看简历
-     * @param id
+     * @param resumeid
      * @param companyid
      * @return
      */
     @Override
     @Transactional
-    public ServerResponse getResumeFromBox(Integer id, String companyid) {
-        if(id==null||StringUtils.isBlank(companyid)){
+    public ServerResponse getResumeFromBox(Integer id,Integer resumeid, String companyid) {
+        if(resumeid ==null||StringUtils.isBlank(companyid)){
             return ServerResponse.createByErrorMessage("传入参数错误");
         }
-        int row = resumeMapper.checkResumeCanGet(id,companyid);//看看有无权限获取该简历
+        int row = resumeMapper.checkResumeCanGet(resumeid,companyid);//看看有无权限获取该简历
         if(row>0){
             //有权限
-            Resume resume = resumeMapper.selectByPrimaryKey(id);  //获取简历信息
+            Resume resume = resumeMapper.selectByPrimaryKey(resumeid);  //获取简历信息
             //判断是否需要更改状态为被查看
-            ResDeliverStatus rds = resDeliverStatusMapper.selectByResumeId(id);
-            if(rds.getViewed()!=1||rds.getStatus()==0){
-                int rowView = resDeliverStatusMapper.viewedByResumeId(id);  //更改状态为被查看
+            ResDeliverStatus rds = resDeliverStatusMapper.selectByPrimaryKey(id);
+            if(rds.getViewed()==null||rds.getViewed()!=1||rds.getStatus()==null||rds.getStatus()==0){
+                int rowView = resDeliverStatusMapper.viewedByResumeId(resumeid);  //更改状态为被查看
                 if(rowView>0){
                     //更改成功后，发一条消息到这个用户那里
                     UserMsg userMsg = new UserMsg();
@@ -230,9 +229,46 @@ public class IResumeServiceImpl implements IResumeService {
                     userMsgMapper.insert(userMsg);
                 }
             }
-            return ServerResponse.createBySuccess(resume);
+            ResumeVO resumeVO = getResumeVO(resume);
+            return ServerResponse.createBySuccess(resumeVO);
         }
         return ServerResponse.createByErrorMessage("没有权限");
+    }
+
+    private ResumeVO getResumeVO(Resume r) {
+        ResumeVO vo = new ResumeVO();
+        vo.setOpenid(r.getOpenid());
+        vo.setMajorclass(r.getMajorclass());
+        vo.setResumename(r.getResumename());
+        vo.setAvatarurl(r.getAvatarurl());
+        vo.setAwards(r.getAwards());
+        vo.setCampusexp(r.getCampusexp());
+        vo.setCertificate(r.getCertificate());
+        vo.setCity(r.getCity());
+        vo.setJobapplied(r.getJobapplied());
+        vo.setCityapplied(r.getCityapplied());
+        vo.setCompanyname(r.getCompanyname());
+        vo.setDurationapplied(r.getDurationapplied());
+        vo.setEducation(r.getEducation());
+        vo.setEntrytime(r.getEntrytime());
+        vo.setId(r.getId());
+        vo.setFrequencyapplied(r.getFrequencyapplied());
+        vo.setJobdesc(r.getJobdesc());
+        vo.setWageapplied(r.getWageapplied());
+        vo.setUpdatetime(r.getUpdatetime());
+        vo.setSkills(r.getSkills());
+        vo.setSchoolname(r.getSchoolname());
+        vo.setSelfevaluation(r.getSelfevaluation());
+        vo.setProvince(r.getProvince());
+        vo.setJobstarttime(r.getJobstarttime());
+        vo.setJobendtime(r.getJobendtime());
+        vo.setMajor(r.getMajor());
+        vo.setGraduationtime(r.getGraduationtime());
+        vo.setJobname(r.getJobname());
+        vo.setGraduationtime(r.getGraduationtime());
+        UserBaseInfo userBaseInfo = userBaseInfoMapper.selectByPrimaryKey(r.getOpenid());
+        if(userBaseInfo!=null)vo.setUserBaseInfo(userBaseInfo);
+        return vo;
     }
 
 

@@ -41,7 +41,20 @@ public class AdminController {
         }
         return response;
     }
-
+    /**
+     * 判断是否登录
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "islogin.do",method = RequestMethod.POST)
+    public ServerResponse isLogin(HttpSession session){
+        Admin admin = (Admin)session.getAttribute(Const.CURRENT_USER);
+        Integer role = (Integer)session.getAttribute("Role");
+        if(admin == null||role!=1){
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
+        }
+        return ServerResponse.createBySuccess();
+    }
     /**
      * 获取所有公司列表
      * @return

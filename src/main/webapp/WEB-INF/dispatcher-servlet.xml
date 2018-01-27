@@ -7,9 +7,25 @@
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <context:component-scan base-package="com.mcl.controller" annotation-config="true"/>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+          p:viewClass="org.springframework.web.servlet.view.JstlView"
+          p:prefix="/WEB-INF/web/"
+          p:suffix=".jsp"></bean>
 
     <context:component-scan base-package="com.mcl" annotation-config="true"/>
-    <mvc:resources mapping="company/assets/**" location="assets/"/>
+    <mvc:resources mapping="assets/**" location="/assets/"/>
+
+    <mvc:interceptors>
+        <!-- 多个拦截器，顺序执行 -->
+        <mvc:interceptor>
+            <!-- /** 表示所有的url，包括子url路径 -->
+            <mvc:mapping path="/comp/*"/>
+            <bean class="com.mcl.controller.interceptor.LoginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
     <mvc:annotation-driven>
         <mvc:message-converters>
 

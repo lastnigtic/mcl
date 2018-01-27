@@ -38,6 +38,8 @@ public class IAccountServiceImpl implements IAccountService {
     @Autowired
     private ResDeliverStatusMapper resDeliverStatusMapper;
 
+
+
     /**
      * 商家登录
      * @param uname
@@ -46,6 +48,9 @@ public class IAccountServiceImpl implements IAccountService {
      */
     @Override
     public ServerResponse<Account> login(String uname, String upass) {
+        if(StringUtils.isBlank(uname)||StringUtils.isBlank(upass)){
+            return ServerResponse.createByErrorMessage("参数为空");
+        }
         int resultCount = accountMapper.checkUname(uname);
         if(resultCount == 0 ){
             return ServerResponse.createByErrorMessage("用户不存在");
