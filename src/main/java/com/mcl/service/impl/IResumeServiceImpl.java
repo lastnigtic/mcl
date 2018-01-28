@@ -157,6 +157,7 @@ public class IResumeServiceImpl implements IResumeService {
      */
     private ResumeVO getResumeVOlist(ResDeliverStatus rds){
         Resume r = resumeMapper.selectByPrimaryKey(rds.getReid());
+        if(r==null)return null ;
         JobOffers jobOffers = null ;
         ResumeVO vo = new ResumeVO() ;
         if(rds!=null){

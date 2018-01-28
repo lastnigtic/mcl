@@ -216,6 +216,10 @@ public class IUserServiceImpl implements IUserService {
                         //已收藏
                         return  ServerResponse.createBySuccess("已收藏");
                     }else{
+                        JobOffers jobOffers = jobOffersMapper.selectByPrimaryKey(joid);
+                        if(jobOffers.getChecked()==0){
+                            return ServerResponse.createByErrorMessage("无法收藏");
+                        }
                         UserCollection uc = new UserCollection();
                         uc.setJoid(joid);
                         uc.setOpenid(openid);
