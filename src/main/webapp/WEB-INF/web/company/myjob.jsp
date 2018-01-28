@@ -74,7 +74,7 @@
 															</c:otherwise>
 														</c:choose>
 													</td>
-													<td>${job.updatetime}</td>
+													<td class="J-Date">${job.updatetime}</td>
 													<td><a href="/comp/jobinfo.html?id=${job.id}">查看</a> &nbsp; <a style="cursor: pointer" data-id="${job.id}" class="deljob">删除</a></td>
 												</tr>
 											</c:forEach>
@@ -115,6 +115,7 @@
 	<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	<script src="/assets/scripts/klorofil-common.js"></script>
 	<script src="/assets/js/public.js"></script>
+	<script src="/assets/js/tool.js"></script>
 	<script>
 		$(function () {
 			$(".deljob").click(function () {

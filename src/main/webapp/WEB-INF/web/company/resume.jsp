@@ -139,7 +139,7 @@
                                                 <li>学历<span>${resume.education}</span></li>
                                                 <li>学校名称<span>${resume.schoolname}</span></li>
                                                 <li>专业类别<span>${resume.major}</span></li>
-                                                <li>毕业时间<span>${resume.graduationtime}</span></li>
+                                                <li>毕业时间<span class="J-Date">${resume.graduationtime}</span></li>
                                                 <li>社团经历<p>${resume.campusexp}</p></li>
                                             </ul>
                                         </div>
