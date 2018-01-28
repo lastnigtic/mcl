@@ -36,7 +36,7 @@
 								<%--<div class="logo text-center"><img src="/assets/img/life__.png" alt="Klorofil Logo"></div>--%>
 								<p class="lead">欢迎注册大学生活 —— 企业端</p>
 							</div>
-							<form class="form-auth-small" action="/login.do" method="post" id="login-form">
+							<form class="form-auth-small" action="/register.do" method="post" id="login-form">
 								<div class="form-group">
 									<label for="signin-uanme" class="control-label sr-only">账号</label>
 									<input name="uname"  class="form-control" id="signin-uanme" value="" placeholder="账号">
@@ -77,11 +77,18 @@
         $("#button-login").click(function(){
             var name = $("#signin-uanme").val();
             var pass = $("#signin-password").val();
+            var pass_again = $("#signin-password-again").val();
             if(name==null||pass==null||name==''||pass==''){
                 alert("未输入账号密码");
                 return ;
             }
-            $("form").submit();
+            if(pass!=pass_again){
+                alert('两次输入的密码不相同');
+			}
+            $.ajax({
+				
+			})
+
         });
         
     })

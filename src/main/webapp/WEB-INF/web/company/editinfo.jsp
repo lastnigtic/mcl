@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <!doctype html>
 <html lang="en">
@@ -48,7 +49,7 @@
 									<input type="text" class="form-control" name="address" id="address" value="${company.address}" placeholder="请输入公司地址...">
 									<br>
 									<label>成立时间</label>
-									<input type="date" class="form-control" id="setuptime" name="setuptime" value="${company.setuptime}" />
+									<input type="text" class="form-control" id="setuptime" name="setuptime" value="${company.setuptime}" />
 									<br>
 									<label>注册资本</label>
 									<input  class="form-control" name="registeredcapital" id="registeredcapital" type="text" value="${company.registeredcapital}">

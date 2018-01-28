@@ -167,8 +167,15 @@ public class CompController {
      * @return
      */
     @RequestMapping(value = "verified.html")
-    public String verified(){
-        return "/company/verified";
+    public String verified(HttpSession session,Model model) {
+        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
+        ServerResponse response = iCompanyService.getCompanyDetail(account.getCompanyid());
+        if(response.isSuccess()){
+            Company company = (Company) response.getData();
+            model.addAttribute("company",company);
+            return "/company/verified";
+        }
+        return "/company/index";
     }
 
     /**
@@ -234,16 +241,7 @@ public class CompController {
     }
 
 
-    /**
-     * 商家注册接口
-     * @param account
-     * @return
-     */
-    @RequestMapping(value = "register.do",method = RequestMethod.POST)
-    @ResponseBody
-    public ServerResponse<String> register(Account account){
-        return iAccountService.register(account);
-    }
+
 
     /**
      * 创建或者更新公司信息
@@ -431,6 +429,7 @@ public class CompController {
         return iResumeService.getResumeBox(pageNum,pageSize,resume,account);
     }
 
+
     /**
      * 提交实名认证资料
      * @param file
@@ -438,7 +437,55 @@ public class CompController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "verified",method = RequestMethod.POST)
+    @RequestMapping(value = "compverified.do",method = RequestMethod.POST)
+    public String compverified(@RequestParam(value = "uploadfile",required = false) MultipartFile file,HttpSession session, HttpServletRequest request,Model model){
+        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
+
+        Company company = iAccountService.getCompanyByAccount(account.getId());
+
+        if(company==null){
+            model.addAttribute("msg","未找到贵公司的信息");
+            return "/comp/verified";
+        }
+
+        //存放路径
+        String uploadpath = request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("ftp.uploadimg.rootpath"))+"/"+ DateTimeUtil.dateToStr(new Date(),"yyyyMMdd");
+        //文件原始名
+        String fileName = file.getOriginalFilename();
+        //扩展名
+        String fileExtensionName = fileName.substring(fileName.lastIndexOf(".")+1);
+        //上传后的文件名
+        String uploadFileName = UUID.randomUUID().toString()+"."+fileExtensionName;
+        //上传临时路径是否存在，不存在则要创建
+        File fileDir = new File(uploadpath);
+        if(!fileDir.exists()){
+            fileDir.setWritable(true);
+            fileDir.mkdirs();
+        }
+        File targetFile = new File(uploadpath,uploadFileName);
+        try {
+            file.transferTo(targetFile);
+        } catch (IOException e) {
+            return null;
+        }
+        //返回一个路径
+        String backpath = DateTimeUtil.dateToStr(new Date(),"yyyyMMdd")+"/"+targetFile.getName();
+        //保存或更新到数据库
+        company.setCompanylicense(backpath);
+        iCompanyService.updateCompanyLicense(company.getId(),backpath);
+        //然后返回这个路径
+        model.addAttribute("path",backpath);
+        return "/company/verified";
+    }
+
+    /**
+     * 提交实名认证资料
+     * @param file
+     * @param session
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "verified.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse verified(@RequestParam(value = "uploadfile",required = false) MultipartFile file,HttpSession session, HttpServletRequest request){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);

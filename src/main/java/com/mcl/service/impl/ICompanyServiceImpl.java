@@ -42,4 +42,9 @@ public class ICompanyServiceImpl implements ICompanyService {
     public void updateCompany(Company company) {
         companyMapper.updateByPrimaryKeySelective(company);
     }
+
+    @Override
+    public void updateCompanyLicense(String id, String backpath) {
+        companyMapper.updateCompanyLicense(id,backpath);
+    }
 }

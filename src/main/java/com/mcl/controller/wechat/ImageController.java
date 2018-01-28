@@ -75,6 +75,62 @@ public class ImageController {
      * @param request
      * @param response
      */
+    @RequestMapping(value = "getlicenseimg.do",method = RequestMethod.GET)
+    @ResponseBody
+    public void downloadLicenseImg(String imgpath, HttpServletRequest request, HttpServletResponse response) {
+        if(!StringUtils.isBlank(imgpath)){
+            //查看是否已经有这个图片了，有就直接下载
+            File f = new File(request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("ftp.uploadimg.rootpath"))+"/"+imgpath);
+            if(f.exists()){
+                OutputStream outputStream = null ;
+                FileInputStream fileInputStream = null ;
+                try {
+                    // 获取输出流
+                    outputStream = response.getOutputStream();
+
+                    fileInputStream = new FileInputStream(f);
+
+                    // 读数据
+                    byte[] data = new byte[fileInputStream.available()];
+
+                    fileInputStream.read(data);
+
+                    fileInputStream.close();
+
+                    // 回写
+                    response.setContentType("image/jpeg;charset=GB2312");
+
+                    outputStream.write(data);
+
+                    outputStream.flush();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }finally {
+                    if(outputStream!=null){
+                        try {
+                            outputStream.close();
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    if (fileInputStream!=null){
+                        try {
+                            fileInputStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 下载图片
+     * @param imgpath
+     * @param request
+     * @param response
+     */
     @RequestMapping(value = "getimg.do",method = RequestMethod.GET)
     @ResponseBody
     public void downloadImg(String imgpath, HttpServletRequest request, HttpServletResponse response) {

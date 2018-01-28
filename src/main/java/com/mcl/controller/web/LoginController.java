@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
@@ -69,6 +71,18 @@ public class LoginController {
     @RequestMapping(value = "register.html")
     public String register(){
         return "/register";
+
+
     }
 
+    /**
+     * 商家注册接口
+     * @param account
+     * @return
+     */
+    @RequestMapping(value = "register.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<String> register(Account account){
+        return iAccountService.register(account);
+    }
 }

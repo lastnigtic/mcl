@@ -91,7 +91,7 @@
                             <div class="profile-header">
                                 <div class="overlay"></div>
                                 <div class="profile-main">
-                                    <img src="${resume.userBaseInfo.avatarurl}" class="img-circle" alt="Avatar">
+                                    <img src="/image/getimg.do?imgpath=${resume.userBaseInfo.avatarurl}" class="img-circle" alt="Avatar">
                                     <h3 class="name">${resume.userBaseInfo.realname}</h3>
                                 </div>
                             </div>
@@ -122,7 +122,7 @@
                                 <div class="media col-md-10 col-md-offset-1">
                                     <h3 class="media-name">${resume.resumename}</h3>
                                     <div class="media-left">
-                                        <img class="media-object" src="${resume.avatarurl}" alt="...">
+                                        <img class="media-object" src="/image/getimg.do?imgpath=${resume.avatarurl}" alt="...">
                                     </div>
                                     <div class="media-body">
                                         <div class="media-item">

@@ -45,13 +45,12 @@ public class IOffersServiceImpl implements IOffersService {
         PageHelper.startPage(pageNum,pageSize);
         //看看keywords有没有
         PageHelper.orderBy("updatetime desc");
-
+        jobOffers.setChecked(1);
         if(StringUtils.isNotBlank(keywords)){
             //有keywords
             if(jobOffers==null) {
                 jobOffers = new JobOffers();
             }
-            jobOffers.setChecked(1);
             String k = new StringBuilder().append("%").append(keywords).append("%").toString();
             jobOffers.setJobname(k);
         }

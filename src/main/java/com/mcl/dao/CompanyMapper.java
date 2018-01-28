@@ -23,4 +23,7 @@ public interface CompanyMapper {
     Integer count();
 
     int updateCredit(@Param("id") String id,@Param("credit") Double avgCredit);
+
+    void updateCompanyLicense(@Param("id") String id, @Param("backpath") String backpath);
+
 }

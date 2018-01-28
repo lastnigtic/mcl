@@ -57,6 +57,9 @@
       </if>
     </where>
   </select>
+  <update id="updateCompanyLicense" >
+    UPDATE  company set companylicense=#{backpath} WHERE id=#{id}
+  </update>
   <update id="updateCredit" parameterType="java.lang.String">
     UPDATE company set credit=#{credit}
     WHERE id = #{id}

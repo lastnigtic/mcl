@@ -13,4 +13,5 @@ public interface ICompanyService {
     void updateCompany(Company company);
 
 
+    void updateCompanyLicense(String id, String backpath);
 }

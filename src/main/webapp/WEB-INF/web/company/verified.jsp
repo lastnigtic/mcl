@@ -1,9 +1,12 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
+
 <!doctype html>
 <html lang="en">
 <head>
 	<title>公司实名认证</title>
 	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<!-- VENDOR CSS -->
@@ -37,15 +40,21 @@
 						<div class="col-md-offset-3 col-md-6">
 							<!-- INPUTS -->
 							<div class="panel">
+								<form enctype="multipart/form-data" method="post" action="/comp/compverified.do">
 								<div class="panel-body">
 									<h3 class="page-title">上传公司认证资料</h3>
 									<br>
 									<div style="margin-bottom:20px">
-										<img src="/assets/img/life__.png" class="img-thumbnail">
+										<img src="/image/getlicenseimg.do?imgpath=${empty path?company.companylicense:path}" class="img-thumbnail" alt="认证资料图片">
 									</div>
 									<input type="file" name="uploadfile" multiple="" value="上传图片"  />
-									<button type="button" class="btn btn-primary" style="float: right">提交</button>
+									<button id="button-upload" type="submit" class="btn btn-primary" style="float: right">提交</button>
+									<c:if test="${!empty msg}">
+										<p style="color: red">错误：${msg}</p>
+									</c:if>
+									<p></p>
 								</div>
+								</form>
 							</div>
 							<!-- END INPUTS -->
 						</div>
@@ -69,6 +78,27 @@
 	<script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	<script src="/assets/scripts/klorofil-common.js"></script>
+	<script>
+		$(function () {
+//			$("#button-upload").click(function () {
+//				$.ajax({
+//					url:"/comp/verified.do",
+//					type:"POST",
+//                    contentType : "multipart/form-data",
+//                    data:$("form").serialize(),
+//					success:function (res) {
+//						if(res.status==0){
+//						    alert('上传成功');
+//						}else {
+//						    alert(res.msg);
+//						}
+//                        $(window).attr("location","/comp/verified");
+//                    }
+//
+//				})
+//            })verified
+        })
+	</script>
 </body>
 
 </html>
