@@ -12,7 +12,6 @@ import com.mcl.service.*;
 import com.mcl.util.DateTimeUtil;
 import com.mcl.util.PropertiesUtil;
 import com.mcl.vo.ResumeVO;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
