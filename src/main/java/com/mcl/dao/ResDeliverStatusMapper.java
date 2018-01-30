@@ -28,5 +28,13 @@ public interface ResDeliverStatusMapper {
 
     List<ResDeliverStatus> getResumeStatusBox(@Param("companyid") String companyid);
 
+    List<Integer> getResumeIdListByJobId(@Param("id") Integer id);
+
+    List<ResDeliverStatus> getResumeStatusListByJobId(@Param("id") Integer id);
+
     ResDeliverStatus isUserHaveAuthorityScoreCompany(@Param("openid") String openid, @Param("companyid") String companyid);
+
+    ResDeliverStatus getStatusByJobIdAndReId(@Param("reid") Integer reid, @Param("joid") Integer joid);
+
+    ResDeliverStatus getStatusById(@Param("id") Integer id);
 }

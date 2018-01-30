@@ -22,6 +22,13 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
     <link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicon.png">
     <style type="text/css">
+        .ctrl-box{
+            margin-bottom: 28px;
+        }
+        .title{
+            font-size: 20px;
+            vertical-align: middle;
+        }
         .resume {
             display: inline-block;
             margin: 20px;
@@ -71,6 +78,34 @@
             border-bottom: 1px solid #f1f1f1;
         }
     </style>
+    <script>
+        function getParams(){
+            var params = window.location.href.split('?')[1].split('&');
+            var id, status;
+            for(var i = 0,len = params.length; i < len; i++){
+                var val = params[i].match(/\d+/)[0];
+                if(params[i].indexOf('resumeid') >= 0){
+                    id = val;
+                }else if(params[i].indexOf('status') >= 0) {
+                    status = val;
+                }
+            }
+            paramsSaver(id, status)
+        }
+        function paramsSaver(id, status){
+            var _id = id,
+                _status = status;
+            paramsSaver = function(str){
+                if(str === 'id'){
+                    return _id
+                }
+                if(str === 'status'){
+                    return _status
+                }
+            }
+        }
+        getParams();
+    </script>
 </head>
 
 <body>
@@ -83,6 +118,13 @@
         <!-- MAIN CONTENT -->
         <div class="main-content">
             <div class="container-fluid">
+                <%--操作--%>
+                <div class="ctrl-box">
+                    <span class="title">简历状态: </span>
+                    <select class="form-control" id="ctrl" style="display: inline-block;height: auto;width: auto;margin: 0 16px;padding: 2px 16px;vertical-align: middle">
+                    </select>
+                    <button id="changeStatus" class="btn btn-primary" style="height: auto; padding: 2px 16px;">确认</button>
+                </div>
                 <div class="panel panel-profile">
                     <div class="clearfix">
                         <!-- LEFT COLUMN -->
@@ -102,7 +144,7 @@
                                     <h4 class="heading">基本信息</h4>
                                     <ul class="list-unstyled list-justify">
                                         <li>性别 <span>${resume.userBaseInfo.gender==1?'男':'女'}</span></li>
-                                        <li>生日 <span>${resume.userBaseInfo.birthday}</span></li>
+                                        <li>生日 <span class="J-Date">${resume.userBaseInfo.birthday}</span></li>
                                         <li>手机 <span>${resume.userBaseInfo.phone}</span></li>
                                         <li>邮箱 <span>${resume.userBaseInfo.email}</span></li>
                                         <li>所在城市 <span>${resume.userBaseInfo.city}</span></li>
@@ -148,7 +190,7 @@
                                             <ul class="list-unstyled list-justify">
                                                 <li>公司名称<span>${resume.companyname}</span></li>
                                                 <li>担任职位<span>${resume.jobname}</span></li>
-                                                <li>入职时间<span>${resume.entrytime}</span></li>
+                                                <li>入职时间<span class="J-Date">${resume.entrytime}</span></li>
                                                 <li>经历描述<span>${resume.jobdesc}</span></li>
                                             </ul>
                                         </div>
@@ -185,6 +227,40 @@
 <script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 <script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <script src="/assets/scripts/klorofil-common.js"></script>
+<script src="/assets/js/tool.js"></script>
+<script>
+    $(function(){
+//        需要id和status
+        var staBox = $('#status');
+        var ctrlBox = $('#ctrl');
+//        传入status
+        function initCtrl(n){
+            var statArr = ['被查看','邀约面试','面试通过','不合适'];
+            var i = n - 1,
+                len = statArr.length;
+            statArr[i] += '(当前)';
+            for(; i < len; i++){
+                ctrlBox.append('<option value='+ (Number(i)+1) +'>'+ statArr[i] +'</option>')
+            }
+        }
+        $('#changeStatus').on('click', function(){
+            var status = ctrlBox.find("option:selected").val();
+            doChangeStatus(id, status)
+        })
+        function doChangeStatus(id, status){
+            $.post('/comp/changeresumestatus.do',{
+                id: id,
+                status: status
+            }, function(res){
+                if(res.data.status === 0){
+                    window.alert('操作成功')
+                }else{
+                    window.alert('操作失败，请重试')
+                }
+            })
+        }
+    })
+</script>
 </body>
 
 </html>

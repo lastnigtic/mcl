@@ -12,7 +12,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -231,12 +233,28 @@ public class IResumeServiceImpl implements IResumeService {
                 }
             }
             ResumeVO resumeVO = getResumeVO(resume);
+            resumeVO = getResumeStatusById(resumeVO, id); // 获取简历状态
             return ServerResponse.createBySuccess(resumeVO);
         }
         return ServerResponse.createByErrorMessage("没有权限");
     }
+    /**
+     *
+     *根据res简历的id去查状态
+     * @param vo
+     * @param id
+     * @return
+     */
+    public ResumeVO getResumeStatusById(ResumeVO vo,Integer id){
+        if(id==null||vo==null|vo.getId()==null)return vo;
+        ResDeliverStatus status = resDeliverStatusMapper.getStatusById(id);
+        if(status!=null){
+            vo.setResDeliverStatus(status);
+        }
+        return vo ;
+    }
 
-    private ResumeVO getResumeVO(Resume r) {
+    public ResumeVO getResumeVO(Resume r) {
         ResumeVO vo = new ResumeVO();
         vo.setOpenid(r.getOpenid());
         vo.setMajorclass(r.getMajorclass());
@@ -328,6 +346,54 @@ public class IResumeServiceImpl implements IResumeService {
             return ServerResponse.createByErrorMessage("修改失败");
         }
         return ServerResponse.createByErrorMessage("没有权限");
+    }
+    /**
+     * 根据id查简历
+     * @param pageNum
+     * @param pageSize
+     * @param id
+     * @param companyid
+     * @return
+     */
+    @Override
+    public ServerResponse<PageInfo> getResumeByJobId(int pageNum, int pageSize, Integer id, @RequestParam(required = false) String companyid) {
+
+        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.orderBy("updatetime desc");
+        List<Integer> list_reids = resDeliverStatusMapper.getResumeIdListByJobId(id);
+        //List<ResDeliverStatus> ls_status = resDeliverStatusMapper.getResumeStatusListByJobId(id);
+        List<Resume> ls = null ;
+        List<ResumeVO> vols = null ;
+        if(list_reids!=null){
+            ls = resumeMapper.getResumeByReIdList(list_reids);
+            if(ls!=null){
+                vols = new ArrayList<>(ls.size());
+                for(Resume resume :ls){
+                    ResumeVO resumeVO = getResumeVO(resume);
+                    resumeVO = getResumeStatusByJobIdAndReId(resumeVO,id);
+                    vols.add(resumeVO);
+                }
+                PageInfo pageResult = new PageInfo(vols);
+                return ServerResponse.createBySuccess(pageResult);
+            }
+        }
+        return ServerResponse.createByError();
+    }
+
+    /**
+     *
+     * 加一个简历投递状态的信息
+     * @param vo
+     * @param joid
+     * @return
+     */
+    public ResumeVO getResumeStatusByJobIdAndReId(ResumeVO vo,Integer joid){
+        if(joid==null||vo==null|vo.getId()==null)return vo;
+        ResDeliverStatus rds = resDeliverStatusMapper.getStatusByJobIdAndReId(vo.getId(),joid);
+        if(rds!=null){
+            vo.setResDeliverStatus(rds);
+        }
+        return vo ;
     }
 
 }

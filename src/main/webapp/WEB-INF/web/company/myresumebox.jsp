@@ -85,7 +85,7 @@
                                                         </c:otherwise>
                                                     </c:choose>
 
-                                                <td><a href="/comp/resume.html?resumeid=${item.id}&id=${item.resDeliverStatus.id}">查看</a></td>
+                                                <td><a href="/comp/resume.html?resumeid=${item.id}&id=${item.resDeliverStatus.id}&status=${item.resDeliverStatus.status}">查看</a></td>
                                             </tr>
                                         </c:forEach>
                                         </c:when>

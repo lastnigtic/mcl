@@ -3,7 +3,9 @@
 // 修改日期
 $('.J-Date').each(function(idx, item){
 	item = $(item);
-	item.text(filterDate(item.text()))
+	if(item.text()){
+        item.text(filterDate(item.text()));
+	}
 })
 function filterDate(str){
 	var date = new Date(str),

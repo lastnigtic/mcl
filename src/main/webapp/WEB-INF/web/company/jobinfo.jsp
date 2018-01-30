@@ -71,9 +71,9 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="media-right">
+                            <div class="media-right" style="text-align: center">
                                 <a href="#">
-                                    <img class="media-object" src="/assets/img/user-medium.png" alt="...">
+                                    <img class="media-object" src="/assets/img/user-medium.png" alt="..." style="display: inline-block">
                                     <a href="/comp/updatejob.html?id=${job.id}"><button type="button" class="btn btn-primary" style="padding: 6px 16px;margin-top: 30px">修改要求</button></a>
                                 </a>
                             </div>
