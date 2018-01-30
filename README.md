@@ -155,20 +155,30 @@
 
 ##### 6. 企业/公司表-company
 
-| 变量名          | 类型       | 长度   | 备注                 |
-| ------------ | -------- | ---- | ------------------ |
-| id           | int      | 11   | -                  |
-| city         | varchar  | 10   | 城市                 |
-| imgurl       | varchar  | 200  | 公司图片地址             |
-| companysize  | varchar  | 10   | 公司规模               |
-| industrytype | varchar  | 20   | 行业类型               |
-| companytag   | varchar  | 40   | 公司标签               |
-| introduction | text     | -    | 介绍                 |
-| address      | varchar  | 30   | 地址                 |
-| updatetime   | datetime | -    | 更新时间               |
-| checked(++)  | int      | 1    | 审核状态，1通过 2不通过 0待审核 |
-| credit(++)   | double   | 4    | 信用平均分              |
-|              |          |      |                    |
+| 变量名            | 类型       | 长度   | 备注                 |
+| -------------- | -------- | ---- | ------------------ |
+| id             | int      | 11   | -                  |
+| city           | varchar  | 10   | 城市                 |
+| imgurl         | varchar  | 200  | 公司图片地址             |
+| companysize    | varchar  | 10   | 公司规模               |
+| industrytype   | varchar  | 20   | 行业类型               |
+| companytag     | varchar  | 40   | 公司标签               |
+| introduction   | text     | -    | 介绍                 |
+| address        | varchar  | 30   | 地址                 |
+| updatetime     | datetime | -    | 更新时间               |
+| checked(++)    | int      | 1    | 审核状态，1通过 2不通过 0待审核 |
+| credit(++)     | double   | 4    | 信用平均分              |
+| companyname    | varchar  | 20   | 公司名                |
+|                |          |      |                    |
+| companylicense | varchar  | 255  | 公司执照图片，多张          |
+|                |          |      |                    |
+|                |          |      |                    |
+|                |          |      |                    |
+|                |          |      |                    |
+|                |          |      |                    |
+|                |          |      |                    |
+|                |          |      |                    |
+|                |          |      |                    |
 
 
 

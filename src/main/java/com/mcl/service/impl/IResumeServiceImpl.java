@@ -364,7 +364,7 @@ public class IResumeServiceImpl implements IResumeService {
         //List<ResDeliverStatus> ls_status = resDeliverStatusMapper.getResumeStatusListByJobId(id);
         List<Resume> ls = null ;
         List<ResumeVO> vols = null ;
-        if(list_reids!=null){
+        if(list_reids!=null&&list_reids.size()!=0){
             ls = resumeMapper.getResumeByReIdList(list_reids);
             if(ls!=null){
                 PageInfo pageInfo = new PageInfo(list_reids);
