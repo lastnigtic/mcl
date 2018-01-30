@@ -82,7 +82,7 @@
     where Id = #{id,jdbcType=INTEGER}
   </update>
   <select id="checkUname" parameterType="java.lang.String" resultType="java.lang.Integer">
-    SELECT COUNT(1) FROM account WHERE uname = #{uname,jdbcType=VARCHAR}
+    SELECT COUNT(1) FROM account WHERE uname = #{uname}
   </select>
   <select id="selectLogin" resultType="com.mcl.pojo.Account">
     SELECT <include refid="Base_Column_List"/>

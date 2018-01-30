@@ -49,7 +49,7 @@
 									<input type="text" class="form-control" name="address" id="address" value="${company.address}" placeholder="请输入公司地址...">
 									<br>
 									<label>成立时间</label>
-									<input type="text" class="form-control" id="setuptime" name="setuptime" value="${company.setuptime}" />
+									<input type="text" class="form-control J-Date" id="setuptime" name="setuptime" value="${company.setuptime}" />
 									<br>
 									<label>注册资本</label>
 									<input  class="form-control" name="registeredcapital" id="registeredcapital" type="text" value="${company.registeredcapital}">
@@ -117,6 +117,7 @@
 	<script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	<script src="/assets/scripts/klorofil-common.js"></script>
+	<script src="/assets/js/tool.js"></script>
 	<script>
         $(function () {
             $("#button-update").click(function () {

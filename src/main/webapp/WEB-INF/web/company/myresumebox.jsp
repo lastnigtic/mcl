@@ -65,8 +65,8 @@
                                                 <td>${item.schoolname}</td>
                                                 <td>${item.education}</td>
                                                 <td>${item.jobname}</td>
-                                                <td>${item.graduationtime}</td>
-                                                <td>${item.updatetime}</td>
+                                                <td class="J-Date">${item.graduationtime}</td>
+                                                <td class="J-Date">${item.updatetime}</td>
                                                     <c:choose>
                                                         <c:when test="${item.resDeliverStatus.status==1}">
                                                             <td><span class="label label-success">被查看</span></td>
@@ -85,7 +85,7 @@
                                                         </c:otherwise>
                                                     </c:choose>
 
-                                                <td><a href="/comp/resume.html?resumeid=${item.id}&id=${item.resDeliverStatus.id}">查看</a></td>
+                                                <td><a href="/comp/resume.html?resumeid=${item.id}&id=${item.resDeliverStatus.id}&status=${item.resDeliverStatus.status}">查看</a></td>
                                             </tr>
                                         </c:forEach>
                                         </c:when>
@@ -127,6 +127,7 @@
 <script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <script src="/assets/scripts/klorofil-common.js"></script>
 <script src="/assets/js/public.js"></script>
+<script src="/assets/js/tool.js"></script>
 <script>
     $(function () {
 

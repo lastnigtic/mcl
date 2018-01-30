@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -126,6 +127,25 @@ public class CompController {
         }
 
         return "/company/myjob";
+    }
+
+    /**
+     * 我的简历箱页面
+     * @return
+     */
+    @RequestMapping(value = "jobresume.html")
+    public String jobresume(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                   @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
+                                   Integer id, Model model, HttpSession session){
+        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
+        ServerResponse response = iResumeService.getResumeByJobId(pageNum, pageSize, id, account.getCompanyid());
+        if(response.isSuccess()){
+            PageInfo<ResumeVO> pageInfo = (PageInfo<ResumeVO>)response.getData();
+            model.addAttribute("pageInfo",pageInfo);
+            model.addAttribute("resumelist",pageInfo.getList());
+        }
+
+        return "/company/myresumebox" ;
     }
 
     /**

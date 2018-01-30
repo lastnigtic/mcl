@@ -336,4 +336,5 @@ public class ResumeVO {
     public void setJobOffers(JobOffers jobOffers) {
         this.jobOffers = jobOffers;
     }
+
 }

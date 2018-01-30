@@ -377,4 +377,15 @@
   <select id="checkResumeCanGet" resultType="java.lang.Integer">
     SELECT COUNT(1) FROM  resdeliverstatus left join joboffers on resdeliverstatus.joid = joboffers.id and  joboffers.companyid= #{companyid} and resdeliverstatus.reid = #{id}
   </select>
+  <select id="getResumeByReIdList" resultType="com.mcl.pojo.Resume"  parameterType="java.util.List">
+  select <include refid="Base_Column_List" /> from resume
+    <if test="idlist != null" >
+      where id in
+      <foreach collection="idlist" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+
+  </select>
+
 </mapper>

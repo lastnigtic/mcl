@@ -16,7 +16,7 @@ public interface AccountMapper {
 
     int updateByPrimaryKey(Account record);
 
-    int checkUname(String uname);
+    int checkUname(@Param("uname")String uname);
 
     Account selectLogin(@Param("uname") String uname,@Param("upass") String md5Password);
 

@@ -140,7 +140,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-
+  <select id="getResumeIdListByJobId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select reid from resdeliverstatus where joid = #{id}
+  </select>
+  <select id="getStatusByJobIdAndReId" resultType="com.mcl.pojo.ResDeliverStatus">
+    select <include refid="Base_Column_List"/> from resdeliverstatus where reid = #{reid} and joid = #{joid}
+  </select>
   <update id="updateByPrimaryKey" parameterType="com.mcl.pojo.ResDeliverStatus" >
     update resdeliverstatus
     set joid = #{joid,jdbcType=INTEGER},
@@ -151,4 +156,10 @@
       openid = #{openid,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="getResumeStatusListByJobId"  resultType="com.mcl.pojo.ResDeliverStatus">
+    select  <include refid="Base_Column_List"/> FROM  resdeliverstatus where joid= #{joid} and reid={reid}
+  </select>
+  <select id="getStatusById" resultType="com.mcl.pojo.ResDeliverStatus" parameterType="java.lang.Integer">
+    select status FROM resdeliverstatus where id= #{id}
+  </select>
 </mapper>

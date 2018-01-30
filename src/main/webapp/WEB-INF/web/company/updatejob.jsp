@@ -85,12 +85,14 @@
 										</select>
 										<br>
 										<label>岗位标签</label>
-										<c:forEach items="${jobtagproperty}" var="item">
-											<label class="fancy-checkbox">
-												<input type="checkbox" name="tag" value="${item}" />
-												<span>${item}</span>
-											</label>
-										</c:forEach>
+										<div class="J-tag" data-value="${jobtagproperty}">
+											<c:forEach items="${jobtagproperty}" var="item">
+												<label class="fancy-checkbox">
+													<input type="checkbox" name="tag" value="${item}" />
+													<span>${item}</span>
+												</label>
+											</c:forEach>
+										</div>
 										<br>
 										<label>岗位描述</label>
 										<textarea class="form-control" id="description" name="description"  rows="3">${job.description}</textarea>
@@ -125,6 +127,7 @@
 	<script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	<script src="/assets/scripts/klorofil-common.js"></script>
+	<script src="/assets/js/tool.js"></script>
 	<script>
         $(function () {
             $("#button-update").click(function () {

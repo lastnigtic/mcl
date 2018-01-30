@@ -54,7 +54,7 @@
                             <div class="media-body">
                                 <h2 class="media-heading">${job.jobname}</h2>
                                 <div class="media-head-info">
-                                    <p>${job.updatetime}</p>
+                                    <p class="J-Date">${job.updatetime}</p>
                                     <p>${job.wage}元/月 &nbsp;|&nbsp; ${job.city} &nbsp;|&nbsp; ${job.education} &nbsp;|&nbsp; ${job.workfrequency}天／周 &nbsp;|&nbsp; 实习${job.duration}个月</p>
                                     <p>职位诱惑：${job.temptation}</p>
                                 </div>
@@ -71,10 +71,10 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="media-right">
+                            <div class="media-right" style="text-align: center">
                                 <a href="#">
-                                    <img class="media-object" src="/assets/img/user-medium.png" alt="...">
-                                    <h3 class="text-center"><h3>
+                                    <img class="media-object" src="/assets/img/user-medium.png" alt="..." style="display: inline-block">
+                                    <a href="/comp/updatejob.html?id=${job.id}"><button type="button" class="btn btn-primary" style="padding: 6px 16px;margin-top: 30px">修改要求</button></a>
                                 </a>
                             </div>
                         </div>
@@ -98,6 +98,7 @@
 <script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 <script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <script src="/assets/scripts/klorofil-common.js"></script>
+<script src="/assets/js/tool.js"></script>
 </body>
 
 </html>
