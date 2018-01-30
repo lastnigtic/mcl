@@ -380,11 +380,12 @@
   <select id="getResumeByReIdList" resultType="com.mcl.pojo.Resume"  parameterType="java.util.List">
   select <include refid="Base_Column_List" /> from resume
     <if test="idlist != null" >
-       where id in
+      where id in
       <foreach collection="idlist" index="index" item="item" open="(" separator="," close=")">
         #{item}
       </foreach>
     </if>
+
   </select>
 
 </mapper>

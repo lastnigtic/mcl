@@ -359,7 +359,7 @@ public class IResumeServiceImpl implements IResumeService {
     public ServerResponse<PageInfo> getResumeByJobId(int pageNum, int pageSize, Integer id, @RequestParam(required = false) String companyid) {
 
         PageHelper.startPage(pageNum,pageSize);
-        PageHelper.orderBy("updatetime desc");
+        //PageHelper.orderBy("updatetime desc");
         List<Integer> list_reids = resDeliverStatusMapper.getResumeIdListByJobId(id);
         //List<ResDeliverStatus> ls_status = resDeliverStatusMapper.getResumeStatusListByJobId(id);
         List<Resume> ls = null ;
@@ -367,14 +367,16 @@ public class IResumeServiceImpl implements IResumeService {
         if(list_reids!=null){
             ls = resumeMapper.getResumeByReIdList(list_reids);
             if(ls!=null){
+                PageInfo pageInfo = new PageInfo(list_reids);
+
                 vols = new ArrayList<>(ls.size());
                 for(Resume resume :ls){
                     ResumeVO resumeVO = getResumeVO(resume);
                     resumeVO = getResumeStatusByJobIdAndReId(resumeVO,id);
                     vols.add(resumeVO);
                 }
-                PageInfo pageResult = new PageInfo(vols);
-                return ServerResponse.createBySuccess(pageResult);
+                pageInfo.setList(vols);
+                return ServerResponse.createBySuccess(pageInfo);
             }
         }
         return ServerResponse.createByError();
