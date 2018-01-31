@@ -3,10 +3,12 @@ package com.mcl.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.mcl.common.Const;
 import com.mcl.common.ServerResponse;
 import com.mcl.dao.*;
 import com.mcl.pojo.*;
 import com.mcl.service.IResumeService;
+import com.mcl.util.MsgTemplate;
 import com.mcl.vo.ResumeVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -294,52 +296,68 @@ public class IResumeServiceImpl implements IResumeService {
     /**
      * 对投递到自己岗位的简历进行邀约面试，通过面试，更改为不合适
      * @param id
-     * @param companyid
+     * @param joid
+     *@param companyid
      * @param status
-     * @param msg
-     * @return
+     * @param msg    @return
      */
     @Override
     @Transactional
-    public ServerResponse changeResumeStatus(Integer id, String companyid, Integer status, String msg) {
-        if(id==null||StringUtils.isBlank(companyid)){
-            return ServerResponse.createByErrorMessage("传入参数错误");
-        }
-        int row = resumeMapper.checkResumeCanGet(id,companyid);//看看有无权限获取该简历
+    public ServerResponse changeResumeStatus(Integer id, Integer joid, String companyid, Integer status, String msg) {
+        if(id==null||status==null)
+            return ServerResponse.createByErrorMessage("传入的参数为空");
+
+        Integer reid = resDeliverStatusMapper.selectReIdById(id);
+
+        if(reid==null)return ServerResponse.createByErrorMessage("找不到数据");
+
+        //TODO 待完善
+        int row = resDeliverStatusMapper.checkResumeCanGet(reid,joid,id);//看看有无权限获取该简历
+
         if(row>0){
             //有权限
             ResDeliverStatus rds = resDeliverStatusMapper.selectByResumeId(id);
+
             UserMsg userMsg = null ;
-            if(status==3&&StringUtils.isNotBlank(msg)){
-                //发送邀约面试消息
-                userMsg = new UserMsg();
-                userMsg.setMsg(msg);
-                userMsg.setType("企业消息");
-                userMsg.setOpenid(rds.getOpenid());
-                userMsg.setReadstatus(0);
-                userMsg.setMsgtitle("您有【"+companyMapper.selectByPrimaryKey(companyid).getCompanyname()+"】面试邀约的消息");
 
-            }else if(status==4){
-                //发送消息
-                userMsg = new UserMsg();
-                userMsg.setMsg("您的面试已通过");
-                userMsg.setType("企业消息");
-                userMsg.setOpenid(rds.getOpenid());
-                userMsg.setReadstatus(0);
+            Company company = companyMapper.selectByPrimaryKey(companyid);
 
-            }else if(status==5){
-                //发送消息
+            JobOffers jobOffers = jobOffersMapper.selectByPrimaryKey(joid);
+
+            if(status== Const.DeliveryStatus.InvitedToInterview){
                 userMsg = new UserMsg();
-                userMsg.setMsg("您的面试不通过");
-                userMsg.setType("企业消息");
+                userMsg.setMsg(StringUtils.isNotBlank(msg)?msg:"");
+                userMsg.setType(MsgTemplate.MsgType.JobDeliveryMsg);
                 userMsg.setOpenid(rds.getOpenid());
                 userMsg.setReadstatus(0);
-            }else {
-                return ServerResponse.createByErrorMessage("参数错误");
+                userMsg.setMsgtitle(MsgTemplate.interviewMsg(company,jobOffers));
+
+            }else if(status==Const.DeliveryStatus.PassInterview){
+                userMsg = new UserMsg();
+                userMsg.setMsg(MsgTemplate.passInterviewMsg(jobOffers));
+                userMsg.setType(MsgTemplate.MsgType.JobDeliveryMsg);
+                userMsg.setOpenid(rds.getOpenid());
+                userMsg.setReadstatus(0);
+            }else if(status==Const.DeliveryStatus.FailInterview){
+                userMsg = new UserMsg();
+                userMsg.setMsg(MsgTemplate.failInterviewMsg(jobOffers));
+                userMsg.setType(MsgTemplate.MsgType.JobDeliveryMsg);
+                userMsg.setOpenid(rds.getOpenid());
+                userMsg.setReadstatus(0);
+            }else if(status==Const.DeliveryStatus.AlreadyViewed){
+                if(rds.getStatus()==null||rds.getStatus()==1){
+                    userMsg = new UserMsg();
+                    userMsg.setOpenid(rds.getOpenid());
+                    userMsg.setReadstatus(0);
+                    userMsg.setMsg(MsgTemplate.alreadyViewedMsg(jobOffers));
+                    userMsg.setType(MsgTemplate.MsgType.JobDeliveryMsg);
+                    userMsgMapper.insert(userMsg);
+                }else{
+                    return ServerResponse.createByErrorMessage("无法修改status");
+                }
             }
             int rowInsert = userMsgMapper.insert(userMsg);
-            rds.setStatus(status);
-            int rowUpdate = resDeliverStatusMapper.updateByPrimaryKeySelective(rds);
+            int rowUpdate = resDeliverStatusMapper.updateStatusById(id,status);
             if(rowInsert>0&&rowUpdate>0){
                 return ServerResponse.createBySuccess("更新成功");
             }

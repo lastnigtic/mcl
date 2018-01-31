@@ -37,4 +37,10 @@ public interface ResDeliverStatusMapper {
     ResDeliverStatus getStatusByJobIdAndReId(@Param("reid") Integer reid, @Param("joid") Integer joid);
 
     ResDeliverStatus getStatusById(@Param("id") Integer id);
+
+    Integer selectReIdById(Integer id);
+
+    int checkResumeCanGet(@Param("reid")Integer reid, @Param("joid")Integer joid, @Param("id") Integer id);
+
+    int updateStatusById(@Param("reid")Integer id, @Param("status")Integer status);
 }

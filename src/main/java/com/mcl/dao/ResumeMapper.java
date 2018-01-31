@@ -28,4 +28,6 @@ public interface ResumeMapper {
     List<Resume> getResumeByReIdList(@Param("idlist") List idlist);
 
     int checkResumeCanGet(@Param("id") Integer id,@Param("companyid") String companyid);
+
+
 }
