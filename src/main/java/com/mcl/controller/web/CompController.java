@@ -433,18 +433,18 @@ public class CompController {
 
     /**
      * 对投递到自己岗位的简历进行邀约面试，通过面试，更改为不合适
-     * @param id
+     * @param id rds的id
+     * @param status 要更改的状态
+     * @param msg 邀约面试的信息
+     * @param joid 岗位id
      * @param session
      * @return
      */
     @RequestMapping(value = "changeresumestatus.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse changeResumeStatus(@RequestParam("id") Integer id,@RequestParam("status") Integer status ,@RequestParam(value = "msg",required = false) String msg,HttpSession session){
+    public ServerResponse changeResumeStatus(@RequestParam("id") Integer id,@RequestParam("joid")Integer joid,@RequestParam("status") Integer status ,@RequestParam(value = "msg",required = false) String msg,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
-        return iResumeService.changeResumeStatus(id,account.getCompanyid(),status,msg);
+        return iResumeService.changeResumeStatus(id,joid,account.getCompanyid(),status,msg);
     }
 
     /**

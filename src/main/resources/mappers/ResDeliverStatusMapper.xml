@@ -162,4 +162,13 @@
   <select id="getStatusById" resultType="com.mcl.pojo.ResDeliverStatus" parameterType="java.lang.Integer">
     select status FROM resdeliverstatus where id= #{id}
   </select>
+  <select id="selectReIdById" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    select reid from resdeliverstatus where id = #{id}
+  </select>
+  <select id="checkResumeCanGet" resultType="java.lang.Integer">
+    SELECT COUNT(1) FROM resdeliverstatus where id = #{id} and reid = #{reid} and joid = #{joid}
+  </select>
+  <update id="updateStatusById" >
+    UPDATE resdeliverstatus set status = #{status} WHERE id = #{id}
+  </update>
 </mapper>
