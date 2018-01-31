@@ -25,6 +25,14 @@
         .ctrl-box{
             margin-bottom: 28px;
         }
+        .ctrl-box .form-control{
+            display: inline-block;
+            height: auto;
+            width: auto;
+            padding: 2px 16px;
+            vertical-align: middle;
+            margin-left: 16px;
+        }
         .title{
             font-size: 20px;
             vertical-align: middle;
@@ -78,34 +86,6 @@
             border-bottom: 1px solid #f1f1f1;
         }
     </style>
-    <script>
-        function getParams(){
-            var params = window.location.href.split('?')[1].split('&');
-            var id, status;
-            for(var i = 0,len = params.length; i < len; i++){
-                var val = params[i].match(/\d+/)[0];
-                if(params[i].indexOf('resumeid') >= 0){
-                    id = val;
-                }else if(params[i].indexOf('status') >= 0) {
-                    status = val;
-                }
-            }
-            paramsSaver(id, status)
-        }
-        function paramsSaver(id, status){
-            var _id = id,
-                _status = status;
-            paramsSaver = function(str){
-                if(str === 'id'){
-                    return _id
-                }
-                if(str === 'status'){
-                    return _status
-                }
-            }
-        }
-        getParams();
-    </script>
 </head>
 
 <body>
@@ -120,10 +100,11 @@
             <div class="container-fluid">
                 <%--操作--%>
                 <div class="ctrl-box">
-                    <span class="title" data-id="${id}">简历状态: </span>
-                    <select class="form-control" id="ctrl" style="display: inline-block;height: auto;width: auto;margin: 0 16px;padding: 2px 16px;vertical-align: middle">
+                    <span class="title">简历状态: </span>
+                    <select class="form-control" id="statusList" data-id="${id}" data-status="${resume.resDeliverStatus.status}">
                     </select>
-                    <button id="changeStatus" class="btn btn-primary" style="height: auto; padding: 2px 16px;">确认</button>
+                    <input id="msg" class="form-control" placeholder="请输入邀约信息" style="display: none;">
+                    <button id="changeStatus" class="btn btn-primary form-control" style="height: auto; padding: 2px 16px;">确认</button>
                 </div>
                 <div class="panel panel-profile">
                     <div class="clearfix">
@@ -230,29 +211,64 @@
 <script src="/assets/js/tool.js"></script>
 <script>
     $(function(){
-//        需要id和status
-        var staBox = $('#status');
-        var ctrlBox = $('#ctrl');
-//        传入status
+        var staBox = $('#statusList');
+        var msgInp = $('#msg');
+        function params(){
+            var _status = staBox.data('status');
+            var _id = staBox.data('id');
+            params = function(str){
+                if(str === 'id'){
+                    return _id;
+                }if(str === 'status'){
+                    return _status
+                }
+            }
+        }
+        params();
+
+        staBox.on('change', function(e){
+            if(staBox.find("option:selected")[0].value == 3){
+                msgInp.css('display','inline-block');
+            }else{
+                msgInp.hide()
+            }
+        })
+//        初始化组件
         function initCtrl(n){
-            var statArr = ['被查看','邀约面试','面试通过','不合适'];
+            var statArr = ['已投递','被查看','邀约面试','面试通过','不合适'];
             var i = n - 1,
                 len = statArr.length;
             statArr[i] += '(当前)';
             for(; i < len; i++){
-                ctrlBox.append('<option value='+ (Number(i)+1) +'>'+ statArr[i] +'</option>')
+                staBox.append('<option value='+ (Number(i)+1) +'>'+ statArr[i] +'</option>')
             }
         }
+        initCtrl(params('status'));
+
+//      提交状态改变
         $('#changeStatus').on('click', function(){
-            var status = ctrlBox.find("option:selected").val();
-            doChangeStatus(id, status)
+            var status = staBox.find("option:selected")[0].value,
+                id = params('id'),
+                msg;
+            if(status == 3){
+                msg = msgInp.val();
+            }
+
+            doChangeStatus(id, status, msg)
         })
-        function doChangeStatus(id, status){
-            $.post('/comp/changeresumestatus.do',{
+        function doChangeStatus(id, status, msg){
+            var data={
                 id: id,
                 status: status
-            }, function(res){
-                if(res.data.status === 0){
+            }
+            if(status == 3){
+                if(!msg){
+                    return window.alert('请输入邀约信息')
+                }
+                data.msg = msg
+            }
+            $.post('/comp/changeresumestatus.do',data, function(res){
+                if(res.status === 0){
                     window.alert('操作成功')
                 }else{
                     window.alert('操作失败，请重试')
