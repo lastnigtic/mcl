@@ -326,6 +326,12 @@ public class IResumeServiceImpl implements IResumeService {
 
             String openid = rds.getOpenid();
 
+            Integer currentStatus = rds.getStatus() ;
+
+            if(status<=currentStatus){
+                return ServerResponse.createByErrorMessage("无法修改status");
+            }
+
             if(status == Const.DeliveryStatus.InvitedToInterview){
 
                 userMsg = new UserMsg(openid,StringUtils.isNotBlank(msg)?msg:"",MsgTemplate.MsgType.JobDeliveryMsg);

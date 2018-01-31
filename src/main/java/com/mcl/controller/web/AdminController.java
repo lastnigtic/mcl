@@ -6,17 +6,15 @@ import com.mcl.common.ServerResponse;
 import com.mcl.pojo.*;
 import com.mcl.service.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
 /**
  * Created by Administrator on 2018/1/20 0020.
  */
-@RestController
+@Controller
 @RequestMapping(value = "/admin/")
 public class AdminController {
 
@@ -24,42 +22,48 @@ public class AdminController {
     @Autowired
     private IAdminService iAdminService ;
 
+    @RequestMapping(value = "/index")
+    public String index(){
+        return "/admin/index";
+    }
 
-    /**
-     * 管理员登录
-     * @param id
-     * @param pass
-     * @param session
-     * @return
-     */
-    @RequestMapping(value = "login.do",method = RequestMethod.POST)
-    public ServerResponse login(String id, String pass, HttpSession session){
-        ServerResponse<Admin> response = iAdminService.login(id,pass);
-        if(response.isSuccess()){
-            session.setAttribute(Const.CURRENT_USER,response.getData());
-            session.setAttribute("Role",Const.Role.ROLE_ADMIN);
-        }
-        return response;
+    @RequestMapping(value = "/search")
+    public String search(){
+        return "/admin/search";
     }
-    /**
-     * 判断是否登录
-     * @param session
-     * @return
-     */
-    @RequestMapping(value = "islogin.do",method = RequestMethod.POST)
-    public ServerResponse isLogin(HttpSession session){
-        Admin admin = (Admin)session.getAttribute(Const.CURRENT_USER);
-        Integer role = (Integer)session.getAttribute("Role");
-        if(admin == null||role!=1){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
-        return ServerResponse.createBySuccess();
+
+    @RequestMapping(value = "/userdetail")
+    public String userdetail(){
+        return "/admin/userdetail";
     }
+
+    @RequestMapping(value = "/join")
+    public String join(){
+        return "/admin/join";
+    }
+
+    @RequestMapping(value = "/jobdetail")
+    public String jobdetail(){
+        return "/admin/jobdetail";
+    }
+
+    @RequestMapping(value = "/companydetail")
+    public String companydetail(){
+        return "/admin/companydetail";
+    }
+
+    @RequestMapping(value = "/charts")
+    public String charts(){
+        return "/admin/charts";
+    }
+
+
     /**
      * 获取所有公司列表
      * @return
      */
     @RequestMapping(value = "companylist.do",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse getCompanyList(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,Company company){
         Admin admin = (Admin)session.getAttribute(Const.CURRENT_USER);
@@ -80,6 +84,7 @@ public class AdminController {
      * @return
      */
     @RequestMapping(value = "userlist.do",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse getUserList(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                       @RequestParam(value = "pageSize",defaultValue = "10") int pageSize, UserBaseInfo userBaseInfo){
         Admin admin = (Admin)session.getAttribute(Const.CURRENT_USER);
@@ -99,6 +104,7 @@ public class AdminController {
      * @return
      */
     @RequestMapping(value = "joblist.do",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse getJobList(HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                       @RequestParam(value = "pageSize",defaultValue = "10") int pageSize, JobOffers jobOffers){
         Admin admin = (Admin)session.getAttribute(Const.CURRENT_USER);
@@ -117,6 +123,7 @@ public class AdminController {
      * @return
      */
     @RequestMapping(value = "passcompany.do",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse passCompany(HttpSession session,String companyid,Integer checked){
         Admin admin = (Admin)session.getAttribute(Const.CURRENT_USER);
         Integer role = (Integer)session.getAttribute("Role");
@@ -133,6 +140,7 @@ public class AdminController {
      * @return
      */
     @RequestMapping(value = "passjob.do",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse passJob(HttpSession session,Integer id,Integer checked){
         Admin admin = (Admin)session.getAttribute(Const.CURRENT_USER);
         Integer role = (Integer)session.getAttribute("Role");
@@ -149,6 +157,7 @@ public class AdminController {
      * @return
      */
     @RequestMapping(value = "getstatistics.do",method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse getStatistics(HttpSession session){
         Admin admin = (Admin)session.getAttribute(Const.CURRENT_USER);
         Integer role = (Integer)session.getAttribute("Role");
