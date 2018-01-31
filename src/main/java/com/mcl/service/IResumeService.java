@@ -21,4 +21,6 @@ public interface IResumeService {
     ServerResponse changeResumeStatus(Integer id, String companyid, Integer status, String msg);
 
     ServerResponse getResumeByJobId(int pageNum, int pageSize, Integer id, String companyid);
+
+    ServerResponse getResumeVOByRdsIdAndResId(Integer id, Integer resumeid);
 }

@@ -382,6 +382,22 @@ public class IResumeServiceImpl implements IResumeService {
         return ServerResponse.createByError();
     }
 
+    @Override
+    public ServerResponse getResumeVOByRdsIdAndResId(Integer id, Integer resumeid) {
+        if(id==null||resumeid==null)
+            return ServerResponse.createByErrorMessage("传入参数错误");
+        Resume resume = resumeMapper.selectByPrimaryKey(resumeid);
+        ResDeliverStatus rds = resDeliverStatusMapper.selectByPrimaryKey(id);
+        if(resume!=null){
+            ResumeVO resumeVO = getResumeVO(resume);
+            if(rds!=null){
+                resumeVO.setResDeliverStatus(rds);
+                return ServerResponse.createBySuccess(resumeVO);
+            }
+        }
+        return ServerResponse.createByErrorMessage("查询错误");
+    }
+
     /**
      *
      * 加一个简历投递状态的信息
