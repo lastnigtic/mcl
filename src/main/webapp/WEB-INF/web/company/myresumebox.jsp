@@ -69,15 +69,18 @@
                                                 <td class="J-Date">${item.updatetime}</td>
                                                     <c:choose>
                                                         <c:when test="${item.resDeliverStatus.status==1}">
-                                                            <td><span class="label label-success">被查看</span></td>
+                                                            <td><span class="label label-success">已投递</span></td>
                                                         </c:when>
                                                         <c:when test="${item.resDeliverStatus.status==2}">
-                                                            <td><span class="label label-success">邀约面试</span></td>
+                                                            <td><span class="label label-success">被查看</span></td>
                                                         </c:when>
                                                         <c:when test="${item.resDeliverStatus.status==3}">
-                                                            <td><span class="label label-success">面试通过</span></td>
+                                                            <td><span class="label label-success">邀约面试</span></td>
                                                         </c:when>
                                                         <c:when test="${item.resDeliverStatus.status==4}">
+                                                            <td><span class="label label-success">面试通过</span></td>
+                                                        </c:when>
+                                                        <c:when test="${item.resDeliverStatus.status==5}">
                                                             <td><span class="label label-danger">不合适</span></td>
                                                         </c:when>
                                                         <c:otherwise>

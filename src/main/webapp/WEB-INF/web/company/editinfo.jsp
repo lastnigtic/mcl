@@ -49,7 +49,7 @@
 									<input type="text" class="form-control" name="address" id="address" value="${company.address}" placeholder="请输入公司地址...">
 									<br>
 									<label>成立时间</label>
-									<input type="text" class="form-control J-Date" id="setuptime" name="setuptime" value="${company.setuptime}" />
+									<input type="text" class=" J-Date form-control" id="setuptime" name="setuptime" value="${company.setuptime}" />
 									<br>
 									<label>注册资本</label>
 									<input  class="form-control" name="registeredcapital" id="registeredcapital" type="text" value="${company.registeredcapital}">
@@ -171,7 +171,7 @@
                 return false;
             }
         })
-	</script>
+	</script>x
 </body>
 
 </html>

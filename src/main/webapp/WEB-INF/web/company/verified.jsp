@@ -38,6 +38,8 @@
 					
 					<div class="row">
 						<div class="col-md-offset-3 col-md-6">
+							<c:choose>
+								<c:when test="${company.checked != 1}">
 							<!-- INPUTS -->
 							<div class="panel">
 								<form enctype="multipart/form-data" method="post" action="/comp/compverified.do">
@@ -57,6 +59,11 @@
 								</form>
 							</div>
 							<!-- END INPUTS -->
+								</c:when>
+								<c:otherwise>
+									<h2>您已经通过实名认证</h2>
+								</c:otherwise>
+							</c:choose>
 						</div>
 						
 					</div>

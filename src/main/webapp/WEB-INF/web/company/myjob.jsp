@@ -84,7 +84,11 @@
 													<td class="J-Date">${job.updatetime}</td>
 													<td>
 														<a href="/comp/jobinfo.html?id=${job.id}">详情</a> &nbsp;
-														<a href="/comp/jobresume.html?id=${job.id}" style="cursor: pointer">简历</a> &nbsp;
+														<c:choose>
+															<c:when test="${job.checked == 1}">
+																<a href="/comp/jobresume.html?id=${job.id}" style="cursor: pointer">简历</a> &nbsp;
+															</c:when>
+														</c:choose>
 														<a style="cursor: pointer" data-id="${job.id}" class="deljob">删除</a>
 													</td>
 												</tr>
