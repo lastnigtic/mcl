@@ -314,9 +314,9 @@ public class IResumeServiceImpl implements IResumeService {
         //TODO 待完善
         int row = resDeliverStatusMapper.checkResumeCanGet(reid,joid,id);//看看有无权限获取该简历
 
-        if(row>0){
+        if(row > 0){
             //有权限
-            ResDeliverStatus rds = resDeliverStatusMapper.selectByResumeId(id);
+            ResDeliverStatus rds = resDeliverStatusMapper.selectByPrimaryKey(id);
 
             UserMsg userMsg = null ;
 
@@ -324,44 +324,51 @@ public class IResumeServiceImpl implements IResumeService {
 
             JobOffers jobOffers = jobOffersMapper.selectByPrimaryKey(joid);
 
-            if(status== Const.DeliveryStatus.InvitedToInterview){
-                userMsg = new UserMsg();
-                userMsg.setMsg(StringUtils.isNotBlank(msg)?msg:"");
-                userMsg.setType(MsgTemplate.MsgType.JobDeliveryMsg);
-                userMsg.setOpenid(rds.getOpenid());
-                userMsg.setReadstatus(0);
+            String openid = rds.getOpenid();
+
+            if(status == Const.DeliveryStatus.InvitedToInterview){
+
+                userMsg = new UserMsg(openid,StringUtils.isNotBlank(msg)?msg:"",MsgTemplate.MsgType.JobDeliveryMsg);
+
                 userMsg.setMsgtitle(MsgTemplate.interviewMsg(company,jobOffers));
 
-            }else if(status==Const.DeliveryStatus.PassInterview){
-                userMsg = new UserMsg();
-                userMsg.setMsg(MsgTemplate.passInterviewMsg(jobOffers));
-                userMsg.setType(MsgTemplate.MsgType.JobDeliveryMsg);
-                userMsg.setOpenid(rds.getOpenid());
-                userMsg.setReadstatus(0);
-            }else if(status==Const.DeliveryStatus.FailInterview){
-                userMsg = new UserMsg();
-                userMsg.setMsg(MsgTemplate.failInterviewMsg(jobOffers));
-                userMsg.setType(MsgTemplate.MsgType.JobDeliveryMsg);
-                userMsg.setOpenid(rds.getOpenid());
-                userMsg.setReadstatus(0);
-            }else if(status==Const.DeliveryStatus.AlreadyViewed){
+            }else if(status == Const.DeliveryStatus.PassInterview){
+
+                userMsg = new UserMsg(openid,MsgTemplate.passInterviewMsg(jobOffers),MsgTemplate.MsgType.JobDeliveryMsg);
+
+            }else if(status == Const.DeliveryStatus.FailInterview){
+
+                userMsg = new UserMsg(openid,MsgTemplate.failInterviewMsg(jobOffers),MsgTemplate.MsgType.JobDeliveryMsg);
+
+            }else if(status == Const.DeliveryStatus.AlreadyViewed){
                 if(rds.getStatus()==null||rds.getStatus()==1){
-                    userMsg = new UserMsg();
-                    userMsg.setOpenid(rds.getOpenid());
-                    userMsg.setReadstatus(0);
-                    userMsg.setMsg(MsgTemplate.alreadyViewedMsg(jobOffers));
-                    userMsg.setType(MsgTemplate.MsgType.JobDeliveryMsg);
-                    userMsgMapper.insert(userMsg);
+
+                    userMsg = new UserMsg(openid,MsgTemplate.alreadyViewedMsg(jobOffers),MsgTemplate.MsgType.JobDeliveryMsg);
+
                 }else{
+
                     return ServerResponse.createByErrorMessage("无法修改status");
+
                 }
+            }else {
+
+                return ServerResponse.createByErrorMessage("非法参数");
+
             }
+
             int rowInsert = userMsgMapper.insert(userMsg);
+
             int rowUpdate = resDeliverStatusMapper.updateStatusById(id,status);
+
             if(rowInsert>0&&rowUpdate>0){
+
                 return ServerResponse.createBySuccess("更新成功");
+
+            }else {
+
+                return ServerResponse.createByErrorMessage("更新失败");
+
             }
-            return ServerResponse.createByErrorMessage("修改失败");
         }
         return ServerResponse.createByErrorMessage("没有权限");
     }
