@@ -95,17 +95,41 @@ public class CompController {
     }
 
 
+    /**
+     * 从收到的简历页进入查看简历的详情
+     * @param model
+     * @param id  投递表的id
+     * @param resumeid  简历表的id
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "resume.html")
     public String resumeFromBox(Model model,Integer id,Integer resumeid,HttpSession session){
-        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        ServerResponse response = iResumeService.getResumeFromBox(id,resumeid,account.getCompanyid());
+        //TODO 鉴权，是否投递到自己岗位的简历
+        ServerResponse response = iResumeService.getResumeVOByRdsIdAndResId(id,resumeid);
         ResumeVO r = (ResumeVO)response.getData();
+        model.addAttribute("id",id);
         if(response.isSuccess()){
             model.addAttribute("resume",r);
             return "/company/resume";
         }
-        return "/company/myresumebox";
+        return "/company/jobresume";
     }
+
+
+//
+//    @RequestMapping(value = "resume.html")
+//    public String resumeFromBox(Model model,Integer id,Integer resumeid,HttpSession session){
+//        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
+//        ServerResponse response = iResumeService.getResumeFromBox(id,resumeid,account.getCompanyid());
+//        ResumeVO r = (ResumeVO)response.getData();
+//        model.addAttribute("id",id);
+//        if(response.isSuccess()){
+//            model.addAttribute("resume",r);
+//            return "/company/resume";
+//        }
+//        return "/company/myresumebox";
+//    }
 
     /**
      * 我发布的岗位信息页面

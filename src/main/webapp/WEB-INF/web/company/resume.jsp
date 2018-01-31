@@ -120,7 +120,7 @@
             <div class="container-fluid">
                 <%--操作--%>
                 <div class="ctrl-box">
-                    <span class="title">简历状态: </span>
+                    <span class="title" data-id="${id}">简历状态: </span>
                     <select class="form-control" id="ctrl" style="display: inline-block;height: auto;width: auto;margin: 0 16px;padding: 2px 16px;vertical-align: middle">
                     </select>
                     <button id="changeStatus" class="btn btn-primary" style="height: auto; padding: 2px 16px;">确认</button>
