@@ -101,7 +101,7 @@
                 <%--操作--%>
                 <div class="ctrl-box">
                     <span class="title">简历状态: </span>
-                    <select class="form-control" id="statusList" data-id="${id}" data-status="${resume.resDeliverStatus.status}">
+                    <select class="form-control" id="statusList" data-id="${id}" data-joid="${resume.resDeliverStatus.joid}" data-status="${resume.resDeliverStatus.status}">
                     </select>
                     <input id="msg" class="form-control" placeholder="请输入邀约信息" style="display: none;">
                     <button id="changeStatus" class="btn btn-primary form-control" style="height: auto; padding: 2px 16px;">确认</button>
@@ -216,11 +216,14 @@
         function params(){
             var _status = staBox.data('status');
             var _id = staBox.data('id');
+            var _joid = staBox.data('joid');
             params = function(str){
                 if(str === 'id'){
                     return _id;
                 }if(str === 'status'){
                     return _status
+                }if(str === 'joid'){
+                    return _joid
                 }
             }
         }
@@ -249,17 +252,19 @@
         $('#changeStatus').on('click', function(){
             var status = staBox.find("option:selected")[0].value,
                 id = params('id'),
+                joid = params('joid');
                 msg;
             if(status == 3){
                 msg = msgInp.val();
             }
 
-            doChangeStatus(id, status, msg)
+            doChangeStatus(id, joid, status, msg)
         })
-        function doChangeStatus(id, status, msg){
+        function doChangeStatus(id, joid, status, msg){
             var data={
                 id: id,
-                status: status
+                status: status,
+                joid: joid
             }
             if(status == 3){
                 if(!msg){
