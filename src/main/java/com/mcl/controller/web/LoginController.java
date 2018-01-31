@@ -3,7 +3,9 @@ package com.mcl.controller.web;
 import com.mcl.common.Const;
 import com.mcl.common.ServerResponse;
 import com.mcl.pojo.Account;
+import com.mcl.pojo.Admin;
 import com.mcl.service.IAccountService;
+import com.mcl.service.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,13 +24,16 @@ public class LoginController {
     @Autowired
     private IAccountService iAccountService ;
 
+    @Autowired
+    private IAdminService iAdminService;
+
     /**
      * 取登录页
      * @param session
      * @return
      */
     @RequestMapping(value = "login.html")
-    public String loginPage(String uname, String upass, HttpSession session, Model model){
+    public String loginPage(HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
         if(account != null){
             return "/company/index";
@@ -84,5 +89,40 @@ public class LoginController {
     @ResponseBody
     public ServerResponse<String> register(Account account){
         return iAccountService.register(account);
+    }
+
+
+
+    /**
+     * 取登录页
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "adminlogin.html")
+    public String adminloginPage(HttpSession session){
+        Admin admin = (Admin)session.getAttribute(Const.CURRENT_USER);
+        Integer role = (Integer)session.getAttribute("Role");
+
+        if(admin != null&&Const.Role.ROLE_ADMIN==role){
+            return "/admin/index";
+        }
+        return "/adminlogin";
+    }
+
+    /**
+     * 管理员登录
+     * @param id
+     * @param pass
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "adminlogin.do",method = RequestMethod.POST)
+    public ServerResponse adminlogin(String id, String pass, HttpSession session){
+        ServerResponse<Admin> response = iAdminService.login(id,pass);
+        if(response.isSuccess()){
+            session.setAttribute(Const.CURRENT_USER,response.getData());
+            session.setAttribute("Role",Const.Role.ROLE_ADMIN);
+        }
+        return response;
     }
 }

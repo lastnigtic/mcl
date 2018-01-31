@@ -1,5 +1,6 @@
 package com.mcl.pojo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class UserMsg {
@@ -32,6 +33,15 @@ public class UserMsg {
 
     public UserMsg() {
         super();
+    }
+
+    public UserMsg(String openid, String msg, String type) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        this.openid = openid;
+        this.type = type;
+        this.msgtime = sdf.format(new Date());
+        this.readstatus = 0;
+        this.msg = msg;
     }
 
     public Integer getId() {
