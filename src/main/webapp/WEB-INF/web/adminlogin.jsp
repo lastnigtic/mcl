@@ -37,16 +37,18 @@
 								<p class="lead">欢迎登陆大学生活 —— 管理端</p>
 							</div>
 							<div class="form-auth-small">
-								<div class="form-group">
-									<label for="username" class="control-label sr-only">账号</label>
-									<input id="username" class="form-control" placeholder="请输入账号名">
-								</div>
-								<div class="form-group">
-									<label for="password" class="control-label sr-only">密码</label>
-									<input type="password" class="form-control" id="password" placeholder="请输入密码">
-								</div>
-								<div class="text-danger" style="display:none">账号或者密码输入错误</div>
-								<button type="submit" class="btn btn-primary btn-lg btn-block" id="login">登录</button>
+								<form action="/adminlogin.html" method="post">
+									<div class="form-group">
+										<label for="username" class="control-label sr-only">账号</label>
+										<input id="username" name="id" class="form-control" placeholder="请输入账号名">
+									</div>
+									<div class="form-group">
+										<label for="password" class="control-label sr-only">密码</label>
+										<input type="password" name="pass" class="form-control" id="password" placeholder="请输入密码">
+									</div>
+									<div class="text-danger" style="display:none">账号或者密码输入错误</div>
+									<button type="submit" class="btn btn-primary btn-lg btn-block" id="login">登录</button>
+								</form>
 							</div>
 						</div>
 					</div>
@@ -65,35 +67,35 @@
 	<!-- END WRAPPER -->
 	<script type="text/javascript" src="/assets/vendor/jquery/jquery.min.js"></script>
 	<script type="text/javascript">
-		$(function(){
-			$('#login').on('click', function(){
-				var id = $('#username');
-				if(!id.val()){
-					 id.parent().addClass('has-error')
-				}else{
-					id.parent().removeClass('has-error')
-				}
-				var pass = $('#password');
-				if(!pass.val()){
-					 pass.parent().addClass('has-error')
-				}else{
-					pass.parent().removeClass('has-error')
-				}
-				if(id && pass){
-
-					window.location.href = './charts.html'	
-
-					$.get('http://139.199.209.108/mcl/admin/login.do?id='+id.val()+'&pass='+pass.val(), function(res){
-						if(res.status === 0){
-							console.log('登陆成功');
-							$(this).parent().find('.text-danger')[0].style.display = 'none';
-						}else{
-							$(this).parent().find('.text-danger')[0].style.display = 'block';
-						}
-					})		
-				}
-			})
-		})
+//		$(function(){
+//			$('#login').on('click', function(){
+//				var id = $('#username');
+//				if(!id.val()){
+//					 id.parent().addClass('has-error')
+//				}else{
+//					id.parent().removeClass('has-error')
+//				}
+//				var pass = $('#password');
+//				if(!pass.val()){
+//					 pass.parent().addClass('has-error')
+//				}else{
+//					pass.parent().removeClass('has-error')
+//				}
+//				if(id && pass){
+//
+//					window.location.href = './charts.html'
+//
+//					$.get('http://139.199.209.108/mcl/admin/login.do?id='+id.val()+'&pass='+pass.val(), function(res){
+//						if(res.status === 0){
+//							console.log('登陆成功');
+//							$(this).parent().find('.text-danger')[0].style.display = 'none';
+//						}else{
+//							$(this).parent().find('.text-danger')[0].style.display = 'block';
+//						}
+//					})
+//				}
+//			})
+//		})
 	</script>
 </body>
 

@@ -59,6 +59,7 @@ public class LoginController {
 
         if(response.isSuccess()){
             session.setAttribute(Const.CURRENT_USER,response.getData());
+            session.setAttribute("Role",Const.Role.ROLE_CUSTOMER);
             return "/company/index";
         }
 
@@ -99,12 +100,20 @@ public class LoginController {
      * @return
      */
     @RequestMapping(value = "adminlogin.html")
-    public String adminloginPage(HttpSession session){
-        Admin admin = (Admin)session.getAttribute(Const.CURRENT_USER);
+    public String adminloginPage(HttpSession session,String id, String pass){
+        Admin admin = null ;
         Integer role = (Integer)session.getAttribute("Role");
-
-        if(admin != null&&Const.Role.ROLE_ADMIN==role){
+        if(role!=null&&role==Const.Role.ROLE_ADMIN)
+            admin = (Admin)session.getAttribute(Const.CURRENT_USER);
+        if(admin != null){
             return "/admin/index";
+        }else {
+            ServerResponse response = iAdminService.login(id,pass);
+            if(response.isSuccess()){
+                session.setAttribute(Const.CURRENT_USER,response.getData());
+                session.setAttribute("Role",Const.Role.ROLE_ADMIN);
+                return "/admin/index";
+            }
         }
         return "/adminlogin";
     }

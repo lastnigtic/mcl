@@ -35,7 +35,7 @@
 <body>
 	<!-- WRAPPER -->
 	<div id="wrapper">
-		<%@ include file="/public/top_nav.jsp"%>
+		<%@ include file="/public/top_nav.jsp"%><!--管理员的侧边栏和顶栏需要另外抽出来-->
 		<%@ include file="/public/left_sidebar.jsp"%>
 		<!-- END LEFT SIDEBAR -->
 		<!-- MAIN -->
