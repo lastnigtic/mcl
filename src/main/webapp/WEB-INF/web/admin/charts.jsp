@@ -38,51 +38,55 @@
 			<!-- MAIN CONTENT -->
 			<div class="main-content">
 				<div class="container-fluid">
-					<h3 class="page-title">数据统计</h3>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="panel">
-								<div class="panel-heading">
-									<h3 class="panel-title">实习数量统计</h3>
+					<!-- OVERVIEW -->
+					<div class="panel panel-headline">
+						<div class="panel-heading">
+							<h3 class="panel-title">数据统计</h3>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-3 J-Ctrl" data-idx="0">
+									<div class="metric">
+										<span class="icon"><i class="lnr lnr-user"></i></span>
+										<p>
+											<span class="number">${data.companyamount}</span>
+											<span class="title">企业用户数量</span>
+										</p>
+									</div>
 								</div>
-								<div class="panel-body">
-									<div id="practice-count-chart" class="ct-chart"></div>
+								<div class="col-md-3 J-Ctrl" data-idx="1">
+									<div class="metric">
+										<span class="icon"><i class="fa fa-shopping-bag"></i></span>
+										<p>
+											<span class="number">${data.jobamount}</span>
+											<span class="title">岗位用户数量</span>
+										</p>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="panel">
-								<div class="panel-heading">
-									<h3 class="panel-title">实习申请数量统计</h3>
+							<div class="row">
+								<div class="col-md-3 J-Ctrl" data-idx="0">
+									<div class="metric">
+										<span class="icon"><i class="lnr lnr-user"></i></span>
+										<p>
+											<span class="number">${data.resumesubmitamount}</span>
+											<span class="title">简历投递次数</span>
+										</p>
+									</div>
 								</div>
-								<div class="panel-body">
-									<div id="practice-apply-chart" class="ct-chart"></div>
+								<div class="col-md-3 J-Ctrl" data-idx="1">
+									<div class="metric">
+										<span class="icon"><i class="fa fa-shopping-bag"></i></span>
+										<p>
+											<span class="number">${data.useramount}</span>
+											<span class="title">用户数量</span>
+										</p>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="panel">
-								<div class="panel-heading">
-									<h3 class="panel-title">普通用户数量统计</h3>
-								</div>
-								<div class="panel-body">
-									<div id="user-count-chart" class="ct-chart"></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="panel">
-								<div class="panel-heading">
-									<h3 class="panel-title">企业用户数量统计</h3>
-								</div>
-								<div class="panel-body">
-									<div id="company-count-chart" class="ct-chart"></div>
-								</div>
-							</div>
-						</div>
-					</div>
+					<!-- END OVERVIEW -->
 				</div>
 			</div>
 			<!-- END MAIN CONTENT -->

@@ -200,4 +200,35 @@ public class IAdminServiceImpl implements IAdminService {
         List<Opinion> list = opinionMapper.selectList();
         return list;
     }
+
+    /**
+     * 根据id查询企业的信息
+     * @param id
+     * @return
+     */
+    @Override
+    public ServerResponse getCompInfoById(String id) {
+
+        if(StringUtils.isBlank(id)){
+            return ServerResponse.createByErrorMessage("参数为空");
+        }
+        Company company = companyMapper.selectByPrimaryKey(id);
+        if(company!=null){
+            return ServerResponse.createBySuccess(company);
+        }
+        return ServerResponse.createByErrorMessage("查询错误");
+
+    }
+
+    @Override
+    public ServerResponse getJobById(Integer id) {
+        if(id==null)
+            return ServerResponse.createByErrorMessage("参数错误");
+        JobOffers jobOffers = jobOffersMapper.selectByPrimaryKey(id);
+        if(jobOffers!=null){
+            return ServerResponse.createBySuccess(jobOffers);
+        }else {
+            return ServerResponse.createByErrorMessage("查询失败");
+        }
+    }
 }

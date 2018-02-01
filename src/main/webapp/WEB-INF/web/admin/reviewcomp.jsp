@@ -46,41 +46,12 @@
 			<!-- MAIN CONTENT -->
 			<div class="main-content">
 				<div class="container-fluid">
-					<!-- OVERVIEW -->
-					<div class="panel panel-headline">
-						<div class="panel-heading">
-							<h3 class="panel-title">信息审核</h3>
-						</div>
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-md-3 J-Ctrl" data-idx="0">
-									<div class="metric">
-										<span class="icon"><i class="lnr lnr-user"></i></span>
-										<p>
-											<span class="number">1,252</span>
-											<span class="title">企业实名信息审核</span>
-										</p>
-									</div>
-								</div>
-								<div class="col-md-3 J-Ctrl" data-idx="1">
-									<div class="metric">
-										<span class="icon"><i class="fa fa-shopping-bag"></i></span>
-										<p>
-											<span class="number">203</span>
-											<span class="title">企业实习岗位信息审核</span>
-										</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- END OVERVIEW -->
 					<div class="row" id="information">
 						<div class="col-md-12">
 							<!-- RECENT PURCHASES -->
 							<div class="panel">
 								<div class="panel-heading">
-									<h3 class="panel-title">企业实名信息审核</h3>
+									<h3 class="panel-title">企业实名信息待审核列表</h3>
 									<div class="right">
 										<button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
 									</div>
@@ -89,17 +60,45 @@
 									<table class="table table-striped">
 										<thead>
 											<tr>
+												<th>#</th>
 												<th>企业名称</th>
-												<th>企业头目</th>
-												<th>实名信息</th>
+												<th>公司规模</th>
+												<th>法人代表</th>
 												<th>所属行业</th>
-												<th>所属地区</th>
-												<th>申请时间</th>
+												<th>所属城市</th>
+												<th>融资阶段</th>
+												<th>注册资本</th>
+												<th>成立时间</th>
 												<th>操作</th>
 											</tr>
 										</thead>
-										<tbody id="informationBody">
-										</tbody>
+										<c:choose>
+											<c:when test="${pageInfo!=null}">
+												<c:forEach items="${pageInfo.list}" var="comp" varStatus="xh" >
+													<tr>
+														<td>${xh.count}</td>
+														<td>${comp.companyname}</td>
+														<td>${comp.companysize}</td>
+														<th>${comp.legalrepresentative}</th>
+														<td>${comp.industry}</td>
+														<th>${comp.city}</th>
+														<th>${comp.financingstage}</th>
+														<th>${comp.registeredcapital}</th>
+														<td>${comp.setuptime}</td>
+														<td>
+															<a href="/admin/compinfo.html?id=${comp.id}">查看详情</a> &nbsp;
+														</td>
+													</tr>
+												</c:forEach>
+											</c:when>
+											<c:otherwise>
+												<tr>
+													<td colspan="5">暂无数据</td>
+												</tr>
+											</c:otherwise>
+										</c:choose>
+										<%--<tbody id="informationBody">--%>
+										<%--</tbody>--%>
 									</table>
 								</div>
 							</div>

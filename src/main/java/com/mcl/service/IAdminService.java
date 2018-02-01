@@ -28,4 +28,7 @@ public interface IAdminService {
 
     List<Opinion> getOpinionList(int pageNum, int pageSize);
 
+    ServerResponse getCompInfoById(String id);
+
+    ServerResponse getJobById(Integer id);
 }
