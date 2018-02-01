@@ -1,10 +1,13 @@
 package com.mcl.controller.web;
 
+import com.github.pagehelper.PageInfo;
 import com.mcl.common.Const;
 import com.mcl.common.ResponseCode;
 import com.mcl.common.ServerResponse;
 import com.mcl.pojo.*;
 import com.mcl.service.IAdminService;
+import com.mcl.vo.StatisticsVO;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,11 +27,105 @@ public class AdminController {
     @Autowired
     private IAdminService iAdminService ;
 
-    @RequestMapping(value = "/review")
-    public String review(){
+    /**
+     * 公司待审核列表
+     * @param model
+     * @param pageNum
+     * @param pageSize
+     * @param company
+     * @return
+     */
+    @RequestMapping(value = "/reviewcomp.html",method = RequestMethod.GET)
+    public String reviewcomp(Model model, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                         @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,Company company){
+        if(company==null)
+            company = new Company();
 
-        return "/admin/review";
+        company.setChecked(0);
+        ServerResponse response = iAdminService.getCompanyList(pageNum,pageSize,company);
+        if(response.isSuccess()){
+            PageInfo<Company> pageInfo = (PageInfo<Company>) response.getData();
+            model.addAttribute("pageInfo",pageInfo);
+        }
+        return "/admin/reviewcomp";
     }
+
+
+    /**
+     * 根据id查询公司详细信息
+     * @param model
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/compinfo")
+    public String compinfo(Model model,String id){
+        ServerResponse response = iAdminService.getCompInfoById(id);
+        if(response.isSuccess()){
+            model.addAttribute("comp",response.getData());
+        }else {
+            model.addAttribute("msg",response.getMsg());
+        }
+        return "/admin/compinfo";
+    }
+
+
+    /**
+     * 岗位待审核列表
+     * @param model
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/reviewjob.html",method = RequestMethod.GET)
+    public String reviewcomp(Model model, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                             @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,JobOffers jobOffers){
+        if(jobOffers==null)
+            jobOffers = new JobOffers();
+
+        jobOffers.setChecked(0);
+        ServerResponse response = iAdminService.getJobList(pageNum,pageSize,jobOffers);
+        if(response.isSuccess()){
+            PageInfo<JobOffers> pageInfo = (PageInfo<JobOffers>) response.getData();
+            model.addAttribute("pageInfo",pageInfo);
+        }
+        return "/admin/reviewjob";
+    }
+
+    /**
+     * 根据id查询公司详细信息
+     * @param model
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/jobinfo")
+    public String jobinfo(Model model,Integer id){
+        ServerResponse response = iAdminService.getJobById(id);
+        if(response.isSuccess()){
+            model.addAttribute("job",response.getData());
+        }else {
+            model.addAttribute("msg",response.getMsg());
+        }
+        return "/admin/jobinfo";
+    }
+
+    /**
+     * 公司待审核列表
+     * @param model
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/userlist.html",method = RequestMethod.GET)
+    public String userlist(Model model, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                             @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,UserBaseInfo userBaseInfo){
+        ServerResponse response = iAdminService.getUserList(pageNum,pageSize,userBaseInfo);
+        if(response.isSuccess()){
+            PageInfo<UserBaseInfo> pageInfo = (PageInfo<UserBaseInfo>) response.getData();
+            model.addAttribute("pageInfo",pageInfo);
+        }
+        return "/admin/userlist";
+    }
+
 
     @RequestMapping(value = "/search")
     public String search(){
@@ -56,10 +153,13 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/charts")
-    public String charts(){
+    public String charts(Model model){
+        ServerResponse response = iAdminService.getStatistics();
+        if(response.isSuccess()){
+            model.addAttribute("data",(StatisticsVO)response.getData());
+        }
         return "/admin/charts";
     }
-
 
     /**
      * 获取所有公司列表

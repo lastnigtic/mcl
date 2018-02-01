@@ -37,7 +37,7 @@
 								<p class="lead">欢迎登陆大学生活 —— 管理端</p>
 							</div>
 							<div class="form-auth-small">
-								<form action="/adminlogin.html" method="post">
+								<form action="/adminlogin.do" method="post">
 									<div class="form-group">
 										<label for="username" class="control-label sr-only">账号</label>
 										<input id="username" name="id" class="form-control" placeholder="请输入账号名">
@@ -49,6 +49,10 @@
 									<div class="text-danger" style="display:none">账号或者密码输入错误</div>
 									<button type="submit" class="btn btn-primary btn-lg btn-block" id="login">登录</button>
 								</form>
+								<c:if test="${!empty msg}">
+									<br/>
+									<p style="color: red">错误:${msg}</p>
+								</c:if>
 							</div>
 						</div>
 					</div>

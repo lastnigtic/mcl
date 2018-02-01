@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -95,27 +96,21 @@ public class LoginController {
 
 
     /**
-     * 取登录页
+     * 取管理员登录页
      * @param session
      * @return
      */
     @RequestMapping(value = "adminlogin.html")
-    public String adminloginPage(HttpSession session,String id, String pass){
+    public String adminloginPage(HttpSession session){
         Admin admin = null ;
         Integer role = (Integer)session.getAttribute("Role");
         if(role!=null&&role==Const.Role.ROLE_ADMIN)
             admin = (Admin)session.getAttribute(Const.CURRENT_USER);
         if(admin != null){
-            return "/admin/review";
-        }else {
-            ServerResponse response = iAdminService.login(id,pass);
-            if(response.isSuccess()){
-                session.setAttribute(Const.CURRENT_USER,response.getData());
-                session.setAttribute("Role",Const.Role.ROLE_ADMIN);
-                return "/admin/review";
-            }
+            return "/admin/index";
         }
         return "/adminlogin";
+
     }
 
     /**
@@ -126,12 +121,23 @@ public class LoginController {
      * @return
      */
     @RequestMapping(value = "adminlogin.do",method = RequestMethod.POST)
-    public ServerResponse adminlogin(String id, String pass, HttpSession session){
-        ServerResponse<Admin> response = iAdminService.login(id,pass);
-        if(response.isSuccess()){
-            session.setAttribute(Const.CURRENT_USER,response.getData());
-            session.setAttribute("Role",Const.Role.ROLE_ADMIN);
+    public String adminlogin(String id, String pass, HttpSession session, Model model){
+        Admin admin = null ;
+        Integer role = (Integer)session.getAttribute("Role");
+        if(role!=null&&role==Const.Role.ROLE_ADMIN)
+            admin = (Admin)session.getAttribute(Const.CURRENT_USER);
+        if(admin != null){
+            return "/admin/index";
+        }else {
+            ServerResponse response = iAdminService.login(id,pass);
+            if(response.isSuccess()){
+                session.setAttribute(Const.CURRENT_USER,response.getData());
+                session.setAttribute("Role",Const.Role.ROLE_ADMIN);
+                return "/admin/index";
+            }else {
+                model.addAttribute("msg",response.getMsg());
+                return "/adminlogin";
+            }
         }
-        return response;
     }
 }
