@@ -12,7 +12,6 @@
 						<ul class="nav">
 							<li><a href="/comp/addjob.html" class="">新增岗位</a></li>
 							<li><a href="/comp/myjob.html" class="">岗位列表</a></li>
-							<li><a href="/comp/myresumebox.html" class="">实习申请</a></li>
 						</ul>
 					</div>
 				</li>

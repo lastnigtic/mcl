@@ -1,10 +1,11 @@
 
-
 // 修改日期
 $('.J-Date').each(function(idx, item){
 	item = $(item);
 	if(item.text()){
         item.text(filterDate(item.text()));
+	}else if(item.val()){
+        item.val(filterDate(item.val()));
 	}
 })
 function filterDate(str){
