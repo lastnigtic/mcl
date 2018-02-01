@@ -4,10 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mcl.common.ServerResponse;
 import com.mcl.dao.*;
-import com.mcl.pojo.Admin;
-import com.mcl.pojo.Company;
-import com.mcl.pojo.JobOffers;
-import com.mcl.pojo.UserBaseInfo;
+import com.mcl.pojo.*;
 import com.mcl.service.IAdminService;
 import com.mcl.util.MD5Util;
 import com.mcl.vo.StatisticsVO;
@@ -37,6 +34,9 @@ public class IAdminServiceImpl implements IAdminService {
 
     @Autowired
     private ResDeliverStatusMapper resDeliverStatusMapper;
+
+    @Autowired
+    private OpinionMapper opinionMapper ;
     /**
      * 管理员登录
      * @param id
@@ -185,5 +185,19 @@ public class IAdminServiceImpl implements IAdminService {
         vo.setUseramount(userBaseInfoMapper.count());
         vo.setResumesubmitamount(resDeliverStatusMapper.count());
         return vo!=null?ServerResponse.createBySuccess(vo):ServerResponse.createByErrorMessage("获取数据错误");
+    }
+
+    /**
+     * 获取意见列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public List<Opinion> getOpinionList(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.orderBy("updatetime desc");
+        List<Opinion> list = opinionMapper.selectList();
+        return list;
     }
 }

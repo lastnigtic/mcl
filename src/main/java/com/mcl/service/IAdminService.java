@@ -1,10 +1,9 @@
 package com.mcl.service;
 
 import com.mcl.common.ServerResponse;
-import com.mcl.pojo.Admin;
-import com.mcl.pojo.Company;
-import com.mcl.pojo.JobOffers;
-import com.mcl.pojo.UserBaseInfo;
+import com.mcl.pojo.*;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/1/18 0018.
@@ -26,5 +25,7 @@ public interface IAdminService {
 
     ServerResponse getStatistics();
 
+
+    List<Opinion> getOpinionList(int pageNum, int pageSize);
 
 }

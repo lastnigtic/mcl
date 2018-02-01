@@ -21,7 +21,10 @@
     delete from opinion
     where id = #{id,jdbcType=INTEGER}
   </delete>
-
+  <select id="selectList" resultType="com.mcl.pojo.Opinion">
+    SELECT  <include refid="Base_Column_List"/>
+    FROM opinion
+  </select>
   <insert id="insert" parameterType="com.mcl.pojo.Opinion" >
     insert into opinion (id, openid, updatetime, 
       contactinfo, description)

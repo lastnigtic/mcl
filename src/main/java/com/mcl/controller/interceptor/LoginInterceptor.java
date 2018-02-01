@@ -15,9 +15,13 @@ public class LoginInterceptor implements HandlerInterceptor{
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         /// /判断是否已经登录
-        Account account = (Account)httpServletRequest.getSession().getAttribute(Const.CURRENT_USER);
-        if(account != null){
-            return true;
+        if(Const.Role.ROLE_CUSTOMER==(Integer)httpServletRequest.getSession().getAttribute("Role")){
+            Account account = (Account)httpServletRequest.getSession().getAttribute(Const.CURRENT_USER);
+            if(account != null){
+                return true;
+            }
+        }else{
+
         }
         httpServletResponse.sendRedirect("/login.html");
         return false;
