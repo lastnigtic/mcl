@@ -29,6 +29,9 @@
 		.J-Ctrl{
 			cursor: pointer;
 		}
+		.J-reject{
+			margin-left: 10px;
+		}
 	</style>
 </head>
 
@@ -36,7 +39,7 @@
 	<!-- WRAPPER -->
 	<div id="wrapper">
 		<%@ include file="/public/top_nav.jsp"%><!--管理员的侧边栏和顶栏需要另外抽出来-->
-		<%@ include file="/public/left_sidebar.jsp"%>
+		<%@ include file="/public/admin_left_sidebar.jsp"%>
 		<!-- END LEFT SIDEBAR -->
 		<!-- MAIN -->
 		<div class="main">
@@ -72,7 +75,7 @@
 						</div>
 					</div>
 					<!-- END OVERVIEW -->
-					<div class="row" id="information"  style="display: none">
+					<div class="row" id="information">
 						<div class="col-md-12">
 							<!-- RECENT PURCHASES -->
 							<div class="panel">
@@ -95,31 +98,7 @@
 												<th>操作</th>
 											</tr>
 										</thead>
-										<tbody>
-											<tr>
-												<td><a href="#">世纪龙</a></td>
-												<td>郑泳智</td>
-												<td>不需要</td>
-												<td>IT</td>
-												<td>广州市番禺区锦官城</td>
-												<td>2018-01-27</td>
-												<td>
-													<button data-type="information" class="btn btn-success btn-xs J-pass">通过</button>
-													<button data-type="information" class="btn btn-danger btn-xs J-reject">拒绝</button>
-												</td>
-											</tr>
-											<tr>
-												<td><a href="#">世纪虫</a></td>
-												<td>郑智</td>
-												<td>不需要</td>
-												<td>IT</td>
-												<td>广州市番禺区锦官城</td>
-												<td>2018-01-27</td>
-												<td>
-													<button data-type="information" class="btn btn-success btn-xs J-pass">通过</button>
-													<button data-type="information" class="btn btn-danger btn-xs J-reject">拒绝</button>
-												</td>
-											</tr>
+										<tbody id="informationBody">
 										</tbody>
 									</table>
 								</div>
@@ -127,7 +106,7 @@
 							<!-- END RECENT PURCHASES -->
 						</div>
 					</div>
-					<div class="row" id="job">
+					<div class="row" id="job" style="display: none">
 						<div class="col-md-12">
 							<!-- RECENT PURCHASES -->
 							<div class="panel">
@@ -152,7 +131,7 @@
 												<th>操作</th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody id="jobBody">
 											<tr>
 												<td><a href="#">世纪龙</a></td>
 												<td>Java开发</td>
@@ -236,6 +215,29 @@
 			}else if(tar.data('type') === 'job'){
 				toastr.error('拒绝一项实习岗位审核', 'java开发', {timeOut: 2000})
 			}
+		})
+		//	获取待审核公司信息
+		$.post('/admin/companylist.do?checked=0',{},function(res){
+			if(res.status === 0){
+				var list = $(res.data.list);
+				var tbody = $('#informationBody');
+				list.each(function(idx, item){
+					var el='<tr>'
+					+'<td>'+item.companyname+'</td>'
+					+'<td>'+item.legalrepresentative+'</td>'
+					+'<td>'+'<a href='+item.companylicense+' target="_blank">查看</a>'+'</td>'
+					+'<td>'+item.industry+'</td>'
+					+'<td>'+item.address+'</td>'
+					+'<td class="J-Date">'+item.updatetime+'</td>'
+					+'<td>'+'<button data-type="information" class="btn btn-success btn-xs J-pass">通过</button><button data-type="information" class="btn btn-danger btn-xs J-reject">拒绝</button>'+'</td>'
+					+'</tr>'
+					tbody.append(el)
+				}) 
+			}
+		})
+		// 获取待审核职位列表
+		$.post('/admin/joblist.do?checked=0',{},function(res){
+			console.log(res)
 		})
 	});
 </script>

@@ -67,35 +67,26 @@
 	<!-- END WRAPPER -->
 	<script type="text/javascript" src="/assets/vendor/jquery/jquery.min.js"></script>
 	<script type="text/javascript">
-//		$(function(){
-//			$('#login').on('click', function(){
-//				var id = $('#username');
-//				if(!id.val()){
-//					 id.parent().addClass('has-error')
-//				}else{
-//					id.parent().removeClass('has-error')
-//				}
-//				var pass = $('#password');
-//				if(!pass.val()){
-//					 pass.parent().addClass('has-error')
-//				}else{
-//					pass.parent().removeClass('has-error')
-//				}
-//				if(id && pass){
-//
-//					window.location.href = './charts.html'
-//
-//					$.get('http://139.199.209.108/mcl/admin/login.do?id='+id.val()+'&pass='+pass.val(), function(res){
-//						if(res.status === 0){
-//							console.log('登陆成功');
-//							$(this).parent().find('.text-danger')[0].style.display = 'none';
-//						}else{
-//							$(this).parent().find('.text-danger')[0].style.display = 'block';
-//						}
-//					})
-//				}
-//			})
-//		})
+		$(function(){
+			$('#login').on('click', function(e){
+				var id = $('#username');
+				if(!id.val()){
+					 id.parent().addClass('has-error')
+				}else{
+					id.parent().removeClass('has-error')
+				}
+				var pass = $('#password');
+				if(!pass.val()){
+					 pass.parent().addClass('has-error')
+				}else{
+					pass.parent().removeClass('has-error')
+				}
+				if(id && pass){
+                    $("form").submit();
+				}
+                e.preventDefault();
+			})
+		})
 	</script>
 </body>
 

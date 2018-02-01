@@ -24,9 +24,10 @@ public class AdminController {
     @Autowired
     private IAdminService iAdminService ;
 
-    @RequestMapping(value = "/index")
-    public String index(){
-        return "/admin/index";
+    @RequestMapping(value = "/review")
+    public String review(){
+
+        return "/admin/review";
     }
 
     @RequestMapping(value = "/search")
