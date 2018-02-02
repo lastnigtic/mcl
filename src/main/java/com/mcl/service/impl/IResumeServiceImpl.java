@@ -88,6 +88,7 @@ public class IResumeServiceImpl implements IResumeService {
      * @return
      */
     @Override
+    @Transactional
     public ServerResponse delResume(String openid, Integer id) {
         if(id!=null){
             //参数不为空
@@ -97,6 +98,7 @@ public class IResumeServiceImpl implements IResumeService {
                 Resume resume = resumeMapper.selectByPrimaryKey(id);
                 if(resume.getOpenid().equals(openid)){
                     int rowDel = resumeMapper.deleteByPrimaryKey(id);
+                    int rowDelDeliveryRecord = resDeliverStatusMapper.deleteByResumeId(id); //删除的时候要把投递记录也删除
                     if(rowDel>0){
                         return ServerResponse.createBySuccess("删除成功");
                     }

@@ -20,4 +20,19 @@ public class Const {
         int FailInterview = 5 ;//面试不通过
     }
 
+    public interface JobStatus{
+        int Overdue = 3 ; //过期
+        int FailTOPass = 2 ; //审批不通过
+        int SuccessTOPass = 1 ; //审批通过
+        int NoApproval = 0 ; //未审批
+
+
+    }
+    public interface CompStatus{
+        int FailTOPass = 2 ; //审批不通过
+        int SuccessTOPass = 1 ; //审批通过
+        int NoApproval = 0 ; //未审批
+
+
+    }
 }

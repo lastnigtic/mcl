@@ -170,7 +170,7 @@ public class UserController {
     }
 
     /**
-     * 获取个人消息
+     * 获取个人消息列表
      * @param pageNum
      * @param pageSize
      * @param openid

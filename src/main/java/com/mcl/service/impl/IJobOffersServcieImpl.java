@@ -2,11 +2,16 @@ package com.mcl.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import com.mcl.common.Const;
 import com.mcl.common.ServerResponse;
+import com.mcl.dao.CompanyMapper;
 import com.mcl.dao.JobOffersMapper;
 import com.mcl.pojo.Account;
+import com.mcl.pojo.Company;
 import com.mcl.pojo.JobOffers;
 import com.mcl.service.IJobOffersServcie;
+import com.mcl.vo.JobOffersListVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +26,8 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
     @Autowired
     private JobOffersMapper jobOffersMapper ;
 
+    @Autowired
+    private CompanyMapper companyMapper ;
 
     /**
      * 发布招聘信息
@@ -52,11 +59,23 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
      */
     @Override
     public ServerResponse updateJob(JobOffers jobOffers) {
-        if(jobOffers==null)return ServerResponse.createByErrorMessage("参数错误");
+
+        //判空
+        if(jobOffers==null||StringUtils.isBlank(jobOffers.getCompanyid()))
+            return ServerResponse.createByErrorMessage("参数错误");
+
+
         if(jobOffers.getId()!=null){
-            int row = jobOffersMapper.checkOffersByJoid(jobOffers.getId());
-            if(row>0&&checkJobInfoComplete(jobOffers)){
-                //存在该信息
+            JobOffers job = jobOffersMapper.selectByPrimaryKey(jobOffers.getId());
+
+            if(job==null)
+                return ServerResponse.createByErrorMessage("更新错误");
+
+            if(job.getChecked()==Const.JobStatus.SuccessTOPass)
+                return ServerResponse.createByErrorMessage("已通过审核的岗位修改权限受限");//有待商榷
+
+            if(checkJobInfoComplete(jobOffers)){
+                //信息完整，可以更新
                 int rowUpdate = jobOffersMapper.updateByPrimaryKeySelective(jobOffers);
                 if(rowUpdate>0){
                     return ServerResponse.createBySuccess("修改成功",jobOffers);
@@ -70,21 +89,36 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
 
 
     /**
-     * 删除发布的招聘信息
-     * @param id
-     * @param companyid
+     * 删除发布的招聘信息  将岗位设置为过期，而不是真正的删除
+     * @param id 岗位id
+     * @param companyid 企业的id
      * @return
      */
     @Override
     public ServerResponse delJob(Integer id, String companyid) {
-        if(id==null)return ServerResponse.createByErrorMessage("传入参数错误");
+
+        //判断空参
+        if(id==null||StringUtils.isBlank(companyid))
+            return ServerResponse.createByErrorMessage("传入参数为空");
+
+        //判断企业是否有权限
+        int haveAuthentication = companyMapper.haveAuthentication(companyid,Const.CompStatus.SuccessTOPass);
+
+        if(haveAuthentication==0)
+            return ServerResponse.createByErrorMessage("无权操作");
+
+        //判断是否存在该记录
         int row = jobOffersMapper.checkOffersByJoid(id);
+
         if(row>0){
             //存在
             JobOffers jobOffers = jobOffersMapper.selectByPrimaryKey(id);
             if(!jobOffers.getCompanyid().equals(companyid))
                 return ServerResponse.createByErrorMessage("这不是你发布的信息，无法删除");
-            int rowDel = jobOffersMapper.deleteByPrimaryKey(id);
+            jobOffers.setChecked(Const.JobStatus.Overdue);  //将岗位设置为过期，而不是真正的删除
+
+            int rowDel = jobOffersMapper.updateByPrimaryKeySelective(jobOffers);
+
             if(rowDel>0){
                 return ServerResponse.createBySuccess("删除成功");
             }
@@ -141,5 +175,109 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
         if(jobOffers.getWorkfrequency()==null)return false;
         if(jobOffers.getDuration()==null)return false;
         return true;
+    }
+
+    /**
+     * 获取招聘信息列表
+     * @param pageNum
+     * @param pageSize
+     * @param jobOffers
+     * @param keywords
+     * @return
+     */
+    @Override
+    public ServerResponse<PageInfo> getOfferList(int pageNum, int pageSize, JobOffers jobOffers, String keywords) {
+        PageHelper.startPage(pageNum,pageSize);
+        //看看keywords有没有
+        PageHelper.orderBy("updatetime desc");
+        //有keywords
+        if(jobOffers==null) {
+            jobOffers = new JobOffers();
+        }
+        jobOffers.setChecked(1); //必须要审核过的才可以
+        if(StringUtils.isNotBlank(keywords)){
+            String k = new StringBuilder().append("%").append(keywords).append("%").toString();
+            jobOffers.setJobname(k);
+        }
+        List<JobOffers> jobOffersList = jobOffersMapper.selectList(jobOffers);
+        List<JobOffersListVO> list = Lists.newArrayList();
+        for(JobOffers jo:jobOffersList){
+            JobOffersListVO vo = assembleJobOffersListVO(jo);
+            list.add(vo);
+        }
+        PageInfo pageResult = new PageInfo(jobOffersList);
+        //将封装好的volist放进去
+        pageResult.setList(list);
+        return ServerResponse.createBySuccess(pageResult);
+
+    }
+
+    /**
+     * 查看具体的招聘信息
+     * @param joid
+     * @return
+     */
+    @Override
+    public ServerResponse getOfferDetail(Integer joid) {
+        if (joid!=null){
+            JobOffers jo = jobOffersMapper.selectByPrimaryKey(joid);
+            if (jo != null) {
+                JobOffersListVO v = assembleJobOffersListVO(jo);
+                return ServerResponse.createBySuccess(v);
+            }
+            return ServerResponse.createByErrorMessage("找不到该招聘信息！");
+        }
+        return ServerResponse.createByErrorMessage("传入参数有误！");
+    }
+
+
+    /**
+     * 获取推荐招聘信息列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public ServerResponse<PageInfo> recommendList(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.orderBy("wage desc");
+        List<JobOffers> jobOffersList = jobOffersMapper.recommendList();
+        List<JobOffersListVO> list = Lists.newArrayList();
+        for(JobOffers jo:jobOffersList){
+            JobOffersListVO vo = assembleJobOffersListVO(jo);
+            list.add(vo);
+        }
+        PageInfo pageResult = new PageInfo(jobOffersList);
+        //将封装好的volist放进去
+        pageResult.setList(list);
+        return ServerResponse.createBySuccess(pageResult);
+    }
+
+
+    private JobOffersListVO assembleJobOffersListVO(JobOffers jobOffers){
+        JobOffersListVO vo = new JobOffersListVO();
+        vo.setAddress(jobOffers.getAddress());
+        vo.setChecked(jobOffers.getChecked());
+        vo.setCity(jobOffers.getCity());
+        vo.setDescription(jobOffers.getDescription());
+        vo.setDuration(jobOffers.getDuration());
+        vo.setEducation(jobOffers.getEducation());
+        vo.setId(jobOffers.getId());
+        vo.setJobname(jobOffers.getJobname());
+        vo.setWage(jobOffers.getWage());
+        vo.setType(jobOffers.getType());
+        vo.setWorkfrequency(jobOffers.getWorkfrequency());
+        vo.setTag(jobOffers.getTag());
+        vo.setUpdatetime(jobOffers.getUpdatetime());
+        String[] temptations = jobOffers.getTemptation().split(",");
+        vo.setTemptation(temptations);
+        if(jobOffers.getCompanyid()!=null){
+            vo.setCompanyid(jobOffers.getCompanyid());
+            Company company = companyMapper.selectByPrimaryKey(jobOffers.getCompanyid());
+            if(company!=null){
+                vo.setCompany(company);
+            }
+        }
+        return vo;
     }
 }

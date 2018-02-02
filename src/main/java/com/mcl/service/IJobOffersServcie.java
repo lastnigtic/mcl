@@ -19,4 +19,10 @@ public interface IJobOffersServcie {
 
     ServerResponse getJob(Integer id, String companyid);
 
+
+    ServerResponse<PageInfo> getOfferList(int pageNum, int pageSize, JobOffers jobOffers, String keywords);
+
+    ServerResponse getOfferDetail(Integer joid);
+
+    ServerResponse<PageInfo> recommendList(int pageNum, int pageSize);
 }

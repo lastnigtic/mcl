@@ -74,11 +74,17 @@
 													<td>
 														<c:choose>
 															<c:when test="${job.checked==0}">
+																<span class="label label-danger">未审核</span>
+															</c:when>
+															<c:when test="${job.checked==1}">
+																<span class="label label-success">通过</span>
+															</c:when>
+															<c:when test="${job.checked==2}">
 																<span class="label label-danger">未通过</span>
 															</c:when>
-															<c:otherwise>
-																<span class="label label-success">通过</span>
-															</c:otherwise>
+															<c:when test="${job.checked==3}">
+																<span class="label label-danger">过期</span>
+															</c:when>
 														</c:choose>
 													</td>
 													<td class="J-Date">${job.updatetime}</td>

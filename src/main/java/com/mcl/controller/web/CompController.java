@@ -249,9 +249,6 @@ public class CompController {
     @ResponseBody
     public ServerResponse saveOrUpdateCompany(Company company, HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
         return iAccountService.saveOrUpdateCompany(account.getId(),company);
     }
 
@@ -265,9 +262,6 @@ public class CompController {
     @ResponseBody
     public ServerResponse isPassVerified(HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
         return iAccountService.isPassVerified(account.getId());
     }
 
@@ -303,9 +297,6 @@ public class CompController {
 
         Company company = iAccountService.getCompanyByAccount(account.getId());
         if(company==null)return ServerResponse.createByErrorMessage("未有公司信息");
-        if(company.getChecked()==0){
-            return ServerResponse.createByErrorMessage("未通过认证");
-        }
         return iJobOffersServcie.updateJob(jobOffers);
     }
 
@@ -320,13 +311,6 @@ public class CompController {
     @ResponseBody
     public ServerResponse delJob(Integer id,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
-        Company company = iAccountService.getCompanyByAccount(account.getId());
-        if(company.getChecked()==0){
-            return ServerResponse.createByErrorMessage("未通过认证");
-        }
         return iJobOffersServcie.delJob(id,account.getCompanyid());
     }
 
@@ -344,9 +328,6 @@ public class CompController {
                                   @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
                                   JobOffers jobOffers,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
         return iJobOffersServcie.list(pageNum,pageSize,account,jobOffers);
     }
 
@@ -361,9 +342,6 @@ public class CompController {
     @ResponseBody
     public ServerResponse getJob(Integer id,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
         return iJobOffersServcie.getJob(id,account.getCompanyid());
     }
 
@@ -378,9 +356,6 @@ public class CompController {
     @ResponseBody
     public ServerResponse getResume(Integer id,Integer resumeid,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
         return iResumeService.getResumeFromBox(id,resumeid,account.getCompanyid());
     }
 
@@ -414,9 +389,6 @@ public class CompController {
                                        @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
                                        Resume resume, HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
         Company company = iAccountService.getCompanyByAccount(account.getId());
         if(company==null)return ServerResponse.createByErrorMessage("未有公司信息");
         if(company.getChecked()==0){
@@ -492,9 +464,6 @@ public class CompController {
     @ResponseBody
     public ServerResponse verified(@RequestParam(value = "uploadfile",required = false) MultipartFile file,HttpSession session, HttpServletRequest request){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
         Company company = iAccountService.getCompanyByAccount(account.getId());
         if(company==null){
             return ServerResponse.createByErrorMessage("未找到贵公司的信息");

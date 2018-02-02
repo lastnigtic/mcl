@@ -43,4 +43,6 @@ public interface ResDeliverStatusMapper {
     int checkResumeCanGet(@Param("reid")Integer reid, @Param("joid")Integer joid, @Param("id") Integer id);
 
     int updateStatusById(@Param("id")Integer id, @Param("status")Integer status);
+
+    int deleteByResumeId(Integer id);
 }

@@ -3,7 +3,7 @@ package com.mcl.controller.wechat;
 import com.github.pagehelper.PageInfo;
 import com.mcl.common.ServerResponse;
 import com.mcl.pojo.JobOffers;
-import com.mcl.service.IOffersService;
+import com.mcl.service.IJobOffersServcie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OffersController {
 
     @Autowired
-    private IOffersService iOffersService ;
+    private IJobOffersServcie iOffersService ;
 
 
     /**

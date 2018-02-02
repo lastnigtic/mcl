@@ -50,7 +50,11 @@
     delete from resdeliverstatus
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.mcl.pojo.ResDeliverStatus" >
+    <delete id="deleteByResumeId">
+      DELETE FROM resdeliverstatus
+    where reid = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.mcl.pojo.ResDeliverStatus" >
     insert into resdeliverstatus (id, joid, reid, 
       status, viewed, updatetime, 
       openid, description)
