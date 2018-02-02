@@ -29,8 +29,8 @@
 		.J-Ctrl{
 			cursor: pointer;
 		}
-		.J-reject{
-			margin-left: 10px;
+		th, td{
+			text-align: center;
 		}
 	</style>
 </head>
@@ -79,85 +79,28 @@
 														<td>${xh.count}</td>
 														<td>${comp.companyname}</td>
 														<td>${comp.companysize}</td>
-														<th>${comp.legalrepresentative}</th>
+														<td>${comp.legalrepresentative}</td>
 														<td>${comp.industry}</td>
-														<th>${comp.city}</th>
-														<th>${comp.financingstage}</th>
-														<th>${comp.registeredcapital}</th>
-														<td>${comp.setuptime}</td>
+														<td>${comp.city}</td>
+														<td>${comp.financingstage}</td>
+														<td>${comp.registeredcapital}</td>
+														<td class="J-Date">${comp.setuptime}</td>
 														<td>
-															<a href="/admin/compinfo.html?id=${comp.id}">查看详情</a> &nbsp;
+															<a href="/admin/compinfo.html?id=${comp.id}">查看</a>
+															<a class="J-pass" data-name="${comp.companyname}" data-id="${comp.id}">通过</a>
+															<a class="J-reject" data-name="${comp.companyname}" data-id="${comp.id}">拒绝</a>
 														</td>
 													</tr>
 												</c:forEach>
 											</c:when>
 											<c:otherwise>
 												<tr>
-													<td colspan="5">暂无数据</td>
+													<td colspan="10">暂无数据</td>
 												</tr>
 											</c:otherwise>
 										</c:choose>
 										<%--<tbody id="informationBody">--%>
 										<%--</tbody>--%>
-									</table>
-								</div>
-							</div>
-							<!-- END RECENT PURCHASES -->
-						</div>
-					</div>
-					<div class="row" id="job" style="display: none">
-						<div class="col-md-12">
-							<!-- RECENT PURCHASES -->
-							<div class="panel">
-								<div class="panel-heading">
-									<h3 class="panel-title">企业实习岗位信息审核</h3>
-									<div class="right">
-										<button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
-									</div>
-								</div>
-								<div class="panel-body no-padding">
-									<table class="table table-striped">
-										
-										<thead>
-											<tr>
-												<th>所属企业</th>
-												<th>实习名称</th>
-												<th style="text-align: center">实习描述</th>
-												<th>实习工资</th>
-												<th>实习天数</th>
-												<th>实习月数</th>
-												<th>招聘结束时间</th>
-												<th>操作</th>
-											</tr>
-										</thead>
-										<tbody id="jobBody">
-											<tr>
-												<td><a href="#">世纪龙</a></td>
-												<td>Java开发</td>
-												<td style="width: 40%">要特别骚的人,骚的出水的，像泳智大神一样骚的男人，最重要的是爱着君要特别骚的人,骚的出水的，像泳智大神一样骚的男人，最重要的是爱着君要特别骚的人,骚的出水的，像泳智大神一样骚的男人，最重要的是爱着君要特别骚的人,骚的出水的，像泳智大神一样骚的男人，最重要的是爱着君要特别骚的人,骚的出水的，像泳智大神一样骚的男人，最重要的是爱着君</td>
-												<td>200</td>
-												<td>4</td>
-												<td>6</td>
-												<td>2020-06-06</td>
-												<td>
-													<button data-type="job" class="btn btn-success btn-xs J-pass">通过</button>
-													<button data-type="job" class="btn btn-danger btn-xs J-reject">拒绝</button>
-												</td>
-											</tr>
-											<tr>
-												<td><a href="#">世纪龙</a></td>
-												<td>Java开发</td>
-												<td>要特别骚的人</td>
-												<td>200</td>
-												<td>4</td>
-												<td>6</td>
-												<td>2020-06-06</td>
-												<td>
-													<button data-type="job" class="btn btn-success btn-xs J-pass">通过</button>
-													<button data-type="job" class="btn btn-danger btn-xs J-reject">拒绝</button>
-												</td>
-											</tr>
-										</tbody>
 									</table>
 								</div>
 							</div>
@@ -183,60 +126,37 @@
 	<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	<script src="/assets/vendor/toastr/toastr.min.js"></script>
 	<script src="/assets/scripts/klorofil-common.js"></script>
+	<script src="/assets/js/tool.js"></script>
 	<script>
 		$(function() {
-			var tableArr = ['information', 'job']
-		// 显示列表
-		$('.J-Ctrl').on('click', function(e){
-			var tar = $(e.currentTarget),
-			idx = tar.data('idx');
-			for(var i = 0, len = tableArr.length; i < len; i++){
-				if(i === idx){
-					$('#' + tableArr[i]).show();
-				}else{
-					$('#' + tableArr[i]).hide();
-				}
-			}
-		})
 		// 通过，拒绝
 		$('.J-pass').on('click', function(e){
 			var tar = $(e.currentTarget);
-			if(tar.data('type') === 'information'){
-				toastr.success('通过一项企业实名审核', '世纪龙', {timeOut: 2000})
-			}else if(tar.data('type') === 'job'){
-				toastr.success('通过一项实习岗位审核', 'java开发', {timeOut: 2000})
-			}
+			    if(window.confirm('通过 '+tar.data('name') +' 实名认证?')){
+					$.post('/admin/passcompany.do?companyid='+tar.data('id')+'&checked=1',{
+					},function(res){
+					    if(res.status === 0){
+                            toastr.success('通过一项企业实名审核', tar.data('name'), {timeOut: 2000})
+                            tar.closest('table').display = 'none';
+						}else{
+                            toastr.warning('提交失败请重试', {timeOut: 2000})
+						}
+					})
+				}
 		})
 		$('.J-reject').on('click', function(e){
 			var tar = $(e.currentTarget);
-			if(tar.data('type') === 'information'){
-				toastr.error('拒绝一项企业实名审核', '世纪龙', {timeOut: 2000})
-			}else if(tar.data('type') === 'job'){
-				toastr.error('拒绝一项实习岗位审核', 'java开发', {timeOut: 2000})
+			    if(window.confirm('拒绝 '+tar.data('name') +' 实名认证?')){
+                    $.post('/admin/passcompany.do?companyid='+tar.data('id')+'&checked=2',{
+                    },function(res){
+                        if(res.status === 0){
+                            toastr.success('拒绝一项企业实名审核', tar.data('name'), {timeOut: 2000})
+                            tar.closest('table').display = 'none';
+                        }else{
+                            toastr.warning('提交失败请重试', {timeOut: 2000})
+                        }
+                    })
 			}
-		})
-		//	获取待审核公司信息
-		$.post('/admin/companylist.do?checked=0',{},function(res){
-			if(res.status === 0){
-				var list = $(res.data.list);
-				var tbody = $('#informationBody');
-				list.each(function(idx, item){
-					var el='<tr>'
-					+'<td>'+item.companyname+'</td>'
-					+'<td>'+item.legalrepresentative+'</td>'
-					+'<td>'+'<a href='+item.companylicense+' target="_blank">查看</a>'+'</td>'
-					+'<td>'+item.industry+'</td>'
-					+'<td>'+item.address+'</td>'
-					+'<td class="J-Date">'+item.updatetime+'</td>'
-					+'<td>'+'<button data-type="information" class="btn btn-success btn-xs J-pass">通过</button><button data-type="information" class="btn btn-danger btn-xs J-reject">拒绝</button>'+'</td>'
-					+'</tr>'
-					tbody.append(el)
-				}) 
-			}
-		})
-		// 获取待审核职位列表
-		$.post('/admin/joblist.do?checked=0',{},function(res){
-			console.log(res)
 		})
 	});
 </script>

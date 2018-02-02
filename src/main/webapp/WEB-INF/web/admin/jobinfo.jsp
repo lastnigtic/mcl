@@ -55,7 +55,7 @@
 						<div class="clearfix">
 							<div class="media col-md-8 col-md-offset-2">
 								<div class="media-body">
-									<h2 class="media-heading">${job.jobname}</h2>
+									<h2 class="media-heading">${job.name}</h2>
 									<div class="media-head-info">
 										<p>2018-01-28 更新</p>
 										<p>120元/天 &nbsp;|&nbsp; 成都 &nbsp;|&nbsp; 本科 &nbsp;|&nbsp; 4天／周 &nbsp;|&nbsp; 实习6个月</p>

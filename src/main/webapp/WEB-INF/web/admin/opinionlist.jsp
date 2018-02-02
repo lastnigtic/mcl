@@ -26,6 +26,10 @@
 		#wrapper td{
 			vertical-align: middle;
 		}
+		th:not(:first-child),
+		td:not(:first-child){
+			text-align: center;
+		}
 	</style>
 </head>
 
@@ -55,14 +59,19 @@
 										<thead>
 											<tr>
 												<th>#</th>
-
+												<th>反馈内容</th>
+												<th>时间</th>
+												<th>联系方式</th>
 											</tr>
 										</thead>
 										<c:choose>
 											<c:when test="${oplist!=null}">
 												<c:forEach items="${oplist}" var="opinion" varStatus="xh" >
 													<tr>
+														<td>${xh.count}</td>
+														<td>${opinion.description}</td>
 														<td>${opinion.contactinfo}</td>
+														<td class="J-Date">${opinion.updatetime}</td>
 													</tr>
 												</c:forEach>
 											</c:when>
@@ -100,6 +109,7 @@
 	<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	<script src="/assets/vendor/toastr/toastr.min.js"></script>
 	<script src="/assets/scripts/klorofil-common.js"></script>
+	<script src="/assets/js/tool.js"></script>
 
 </body>
 
