@@ -3,19 +3,18 @@ package com.mcl.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.mcl.common.Const;
 import com.mcl.common.ServerResponse;
 import com.mcl.dao.*;
 import com.mcl.pojo.*;
-import com.mcl.service.IDeliveredService;
 import com.mcl.service.IUserService;
-import com.mcl.util.PropertiesUtil;
 import com.mcl.vo.JobOffersListVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -509,6 +508,25 @@ public class IUserServiceImpl implements IUserService {
     }
 
 
+    public boolean isUserHaveAuthorityScoreCompany(String openid, String companyid) {
+
+        ResDeliverStatus deliverStatus = resDeliverStatusMapper.isUserHaveAuthorityScoreCompany(openid, companyid, Const.DeliveryStatus.PassInterview);
+
+        if(deliverStatus==null)
+            return false ;
+
+        Date updatetime = deliverStatus.getUpdatetime();
+
+        long subtractionResult = new Date().getTime()-updatetime.getTime();
+
+        if(subtractionResult < 60*60*24*30){
+            //小于30天
+            return false;
+        }
+        return true ;
+
+    }
+
     /**
      * 用户向公司评分
      * @param openid
@@ -533,7 +551,7 @@ public class IUserServiceImpl implements IUserService {
         if(company==null)
             return ServerResponse.createByErrorMessage("找不到公司");
 
-        boolean havaAuthority = resDeliverStatusMapper.isUserHaveAuthorityScoreCompany(openid,companyid)==null?false:true;
+        boolean havaAuthority = resDeliverStatusMapper.isUserHaveAuthorityScoreCompany(openid,companyid, Const.DeliveryStatus.PassInterview)==null?false:true;
 
         if(havaAuthority){
             //有权评分

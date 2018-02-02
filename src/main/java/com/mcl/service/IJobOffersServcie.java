@@ -19,5 +19,4 @@ public interface IJobOffersServcie {
 
     ServerResponse getJob(Integer id, String companyid);
 
-    PageInfo list4jsp(int pageNum, int pageSize, Account account, JobOffers jobOffers);
 }

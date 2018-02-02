@@ -19,4 +19,6 @@ public interface IAccountService {
     ServerResponse isPassVerified(Integer id);
 
     ServerResponse rateToUser(String openid, String companyid, Double credit);
+
+    boolean isCompanyHaveAuthorityScoreUser(String openid, String companyid);
 }

@@ -32,7 +32,7 @@ public interface ResDeliverStatusMapper {
 
     List<ResDeliverStatus> getResumeStatusListByJobId(@Param("id") Integer id);
 
-    ResDeliverStatus isUserHaveAuthorityScoreCompany(@Param("openid") String openid, @Param("companyid") String companyid);
+    ResDeliverStatus isUserHaveAuthorityScoreCompany(@Param("openid") String openid, @Param("companyid") String companyid,@Param("status") Integer passInterview);
 
     ResDeliverStatus getStatusByJobIdAndReId(@Param("reid") Integer reid, @Param("joid") Integer joid);
 

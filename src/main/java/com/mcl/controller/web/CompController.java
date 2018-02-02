@@ -23,7 +23,6 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -117,20 +116,6 @@ public class CompController {
     }
 
 
-//
-//    @RequestMapping(value = "resume.html")
-//    public String resumeFromBox(Model model,Integer id,Integer resumeid,HttpSession session){
-//        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-//        ServerResponse response = iResumeService.getResumeFromBox(id,resumeid,account.getCompanyid());
-//        ResumeVO r = (ResumeVO)response.getData();
-//        model.addAttribute("id",id);
-//        if(response.isSuccess()){
-//            model.addAttribute("resume",r);
-//            return "/company/resume";
-//        }
-//        return "/company/myresumebox";
-//    }
-
     /**
      * 我发布的岗位信息页面
      * @return
@@ -169,44 +154,12 @@ public class CompController {
             model.addAttribute("resumelist",pageInfo.getList());
         }
 
-        return "/company/myresumebox" ;
+        return "company/jobresume";
     }
 
-    /**
-     * 我的简历箱页面
-     * @return
-     */
-    @RequestMapping(value = "myresumebox.html")
-    public String myResumeBox(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
-                              @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
-                              Resume resume, HttpSession session,Model model){
-        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-
-        Company company = iAccountService.getCompanyByAccount(account.getId());
-        if(company==null){
-            model.addAttribute("msg","找不到公司");
-            return "/company/index" ;
-        }
-        if(company.getChecked()==0){
-            model.addAttribute("msg","未通过认证");
-            return "/company/index" ;
-        }
-
-        ServerResponse response =  iResumeService.getResumeBox(pageNum,pageSize,resume,account);
-
-        if(response.isSuccess()){
-            PageInfo<ResumeVO> pageInfo = (PageInfo<ResumeVO>)response.getData();
-            model.addAttribute("pageInfo",pageInfo);
-            model.addAttribute("resumelist",pageInfo.getList());
-        }
-
-        return "/company/myresumebox";
-
-
-    }
 
     /**
-     * 验证页面
+     * 实名验证页面
      * @return
      */
     @RequestMapping(value = "verified.html")
@@ -491,6 +444,13 @@ public class CompController {
             return "/comp/verified";
         }
 
+        ServerResponse response = this.isPassVerified(session);
+        if(response.isSuccess()&&response.getData()==1){
+            //已认证，直接返回
+            model.addAttribute("msg","已认证，无需再认证");
+            return "/comp/verified";
+        }
+
         //存放路径
         String uploadpath = request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("ftp.uploadimg.rootpath"))+"/"+ DateTimeUtil.dateToStr(new Date(),"yyyyMMdd");
         //文件原始名
@@ -522,7 +482,7 @@ public class CompController {
     }
 
     /**
-     * 提交实名认证资料
+     * 提交实名认证资料(ajax接口，备用)
      * @param file
      * @param session
      * @param request
@@ -579,10 +539,23 @@ public class CompController {
     @ResponseBody
     public ServerResponse rateToUser(String openid,Double credit,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
         return iAccountService.rateToUser(openid,account.getCompanyid(),credit);
     }
 
+
+    /**
+     * 判断用户能否对公司评分
+     * @param openid
+     * @return
+     */
+    @RequestMapping(value = "canscoreuser.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse isCompanyHaveAuthorityScoreUser(String openid,HttpSession session){
+        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
+        boolean canscoreuser = iAccountService.isCompanyHaveAuthorityScoreUser(openid,account.getCompanyid());
+        if(canscoreuser){
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.createByError();
+    }
 }

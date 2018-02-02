@@ -44,4 +44,6 @@ public interface IUserService {
     boolean checkOpenid(String openid);
 
     ServerResponse rateToCompany(String openid, String companyid, Double credit);
+
+    boolean isUserHaveAuthorityScoreCompany(String openid, String companyid);
 }
