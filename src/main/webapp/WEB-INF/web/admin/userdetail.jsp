@@ -95,7 +95,7 @@
 									<div class="overlay"></div>
 									<div class="profile-main">
 										<img src="assets/img/user-medium.png" class="img-circle" alt="Avatar">
-										<h3 class="name">郑泳智</h3>
+										<h3 class="name">${user.realname}</h3>
 									</div>
 								</div>
 								<!-- END PROFILE HEADER -->

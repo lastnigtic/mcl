@@ -107,7 +107,7 @@ public class LoginController {
         if(role!=null&&role==Const.Role.ROLE_ADMIN)
             admin = (Admin)session.getAttribute(Const.CURRENT_USER);
         if(admin != null){
-            return "/admin/index";
+            return "/admin/reviewcomp";
         }
         return "/adminlogin";
 
@@ -127,13 +127,13 @@ public class LoginController {
         if(role!=null&&role==Const.Role.ROLE_ADMIN)
             admin = (Admin)session.getAttribute(Const.CURRENT_USER);
         if(admin != null){
-            return "/admin/index";
+            return "/admin/reviewcomp";
         }else {
             ServerResponse response = iAdminService.login(id,pass);
             if(response.isSuccess()){
                 session.setAttribute(Const.CURRENT_USER,response.getData());
                 session.setAttribute("Role",Const.Role.ROLE_ADMIN);
-                return "/admin/index";
+                return "/admin/reviewcomp";
             }else {
                 model.addAttribute("msg",response.getMsg());
                 return "/adminlogin";

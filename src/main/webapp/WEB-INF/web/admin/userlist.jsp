@@ -26,6 +26,9 @@
 		#wrapper td{
 			vertical-align: middle;
 		}
+		th,td{
+			text-align: center;
+		}
 	</style>
 </head>
 
@@ -55,14 +58,32 @@
 										<thead>
 											<tr>
 												<th>#</th>
-
+												<th>姓名</th>
+												<th>性别</th>
+												<th>所在城市</th>
+												<th>学校</th>
+												<th>学历</th>
+												<th>生日</th>
+												<th>手机</th>
+												<th>邮箱</th>
 											</tr>
 										</thead>
 										<c:choose>
 											<c:when test="${pageInfo!=null}">
 												<c:forEach items="${pageInfo.list}" var="user" varStatus="xh" >
 													<tr>
-														<td>${user.realname}</td>
+														<td>${xh.count}</td>
+														<td><a href="/admin/userdetail.html?id=${user.openid}">${user.realname}</a></td>
+														<c:choose>
+														<c:when test="${user.gender==1}"><td>男</td></c:when>
+														<c:otherwise><td>女</td></c:otherwise>
+														</c:choose>
+														<td>${user.city}</td>
+														<td>${user.schoolname}</td>
+														<td>${user.education}</td>
+														<td class="J-Date">${user.birthday}</td>
+														<td>${user.phone}</td>
+														<td>${user.email}</td>
 													</tr>
 												</c:forEach>
 											</c:when>
@@ -100,6 +121,7 @@
 	<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	<script src="/assets/vendor/toastr/toastr.min.js"></script>
 	<script src="/assets/scripts/klorofil-common.js"></script>
+	<script src="/assets/js/tool.js"></script>
 
 </body>
 

@@ -1758,4 +1758,8 @@ ul.activity-timeline > li {
   width: 150px;
   height: auto;
 }
+.media-body img{
+   width: 150px;
+   height: auto;
+ }
 /*# sourceMappingURL=main.css.map */

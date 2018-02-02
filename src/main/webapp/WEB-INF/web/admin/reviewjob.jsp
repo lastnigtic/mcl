@@ -26,6 +26,9 @@
 		#wrapper td{
 			vertical-align: middle;
 		}
+		th, td{
+			text-align: center;
+		}
 	</style>
 </head>
 
@@ -70,21 +73,24 @@
 												<c:forEach items="${pageInfo.list}" var="job" varStatus="xh" >
 													<tr>
 														<td>${xh.count}</td>
+														<td>${job.jobname}</td>
 														<td>${job.type}</td>
 														<td>${job.wage}</td>
 														<td>${job.address}</td>
 														<td>${job.city}</td>
 														<td>${job.education}</td>
-														<td>${job.updatetime}</td>
+														<td class="J-Date">${job.updatetime}</td>
 														<td>
-															<a href="/admin/jobinfo.html?id=${job.id}">查看详情</a> &nbsp;
+															<a href="/admin/jobinfo.html?id=${job.id}">查看</a>
+															<a data-name="${job.jobname}" data-id="${job.id}" class="J-pass">通过</a>
+															<a data-name="${job.jobname}" data-id="${job.id}" data-type="job" class="J-reject">拒绝</a>
 														</td>
 													</tr>
 												</c:forEach>
 											</c:when>
 											<c:otherwise>
 												<tr>
-													<td colspan="5">暂无数据</td>
+													<td colspan="9">暂无数据</td>
 												</tr>
 											</c:otherwise>
 										</c:choose>
@@ -116,6 +122,39 @@
 	<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	<script src="/assets/vendor/toastr/toastr.min.js"></script>
 	<script src="/assets/scripts/klorofil-common.js"></script>
+	<script src="/assets/js/tool.js"></script>
+	<script>
+        $(function() {
+            // 通过，拒绝
+            $('.J-pass').on('click', function(e){
+                var tar = $(e.currentTarget);
+                    if(window.confirm('通过 '+tar.data('name') +' 岗位认证?')){
+                        $.post('/admin/passjob.do?id='+tar.data('id')+'&checked=1',{
+                        },function(res){
+                            if(res.status === 0){
+                                toastr.success('通过一项实习岗位审核', tar.data('name'), {timeOut: 2000});
+                                tar.closest('table').display = 'none';
+                            }else{
+                                toastr.warning('提交失败请重试', {timeOut: 2000})
+                            }
+                        })
+                    }
+            })
+            $('.J-reject').on('click', function(e){
+                var tar = $(e.currentTarget);
+                    if(window.confirm('拒绝 '+tar.data('name') +' 岗位认证?')) {
+                        $.post('/admin/passjob.do?id=' + tar.data('id') + '&checked=2', {}, function (res) {
+                            if (res.status === 0) {
+                                toastr.success('拒绝一项实习岗位审核', tar.data('name'), {timeOut: 2000});
+                                tar.closest('table').display = 'none';
+                            } else {
+                                toastr.warning('提交失败请重试', {timeOut: 2000})
+                            }
+                        })
+                    }
+            })
+        });
+	</script>
 
 </body>
 
