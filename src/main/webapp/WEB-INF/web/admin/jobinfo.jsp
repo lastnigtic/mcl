@@ -55,29 +55,17 @@
 						<div class="clearfix">
 							<div class="media col-md-8 col-md-offset-2">
 								<div class="media-body">
-									<h2 class="media-heading">${job.name}</h2>
+									<h2 class="media-heading">${job.jobname}</h2>
 									<div class="media-head-info">
-										<p>2018-01-28 更新</p>
-										<p>120元/天 &nbsp;|&nbsp; 成都 &nbsp;|&nbsp; 本科 &nbsp;|&nbsp; 4天／周 &nbsp;|&nbsp; 实习6个月</p>
-										<p>职位诱惑：有爱团队，领先实习薪资，快速成长</p>
+										<p class="J-Date">${job.updatetime}</p>
+										<p>${job.wage}元/天 &nbsp;|&nbsp; ${job.city} &nbsp|&nbsp; ${job.workfrequency}天／周 &nbsp;|&nbsp; 实习6个月</p>
+										<p>职位诱惑：${job.temptation}</p>
 									</div>
 									<div class="media-main-info">
 										<h3 class="title">职位描述</h3>
-										<p class="detial">
-											工作内容<br>
-											撰写教学讲义<br>
-											制作&录入教学数据<br>
-											负责校对中英文字幕<br>
-									  	岗位要求<br>
-											高校在校生<br>
-											中英文功底扎实（六级500+／专八60+／雅思6.5分+／托福90分+）<br>
-											主动性强、有责任心、做事细致、有条理<br>
-											良好的沟通能力和团队协作能力<br>
-											这样的你更加分哟<br>
-											有字幕组工作经验<br>
-											有留学或交换经历<br>
-											爱看美剧、外国综艺<br>
-											</p>
+										<p class="detial">${job.description}</p>
+										<h3 class="title">详细地址</h3>
+										<p class="detail">${job.address}</p>
 										<h3 class="title">截止时间</h3>
 										<p class="detail">2018-03-03</p>
 									</div>
@@ -85,7 +73,7 @@
 								<div class="media-right">
 									<a href="#">
 										<img class="media-object" src="assets/img/user-medium.png" alt="...">
-										<h3 class="text-center">百词斩<h3>
+										<h3 class="text-center">${job.companyid}<h3>
 										</a>
 									</div>
 								</div>
@@ -109,6 +97,7 @@
 		<script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 		<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 		<script src="/assets/scripts/klorofil-common.js"></script>
+		<script src="/assets/js/tool.js"></script>
 	</body>
 
 	</html>
