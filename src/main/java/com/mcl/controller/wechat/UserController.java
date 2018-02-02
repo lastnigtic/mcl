@@ -259,4 +259,20 @@ public class UserController {
         return ServerResponse.createBySuccess(backpath);
     }
 
+    /**
+     * 判断用户能否对公司评分
+     * @param openid
+     * @param companyid
+     * @return
+     */
+    @RequestMapping(value = "canscorecompany.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse isUserHaveAuthorityScoreCompany(String openid,String companyid){
+        boolean canscorecompany = iUserService.isUserHaveAuthorityScoreCompany(openid,companyid);
+        if(canscorecompany){
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.createByError();
+    }
+
 }

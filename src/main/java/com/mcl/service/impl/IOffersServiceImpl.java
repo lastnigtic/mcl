@@ -27,9 +27,6 @@ public class IOffersServiceImpl implements IOffersService {
     private JobOffersMapper jobOffersMapper;
 
     @Autowired
-    private UserBaseInfoMapper userBaseInfoMapper ;
-
-    @Autowired
     private CompanyMapper companyMapper;
 
     /**

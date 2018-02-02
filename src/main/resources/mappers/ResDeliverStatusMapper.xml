@@ -38,8 +38,8 @@
     FROM resdeliverstatus
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="isUserHaveAuthorityScoreCompany">
-    select * from resdeliverstatus where joid in (select id from joboffers where companyid = #{companyid}) and reid in (select id from resume where openid=#{openid}) and status=3 order by updatetime desc limit 1,1
+  <select id="isUserHaveAuthorityScoreCompany" resultType="com.mcl.pojo.ResDeliverStatus">
+    select  <include refid="Base_Column_List"/> from resdeliverstatus where joid in (select id from joboffers where companyid = #{companyid}) and reid in (select id from resume where openid=#{openid}) and status=#{status} order by updatetime desc limit 1,1
   </select>
   <select id="getResumeStatusBox" resultType="com.mcl.pojo.ResDeliverStatus">
     select resdeliverstatus.*

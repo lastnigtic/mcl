@@ -1,19 +1,20 @@
 package com.mcl.service.impl;
 
+import com.mcl.common.Const;
 import com.mcl.common.ServerResponse;
 import com.mcl.dao.*;
 import com.mcl.pojo.Account;
 import com.mcl.pojo.Company;
 import com.mcl.pojo.CompanyUserCredit;
+import com.mcl.pojo.ResDeliverStatus;
 import com.mcl.service.IAccountService;
-import com.mcl.service.IDeliveredService;
 import com.mcl.util.MD5Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -171,6 +172,28 @@ public class IAccountServiceImpl implements IAccountService {
         return ServerResponse.createByErrorMessage("错误！");
     }
 
+
+    @Override
+    public boolean isCompanyHaveAuthorityScoreUser(String openid, String companyid) {
+
+        ResDeliverStatus deliverStatus = resDeliverStatusMapper.isUserHaveAuthorityScoreCompany(openid, companyid, Const.DeliveryStatus.PassInterview);
+
+        if(deliverStatus==null)
+            return false ;
+
+        Date updatetime = deliverStatus.getUpdatetime();
+
+        long subtractionResult = new Date().getTime()-updatetime.getTime();
+
+        if(subtractionResult < 60*60*24*30){
+            //小于30天
+            return false;
+        }
+        return true ;
+
+    }
+
+
     /**
      * 对用户评分
      * @param openid
@@ -188,7 +211,7 @@ public class IAccountServiceImpl implements IAccountService {
         if(rowUser==0)
             return ServerResponse.createByErrorMessage("找不到用户");
 
-        boolean havaAuthority = resDeliverStatusMapper.isUserHaveAuthorityScoreCompany(openid,companyid)==null?false:true;
+        boolean havaAuthority = isCompanyHaveAuthorityScoreUser(openid,companyid);
 
         if(havaAuthority){
             //有权评分
