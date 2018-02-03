@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mcl.dao.UserScoreMapper" >
+  <resultMap id="BaseResultMap" type="com.mcl.pojo.UserScore" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="openid" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="organizationability" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="communicateability" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="technicalability" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="adaptability" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="innovationability" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="learnability" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="joid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="companyid" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="comment" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, openid, organizationability, communicateability, technicalability, adaptability, 
+    innovationability, learnability, joid, companyid, updatetime, comment
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from userscore
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="isCompanyHaveAuthorityScoreUser" resultType="java.lang.Integer">
+      SELECT count(1) FROM  userscore WHERE openid = #{openid} and companyid = #{companyid} and joid = #{joid}
+    </select>
+  <select id="getUserAvgAbility" resultType="com.mcl.pojo.UserAvgAbility">
+    select
+AVG(technicalability) as technicalability ,
+avg(organizationability) as organizationability,
+avg(communicateability) as communicateability,
+avg(innovationability) as innovationability,
+avg(learnability) as learnability,
+avg(adaptability) as adaptability,
+openid
+from userscore where openid = #{openid}
+  </select>
+  <select id="selectList" resultType="com.mcl.pojo.UserScore">
+    SELECT <include refid="Base_Column_List"/>
+    FROM userscore
+    WHERE openid = #{openid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from userscore
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mcl.pojo.UserScore" >
+    insert into userscore (id, openid, organizationability, 
+      communicateability, technicalability, adaptability, 
+      innovationability, learnability, joid, 
+      companyid, updatetime, comment
+      )
+    values (#{id,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, #{organizationability,jdbcType=INTEGER}, 
+      #{communicateability,jdbcType=INTEGER}, #{technicalability,jdbcType=INTEGER}, #{adaptability,jdbcType=INTEGER}, 
+      #{innovationability,jdbcType=INTEGER}, #{learnability,jdbcType=INTEGER}, #{joid,jdbcType=INTEGER}, 
+      #{companyid,jdbcType=VARCHAR}, now() #{comment,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mcl.pojo.UserScore" >
+    insert into userscore
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="openid != null" >
+        openid,
+      </if>
+      <if test="organizationability != null" >
+        organizationability,
+      </if>
+      <if test="communicateability != null" >
+        communicateability,
+      </if>
+      <if test="technicalability != null" >
+        technicalability,
+      </if>
+      <if test="adaptability != null" >
+        adaptability,
+      </if>
+      <if test="innovationability != null" >
+        innovationability,
+      </if>
+      <if test="learnability != null" >
+        learnability,
+      </if>
+      <if test="joid != null" >
+        joid,
+      </if>
+      <if test="companyid != null" >
+        companyid,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="organizationability != null" >
+        #{organizationability,jdbcType=INTEGER},
+      </if>
+      <if test="communicateability != null" >
+        #{communicateability,jdbcType=INTEGER},
+      </if>
+      <if test="technicalability != null" >
+        #{technicalability,jdbcType=INTEGER},
+      </if>
+      <if test="adaptability != null" >
+        #{adaptability,jdbcType=INTEGER},
+      </if>
+      <if test="innovationability != null" >
+        #{innovationability,jdbcType=INTEGER},
+      </if>
+      <if test="learnability != null" >
+        #{learnability,jdbcType=INTEGER},
+      </if>
+      <if test="joid != null" >
+        #{joid,jdbcType=INTEGER},
+      </if>
+      <if test="companyid != null" >
+        #{companyid,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        now(),
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mcl.pojo.UserScore" >
+    update userscore
+    <set >
+      <if test="openid != null" >
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="organizationability != null" >
+        organizationability = #{organizationability,jdbcType=INTEGER},
+      </if>
+      <if test="communicateability != null" >
+        communicateability = #{communicateability,jdbcType=INTEGER},
+      </if>
+      <if test="technicalability != null" >
+        technicalability = #{technicalability,jdbcType=INTEGER},
+      </if>
+      <if test="adaptability != null" >
+        adaptability = #{adaptability,jdbcType=INTEGER},
+      </if>
+      <if test="innovationability != null" >
+        innovationability = #{innovationability,jdbcType=INTEGER},
+      </if>
+      <if test="learnability != null" >
+        learnability = #{learnability,jdbcType=INTEGER},
+      </if>
+      <if test="joid != null" >
+        joid = #{joid,jdbcType=INTEGER},
+      </if>
+      <if test="companyid != null" >
+        companyid = #{companyid,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = now(),
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mcl.pojo.UserScore" >
+    update userscore
+    set openid = #{openid,jdbcType=VARCHAR},
+      organizationability = #{organizationability,jdbcType=INTEGER},
+      communicateability = #{communicateability,jdbcType=INTEGER},
+      technicalability = #{technicalability,jdbcType=INTEGER},
+      adaptability = #{adaptability,jdbcType=INTEGER},
+      innovationability = #{innovationability,jdbcType=INTEGER},
+      learnability = #{learnability,jdbcType=INTEGER},
+      joid = #{joid,jdbcType=INTEGER},
+      companyid = #{companyid,jdbcType=VARCHAR},
+      updatetime = now(),
+      comment = #{comment,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
