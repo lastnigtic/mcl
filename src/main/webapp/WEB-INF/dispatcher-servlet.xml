@@ -24,6 +24,12 @@
             <mvc:mapping path="/comp/*"/>
             <bean class="com.mcl.controller.interceptor.LoginInterceptor"></bean>
         </mvc:interceptor>
+        <!-- 多个拦截器，顺序执行 -->
+        <mvc:interceptor>
+            <!-- /** 表示所有的url，包括子url路径 -->
+            <mvc:mapping path="/admin/*"/>
+            <bean class="com.mcl.controller.interceptor.AdminLoginInterceptor"></bean>
+        </mvc:interceptor>
     </mvc:interceptors>
 
     <mvc:annotation-driven>

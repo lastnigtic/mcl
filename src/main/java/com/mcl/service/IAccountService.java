@@ -3,6 +3,8 @@ package com.mcl.service;
 import com.mcl.common.ServerResponse;
 import com.mcl.pojo.Account;
 import com.mcl.pojo.Company;
+import com.mcl.pojo.CompanyMsg;
+import com.mcl.pojo.UserScore;
 
 /**
  * Created by Administrator on 2018/1/13 0013.
@@ -18,7 +20,12 @@ public interface IAccountService {
 
     ServerResponse isPassVerified(Integer id);
 
-    ServerResponse rateToUser(String openid, String companyid, Double credit);
+    ServerResponse rateToUser(UserScore userScore);
 
-    boolean isCompanyHaveAuthorityScoreUser(String openid, String companyid);
+    boolean isCompanyHaveAuthorityScoreUser(String openid, String companyid,Integer joid);
+
+
+    ServerResponse msgList(int pageNum, int pageSize, CompanyMsg companyMsg);
+
+    ServerResponse readMsg(Integer id);
 }

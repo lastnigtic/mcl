@@ -26,4 +26,5 @@ public interface CompanyMapper {
 
     void updateCompanyLicense(@Param("id") String id, @Param("backpath") String backpath);
 
+    int haveAuthentication(@Param("companyid") String companyid,@Param("checked") int successTOPass);
 }

@@ -67,7 +67,10 @@
   <select id="count" resultType="java.lang.Integer">
     SELECT COUNT(1) FROM company
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    <select id="haveAuthentication" resultType="java.lang.Integer">
+      SELECT COUNT(1) FROM company where checked = #{checked} and id = #{companyid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from company
     where id = #{id,jdbcType=VARCHAR}
   </delete>

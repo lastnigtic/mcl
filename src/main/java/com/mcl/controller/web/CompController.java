@@ -1,17 +1,16 @@
 package com.mcl.controller.web;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.mcl.common.Const;
 import com.mcl.common.ResponseCode;
 import com.mcl.common.ServerResponse;
-import com.mcl.pojo.Account;
-import com.mcl.pojo.Company;
-import com.mcl.pojo.JobOffers;
-import com.mcl.pojo.Resume;
+import com.mcl.pojo.*;
 import com.mcl.service.*;
 import com.mcl.util.DateTimeUtil;
 import com.mcl.util.PropertiesUtil;
 import com.mcl.vo.ResumeVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,6 +49,9 @@ public class CompController {
     @Autowired
     private ITagPropertyService iTagPropertyService;
 
+
+    @Autowired
+    private IScoreService iScoreService ;
     /**
      * 取首页
      * @return
@@ -232,8 +234,30 @@ public class CompController {
         model.addAttribute("jobtagproperty",iTagPropertyService.getJobTageList());
         model.addAttribute("jobtypeproperty",iTagPropertyService.getJobTypeList());
 
-        return "company/updatejob";
+        return "/company/updatejob";
 
+    }
+
+
+    /**
+     * 收到的消息
+     * @param model
+     * @param session
+     * @param companyMsg
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "msglist.html")
+    public String msgList(Model model ,HttpSession session,CompanyMsg companyMsg,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                          @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
+        ServerResponse response = this.msgList(pageNum,pageSize,session,companyMsg);
+        if(response.isSuccess()){
+            model.addAttribute("pageInfo",(PageInfo<CompanyMsg>)response.getData());
+        }else{
+            model.addAttribute("msg",response.getMsg());
+        }
+        return "/company/msglist";
     }
 
 
@@ -249,9 +273,6 @@ public class CompController {
     @ResponseBody
     public ServerResponse saveOrUpdateCompany(Company company, HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
         return iAccountService.saveOrUpdateCompany(account.getId(),company);
     }
 
@@ -265,9 +286,6 @@ public class CompController {
     @ResponseBody
     public ServerResponse isPassVerified(HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
         return iAccountService.isPassVerified(account.getId());
     }
 
@@ -303,9 +321,6 @@ public class CompController {
 
         Company company = iAccountService.getCompanyByAccount(account.getId());
         if(company==null)return ServerResponse.createByErrorMessage("未有公司信息");
-        if(company.getChecked()==0){
-            return ServerResponse.createByErrorMessage("未通过认证");
-        }
         return iJobOffersServcie.updateJob(jobOffers);
     }
 
@@ -320,13 +335,6 @@ public class CompController {
     @ResponseBody
     public ServerResponse delJob(Integer id,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
-        Company company = iAccountService.getCompanyByAccount(account.getId());
-        if(company.getChecked()==0){
-            return ServerResponse.createByErrorMessage("未通过认证");
-        }
         return iJobOffersServcie.delJob(id,account.getCompanyid());
     }
 
@@ -344,9 +352,6 @@ public class CompController {
                                   @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
                                   JobOffers jobOffers,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
         return iJobOffersServcie.list(pageNum,pageSize,account,jobOffers);
     }
 
@@ -361,9 +366,6 @@ public class CompController {
     @ResponseBody
     public ServerResponse getJob(Integer id,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
         return iJobOffersServcie.getJob(id,account.getCompanyid());
     }
 
@@ -378,26 +380,22 @@ public class CompController {
     @ResponseBody
     public ServerResponse getResume(Integer id,Integer resumeid,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
         return iResumeService.getResumeFromBox(id,resumeid,account.getCompanyid());
     }
 
     /**
      * 对投递到自己岗位的简历进行邀约面试，通过面试，更改为不合适
-     * @param id rds的id
-     * @param status 要更改的状态
-     * @param msg 邀约面试的信息
-     * @param joid 岗位id
+     * @param rds
      * @param session
+     * @param msg
      * @return
      */
     @RequestMapping(value = "changeresumestatus.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse changeResumeStatus(@RequestParam("id") Integer id,@RequestParam("joid")Integer joid,@RequestParam("status") Integer status ,@RequestParam(value = "msg",required = false) String msg,HttpSession session){
+    public ServerResponse changeResumeStatus(ResDeliverStatus rds,
+                                             HttpSession session,@RequestParam(value = "msg",required = false)String msg){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        return iResumeService.changeResumeStatus(id,joid,account.getCompanyid(),status,msg);
+        return iResumeService.changeResumeStatus(rds.getId(),rds.getJoid(),account.getCompanyid(),rds.getStatus(),msg,rds.getEntrytime() );
     }
 
     /**
@@ -414,9 +412,6 @@ public class CompController {
                                        @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
                                        Resume resume, HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
         Company company = iAccountService.getCompanyByAccount(account.getId());
         if(company==null)return ServerResponse.createByErrorMessage("未有公司信息");
         if(company.getChecked()==0){
@@ -492,9 +487,6 @@ public class CompController {
     @ResponseBody
     public ServerResponse verified(@RequestParam(value = "uploadfile",required = false) MultipartFile file,HttpSession session, HttpServletRequest request){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account == null){
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"未登录,需要强制登录status=10");
-        }
         Company company = iAccountService.getCompanyByAccount(account.getId());
         if(company==null){
             return ServerResponse.createByErrorMessage("未找到贵公司的信息");
@@ -530,32 +522,128 @@ public class CompController {
 
     /**
      * 公司向用户评分
-     * @param openid
-     * @param credit
+     * @param userScore
      * @param session
      * @return
      */
     @RequestMapping(value = "ratetouser.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse rateToUser(String openid,Double credit,HttpSession session){
+    public ServerResponse rateToUser(UserScore userScore,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        return iAccountService.rateToUser(openid,account.getCompanyid(),credit);
+        if(userScore!=null&& StringUtils.isBlank(userScore.getCompanyid()))
+            userScore.setCompanyid(account.getCompanyid());
+        return iAccountService.rateToUser(userScore);
     }
 
 
     /**
-     * 判断用户能否对公司评分
+     * 判断能否评分
      * @param openid
      * @return
      */
     @RequestMapping(value = "canscoreuser.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse isCompanyHaveAuthorityScoreUser(String openid,HttpSession session){
+    public ServerResponse isCompanyHaveAuthorityScoreUser(String openid,Integer joid ,HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        boolean canscoreuser = iAccountService.isCompanyHaveAuthorityScoreUser(openid,account.getCompanyid());
+        boolean canscoreuser = iAccountService.isCompanyHaveAuthorityScoreUser(openid,account.getCompanyid(),joid);
         if(canscoreuser){
             return ServerResponse.createBySuccess();
         }
         return ServerResponse.createByError();
     }
+
+    /**
+     * 获取用户的六种能力平均分
+     * @param openid
+     * @return
+     */
+    @RequestMapping(value = "getuseravgability.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse getUserAvgAbility(String openid){
+        return iScoreService.getUserAvgAbility(openid);
+    }
+
+    /**
+     * 获取企业的六种能力平均分
+     * @param companyid
+     * @return
+     */
+    @RequestMapping(value = "getcompavgrate.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse getCompavgRate(String companyid){
+        return iScoreService.getCompAvgAbility(companyid);
+    }
+
+
+    /**
+     * 获取消息列表
+     * @param pageNum
+     * @param pageSize
+     * @param session
+     * @param companyMsg
+     * @return
+     */
+    @RequestMapping(value = "msglist.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse msgList(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                  @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,HttpSession session,CompanyMsg companyMsg){
+        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
+        if(companyMsg!=null&&StringUtils.isBlank(companyMsg.getCompanyid())){
+            companyMsg.setCompanyid(account.getCompanyid());
+        }
+        return iAccountService.msgList(pageNum,pageSize,companyMsg);
+    }
+
+
+    /**
+     * 将消息设置为已读（ajax)
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "readmsg.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse readMsg(Integer id){
+        return iAccountService.readMsg(id);
+    }
+
+
+    /**
+     * 获取评分列表
+     * @param pageNum
+     * @param pageSize
+     * @param session
+     * @param companyScore
+     * @return
+     */
+    @RequestMapping(value = "ratelist.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse rateList(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                   @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,HttpSession session,CompanyScore companyScore){
+        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
+
+        return iScoreService.getCompRateList(pageNum,pageSize,account.getCompanyid(),companyScore);
+    }
+
+    /**
+     * 获取评分列表
+     * @param pageNum
+     * @param pageSize
+     * @param session
+     * @param companyScore
+     * @return
+     */
+    @RequestMapping(value = "ratelist.html")
+    public String rateList(Model model,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                   @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,HttpSession session,CompanyScore companyScore){
+
+        ServerResponse response = this.rateList(pageNum,pageSize,session,companyScore);
+
+        if(response.isSuccess()){
+            model.addAttribute("pageInfo",(PageInfo<CompanyScore>)response.getData());
+        }else {
+            model.addAttribute("msg",response.getMsg());
+        }
+        return "/company/ratelist";
+    }
+
 }

@@ -1,12 +1,11 @@
 package com.mcl.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.mcl.common.Const;
 import com.mcl.common.ServerResponse;
 import com.mcl.dao.*;
-import com.mcl.pojo.Account;
-import com.mcl.pojo.Company;
-import com.mcl.pojo.CompanyUserCredit;
-import com.mcl.pojo.ResDeliverStatus;
+import com.mcl.pojo.*;
 import com.mcl.service.IAccountService;
 import com.mcl.util.MD5Util;
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -34,11 +34,16 @@ public class IAccountServiceImpl implements IAccountService {
     private UserBaseInfoMapper userBaseInfoMapper;
 
     @Autowired
-    private CompanyUserCreditMapper companyUserCreditMapper;
+    private UserScoreMapper userScoreMapper;
 
     @Autowired
     private ResDeliverStatusMapper resDeliverStatusMapper;
 
+    @Autowired
+    private CompanyMsgMapper companyMsgMapper ;
+
+    @Autowired
+    private JobOffersMapper jobOffersMapper ;
 
 
     /**
@@ -173,64 +178,106 @@ public class IAccountServiceImpl implements IAccountService {
     }
 
 
+    /**
+     * 判断企业是否有权限对用户评分
+     * @param openid
+     * @param companyid
+     * @return
+     */
     @Override
-    public boolean isCompanyHaveAuthorityScoreUser(String openid, String companyid) {
+    public boolean isCompanyHaveAuthorityScoreUser(String openid, String companyid,Integer joid) {
+
+        //已经评分的就不能再评
+        int row  = userScoreMapper.isCompanyHaveAuthorityScoreUser(openid,companyid,joid);
+
+        if(row>0)
+            return false;
 
         ResDeliverStatus deliverStatus = resDeliverStatusMapper.isUserHaveAuthorityScoreCompany(openid, companyid, Const.DeliveryStatus.PassInterview);
 
         if(deliverStatus==null)
             return false ;
 
-        Date updatetime = deliverStatus.getUpdatetime();
+        Date entrytime = deliverStatus.getEntrytime();
 
-        long subtractionResult = new Date().getTime()-updatetime.getTime();
+        long subtractionResult = new Date().getTime()-entrytime.getTime();
 
-        if(subtractionResult < 60*60*24*30){
-            //小于30天
+        JobOffers jobOffers  = jobOffersMapper.selectByPrimaryKey(joid);
+        if(jobOffers==null||jobOffers.getDuration()==null)
             return false;
-        }
-        return true ;
 
+
+
+        if(subtractionResult < Const.RatingDuration.Day30*jobOffers.getDuration())//小于规定天数
+            return false;
+
+        return true ;
+    }
+
+    /**
+     * 获取消息列表
+     *
+     * @param pageNum
+     * @param pageSize
+     *@param companyMsg  @return
+     */
+    @Override
+    public ServerResponse msgList(int pageNum, int pageSize, CompanyMsg companyMsg) {
+        PageHelper.startPage(pageNum,pageSize);
+
+        if(StringUtils.isBlank(companyMsg.getCompanyid()))
+            return ServerResponse.createByErrorMessage("参数为空");
+
+        List<CompanyMsg> list = companyMsgMapper.selectList(companyMsg);
+
+        PageInfo pageInfo = new PageInfo(list);
+
+        return ServerResponse.createBySuccess(pageInfo);
+    }
+
+    /**
+     * 将消息设置为已读
+     * @param id
+     * @return
+     */
+    @Override
+    public ServerResponse readMsg(Integer id) {
+        if(id==null)
+            return ServerResponse.createByErrorMessage("参数为空");
+
+        int row = companyMsgMapper.readMsg(id);
+
+        if(row>0)
+            return ServerResponse.createBySuccess("成功");
+
+        return ServerResponse.createByErrorMessage("错误");
     }
 
 
     /**
      * 对用户评分
-     * @param openid
-     * @param companyid
-     * @param credit
+     * @param userScore
      * @return
      */
     @Override
-    public ServerResponse rateToUser(String openid, String companyid, Double credit) {
-        if(StringUtils.isBlank(openid)||StringUtils.isBlank(companyid)||credit==null)
+    public ServerResponse rateToUser(UserScore userScore) {
+        if(userScore==null||
+                StringUtils.isBlank(userScore.getOpenid())||
+                StringUtils.isBlank(userScore.getCompanyid())||
+                userScore.getJoid()==null)
             return ServerResponse.createByErrorMessage("参数错误");
 
-        int rowUser = userBaseInfoMapper.checkUserByOpenid(openid);
-
-        if(rowUser==0)
+        if(userBaseInfoMapper.checkUserByOpenid(userScore.getOpenid())==0)
             return ServerResponse.createByErrorMessage("找不到用户");
 
-        boolean havaAuthority = isCompanyHaveAuthorityScoreUser(openid,companyid);
+        boolean havaAuthority = isCompanyHaveAuthorityScoreUser(userScore.getOpenid(),userScore.getCompanyid(),userScore.getJoid());
 
         if(havaAuthority){
             //有权评分
-            CompanyUserCredit creditObj = new CompanyUserCredit();
-            creditObj.setCredit(credit.floatValue());
-            creditObj.setOpenid(openid);
-            creditObj.setCompanyid(companyid);
-
-            int rowInsert = companyUserCreditMapper.insert(creditObj);
+            int rowInsert = userScoreMapper.insert(userScore);
 
             if(rowInsert>0){
-                Double sum = companyUserCreditMapper.calSumCredit(openid);
-                Integer amount = companyUserCreditMapper.calAmount(openid);
-                Double avgCredit = Double.parseDouble(String.format("%.2f", sum/amount));//计算平均分，保留两位小数
-                int rowUpdate = userBaseInfoMapper.updateCredit(openid,avgCredit);
-                if(rowUpdate>0){
-                    return ServerResponse.createBySuccess("评分成功",avgCredit);
-                }
-                return ServerResponse.createByErrorMessage("评分失败");
+                return ServerResponse.createBySuccess("评分成功");
             }
             return ServerResponse.createByErrorMessage("评分失败");
         }
@@ -264,4 +311,6 @@ public class IAccountServiceImpl implements IAccountService {
         }
         return true;
     }
+
+
 }

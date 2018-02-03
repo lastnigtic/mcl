@@ -4,6 +4,8 @@ import com.mcl.common.ServerResponse;
 import com.mcl.pojo.Account;
 import com.mcl.pojo.Resume;
 
+import java.util.Date;
+
 /**
  * Created by Administrator on 2018/1/9 0009.
  */
@@ -18,7 +20,7 @@ public interface IResumeService {
 
     ServerResponse getResumeFromBox(Integer id,Integer resumeid, String companyid);
 
-    ServerResponse changeResumeStatus(Integer id, Integer joid, String companyid, Integer status, String msg);
+    ServerResponse changeResumeStatus(Integer id, Integer joid, String companyid, Integer status, String msg, Date entrytime);
 
     ServerResponse getResumeByJobId(int pageNum, int pageSize, Integer id, String companyid);
 

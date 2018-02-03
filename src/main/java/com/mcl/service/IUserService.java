@@ -2,8 +2,11 @@ package com.mcl.service;
 
 import com.github.pagehelper.PageInfo;
 import com.mcl.common.ServerResponse;
+import com.mcl.pojo.CompanyScore;
 import com.mcl.pojo.Opinion;
+import com.mcl.pojo.UserAvgAbility;
 import com.mcl.pojo.UserBaseInfo;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * Created by Administrator on 2018/1/9 0009.
@@ -43,7 +46,8 @@ public interface IUserService {
 
     boolean checkOpenid(String openid);
 
-    ServerResponse rateToCompany(String openid, String companyid, Double credit);
+    ServerResponse rateToCompany(CompanyScore companyScore);
 
-    boolean isUserHaveAuthorityScoreCompany(String openid, String companyid);
+    boolean isUserHaveAuthorityScoreCompany(String openid, String companyid,Integer joid);
+
 }

@@ -48,10 +48,11 @@ public class IUserServiceImpl implements IUserService {
     private UserMsgMapper userMsgMapper ;
 
     @Autowired
-    private CompanyUserCreditMapper companyUserCreditMapper ;
+    private CompanyScoreMapper companyScoreMapper ;
 
     @Autowired
-    private UserCompanyCreditMapper userCompanyCreditMapper;
+    private UserScoreMapper userScoreMapper ;
+
 
     /**
      * 更新或新增用户的基础信息
@@ -508,79 +509,82 @@ public class IUserServiceImpl implements IUserService {
     }
 
 
-    public boolean isUserHaveAuthorityScoreCompany(String openid, String companyid) {
+    /**
+     * 判断用户是否有权限对企业评分
+     * @param openid
+     * @param companyid
+     * @return
+     */
+    public boolean isUserHaveAuthorityScoreCompany(String openid, String companyid,Integer joid) {
+
+        //已经评分的就不能再评
+        int row = companyScoreMapper.isUserHaveAuthorityScoreCompany(openid,companyid);
+
+        if(row>0)
+            return false;
 
         ResDeliverStatus deliverStatus = resDeliverStatusMapper.isUserHaveAuthorityScoreCompany(openid, companyid, Const.DeliveryStatus.PassInterview);
 
         if(deliverStatus==null)
             return false ;
 
-        Date updatetime = deliverStatus.getUpdatetime();
+        Date entrytime = deliverStatus.getEntrytime();
 
-        long subtractionResult = new Date().getTime()-updatetime.getTime();
 
-        if(subtractionResult < 60*60*24*30){
-            //小于30天
+        long subtractionResult = new Date().getTime()-entrytime.getTime();
+
+        JobOffers jobOffers  = jobOffersMapper.selectByPrimaryKey(joid);
+        if(jobOffers==null||jobOffers.getDuration()==null)
             return false;
-        }
+
+
+
+        if(subtractionResult < Const.RatingDuration.Day30*jobOffers.getDuration())//小于规定天数
+            return false;
+
         return true ;
 
     }
 
+
     /**
      * 用户向公司评分
-     * @param openid
-     * @param companyid
-     * @param credit
+     * @param companyScore
      * @return
      */
     @Override
     @Transactional
-    public ServerResponse rateToCompany(String openid, String companyid, Double credit) {
+    public ServerResponse rateToCompany(CompanyScore companyScore) {
 
-        if(StringUtils.isBlank(openid)||StringUtils.isBlank(companyid)||credit==null)
-            return ServerResponse.createByErrorMessage("参数错误");
+        if(companyScore==null||StringUtils.isBlank(companyScore.getCompanyid())||StringUtils.isBlank(companyScore.getOpenid()))
+            return ServerResponse.createByErrorMessage("参数为空");
 
-        int rowUser = userBaseInfoMapper.checkUserByOpenid(openid);
+
+        int rowUser = userBaseInfoMapper.checkUserByOpenid(companyScore.getOpenid());
 
         if(rowUser==0)
             return ServerResponse.createByErrorMessage("找不到用户");
 
-        Company company = companyMapper.selectByPrimaryKey(companyid);
+        Company company = companyMapper.selectByPrimaryKey(companyScore.getCompanyid());
 
         if(company==null)
             return ServerResponse.createByErrorMessage("找不到公司");
 
-        boolean havaAuthority = resDeliverStatusMapper.isUserHaveAuthorityScoreCompany(openid,companyid, Const.DeliveryStatus.PassInterview)==null?false:true;
+        boolean havaAuthority = isUserHaveAuthorityScoreCompany(companyScore.getOpenid(),companyScore.getCompanyid(),companyScore.getJoid());
 
         if(havaAuthority){
-            //有权评分
-            UserCompanyCredit creditObj = new UserCompanyCredit();
-            creditObj.setCompanyid(companyid);
-            creditObj.setOpenid(openid);
-            creditObj.setCredit(credit);
 
-            int rowInsert = userCompanyCreditMapper.insert(creditObj);//插入一条评分记录
+            int rowInsert = companyScoreMapper.insert(companyScore);//插入一条评分记录
 
-            if(rowInsert==0){
-                return ServerResponse.createByErrorMessage("评分失败");
-            }
-            Double sum = userCompanyCreditMapper.calSumCredit(companyid); //计算该公司总分
-
-            Integer amount = userCompanyCreditMapper.calAmount(companyid);//计算该公司评分记录数
-
-            Double avgCredit = Double.parseDouble(String.format("%.2f", sum/amount));//计算平均分，保留两位小数
-
-            int row = companyMapper.updateCredit(companyid,avgCredit);
-
-            if(row>0){
-                return ServerResponse.createBySuccess("评分成功",avgCredit);
+            if(rowInsert>0){
+                return ServerResponse.createBySuccess("评分成功");
             }
             return ServerResponse.createByErrorMessage("评分失败");
         }else{
             return ServerResponse.createByErrorMessage("无权评分");
         }
     }
+
 
     /**
      * 检查某用户的某个简历是否完善，是否可以投递

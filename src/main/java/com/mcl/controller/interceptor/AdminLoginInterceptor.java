@@ -1,7 +1,7 @@
 package com.mcl.controller.interceptor;
 
 import com.mcl.common.Const;
-import com.mcl.pojo.Account;
+import com.mcl.pojo.Admin;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -9,22 +9,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by Administrator on 2018/1/27 0027.
+ * 管理员登录的拦截器
+ * @author yz
  */
-public class LoginInterceptor implements HandlerInterceptor{
+public class AdminLoginInterceptor implements HandlerInterceptor {
+
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+        Integer role = (Integer)httpServletRequest.getSession().getAttribute("Role");
         /// /判断是否已经登录
-        Integer role =  (Integer)httpServletRequest.getSession().getAttribute("Role");
-        if(role!=null&&Const.Role.ROLE_CUSTOMER==role){
-            Account account = (Account)httpServletRequest.getSession().getAttribute(Const.CURRENT_USER);
-            if(account != null){
+        if(role!=null&&Const.Role.ROLE_ADMIN==role){
+            Admin admin = (Admin)httpServletRequest.getSession().getAttribute(Const.CURRENT_USER);
+            if(admin != null){
                 return true;
             }
         }else{
 
         }
-        httpServletResponse.sendRedirect("/login.html");
+        httpServletResponse.sendRedirect("/adminlogin.html");
         return false;
     }
 

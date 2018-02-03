@@ -3,6 +3,7 @@ package com.mcl.dao;
 import com.mcl.pojo.ResDeliverStatus;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ResDeliverStatusMapper {
@@ -42,5 +43,7 @@ public interface ResDeliverStatusMapper {
 
     int checkResumeCanGet(@Param("reid")Integer reid, @Param("joid")Integer joid, @Param("id") Integer id);
 
-    int updateStatusById(@Param("id")Integer id, @Param("status")Integer status);
+    int updateStatusById(@Param("id") Integer id, @Param("status") Integer status,@Param("entrytime") Date entrytime);
+
+    int deleteByResumeId(Integer id);
 }

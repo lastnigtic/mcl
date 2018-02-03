@@ -48,61 +48,45 @@
 						<div class="col-md-12">
 							<div class="panel">
 								<div class="panel-heading">
-									<h3 class="panel-title">我发布的岗位</h3>
+									<h3 class="panel-title">消息列表</h3>
 								</div>
 								<div class="panel-body">
 									<table class="table table-striped">
 										<thead>
 											<tr>
 												<th>#</th>
-												<th>名称</th>
-												<th>工资</th>
-												<th>审核态</th>
+												<th>标题</th>
+												<th>类型</th>
 												<th>更新时间</th>
+												<th>已读状态</th>
 												<th>操作</th>
 											</tr>
 										</thead>
 										<tbody id="table-body">
 										<c:choose>
 
-										<c:when test="${joblist!=null}">
-											<c:forEach items="${joblist}" var="job" varStatus="xh" >
+										<c:when test="${pageInfo!=null}">
+											<c:forEach items="${pageInfo.list}" var="msg" varStatus="xh" >
 												<tr>
 													<td>${xh.count}</td>
-													<td>${job.jobname}</td>
-													<td>${job.wage}</td>
-													<td>
-														<c:choose>
-															<c:when test="${job.checked==0}">
-																<span class="label label-danger">未审核</span>
-															</c:when>
-															<c:when test="${job.checked==1}">
-																<span class="label label-success">通过</span>
-															</c:when>
-															<c:when test="${job.checked==2}">
-																<span class="label label-danger">未通过</span>
-															</c:when>
-															<c:when test="${job.checked==3}">
-																<span class="label label-danger">过期</span>
-															</c:when>
-														</c:choose>
-													</td>
-													<td class="J-Date">${job.updatetime}</td>
-													<td>
-														<a href="/comp/jobinfo.html?id=${job.id}">详情</a> &nbsp;
-														<c:choose>
-															<c:when test="${job.checked == 1}">
-																<a href="/comp/jobresume.html?id=${job.id}" style="cursor: pointer">简历</a> &nbsp;
-															</c:when>
-														</c:choose>
-														<a style="cursor: pointer" data-id="${job.id}" class="deljob">删除</a>
-													</td>
+													<td>${msg.title}</td>
+													<td>${msg.type}</td>
+													<td>${msg.updatetime}</td>
+													<c:choose>
+														<c:when test="${msg.status==0}">
+															<td>未读</td>
+														</c:when>
+														<c:when test="${msg.status==1}">
+															<td>已读</td>
+														</c:when>
+													</c:choose>
+													<td><a href="/comp/msgdetail.html?id=${msg.id}" style="cursor: pointer">详情</a> &nbsp;</td>
 												</tr>
 											</c:forEach>
 										</c:when>
 										<c:otherwise>
 											<tr>
-												<td colspan="5">暂无数据</td>
+												<td colspan="6">暂无数据</td>
 											</tr>
 										</c:otherwise>
 										</c:choose>
@@ -111,7 +95,7 @@
 									</table>
 
 									<jsp:include page="/public/page.jsp">
-										<jsp:param name="url" value="/comp/myjob.html"></jsp:param>
+										<jsp:param name="url" value="/comp/msglist.html"></jsp:param>
 									</jsp:include>
 								</div>
 							</div>
@@ -137,29 +121,6 @@
 	<script src="/assets/scripts/klorofil-common.js"></script>
 	<script src="/assets/js/public.js"></script>
 	<script src="/assets/js/tool.js"></script>
-	<script>
-		$(function () {
-			$(".deljob").click(function () {
-				if(confirm("是否确认删除")){
-				    $.ajax({
-                        url:'/comp/deljob.do',
-                        type:'POST',
-                        data:{
-                            id:$(this).data('id')
-                        },
-						success:function (res) {
-							if(res.status==0){
-							    alert('删除成功');
-							}else {
-                                alert('删除失败');
-							}
-							$(window).attr('location','/comp/myjob.html');
-                        }
-					})
-				}
-            })
-        })
-	</script>
 </body>
 
 </html>

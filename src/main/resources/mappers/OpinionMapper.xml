@@ -11,7 +11,7 @@
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, openid, updatetime, contactinfo
+    id, openid, updatetime, contactinfo,description
   </sql>
   <sql id="Blob_Column_List" >
     description

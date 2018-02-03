@@ -75,11 +75,16 @@ public class LoginController {
         return "/login";
     }
 
+    @RequestMapping(value = "adminlogout.do")
+    public String adminlogout(HttpSession session){
+        session.invalidate();
+        return "/adminlogin";
+    }
+
+
     @RequestMapping(value = "register.html")
     public String register(){
         return "/register";
-
-
     }
 
     /**

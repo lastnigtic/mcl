@@ -1,6 +1,7 @@
 package com.mcl.util;
 
 import com.mcl.pojo.Company;
+import com.mcl.pojo.CompanyMsg;
 import com.mcl.pojo.JobOffers;
 import org.apache.commons.lang3.StringUtils;
 
@@ -9,8 +10,69 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class MsgTemplate {
 
+    /**
+     * 企业通过验证的消息模版
+     * @return
+     * @param company
+     */
+    public static CompanyMsg newCompanyPassMsg(Company company) {
+        CompanyMsg companyMsg = new CompanyMsg();
+        companyMsg.setCompanyid(company.getId());
+        companyMsg.setContent("恭喜您！已通过实名认证！");
+        companyMsg.setTitle("通过实名认证");
+        companyMsg.setStatus(0);
+        companyMsg.setType(MsgType.SysMsg);
+        return  companyMsg ;
+    }
+
+    /**
+     * 企业实名认证被拒绝
+     * @param company
+     * @return
+     */
+    public static CompanyMsg newCompanyRejectMsg(Company company) {
+        CompanyMsg companyMsg = new CompanyMsg();
+        companyMsg.setCompanyid(company.getId());
+        companyMsg.setContent("很遗憾！您的认证已被退回！请您更改资料上传！");
+        companyMsg.setTitle("实名认证退回");
+        companyMsg.setStatus(0);
+        companyMsg.setType(MsgType.SysMsg);
+        return  companyMsg ;
+    }
+
+    /**
+     * 岗位审核通过
+     * @param jobOffers
+     * @return
+     */
+    public static CompanyMsg newJobPassMsg(JobOffers jobOffers) {
+        CompanyMsg companyMsg = new CompanyMsg();
+        companyMsg.setCompanyid(jobOffers.getCompanyid());
+        companyMsg.setContent("恭喜您！！您的"+jobOffers.getJobname()+"岗位已被审核通过！");
+        companyMsg.setTitle("岗位审核通过");
+        companyMsg.setStatus(0);
+        companyMsg.setType(MsgType.SysMsg);
+        return  companyMsg ;
+    }
+
+    /**
+     * 岗位审核不通过
+     * @param jobOffers
+     * @return
+     */
+    public static CompanyMsg newJobRejectMsg(JobOffers jobOffers) {
+        CompanyMsg companyMsg = new CompanyMsg();
+        companyMsg.setCompanyid(jobOffers.getCompanyid());
+        companyMsg.setContent("很遗憾！！您的"+jobOffers.getJobname()+"岗位已被退回！");
+        companyMsg.setTitle("岗位审核不通过");
+        companyMsg.setStatus(0);
+        companyMsg.setType(MsgType.SysMsg);
+        return  companyMsg ;
+    }
+
     public interface MsgType{
         String JobDeliveryMsg = "岗位投递消息";
+        int SysMsg = 1 ;
     }
 
     public static String interviewMsg(Company company, JobOffers jobOffers){

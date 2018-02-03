@@ -18,12 +18,12 @@
 						<span class="badge bg-danger">6</span>
 					</a>
 					<ul class="dropdown-menu notifications">
-						<li><a href="#" class="notification-item"><span class="dot bg-warning"></span>【王谋】投递了您的【JavaScript前端工程师】岗位</a></li>
-						<li><a href="#" class="notification-item"><span class="dot bg-danger"></span>【李彦鹏】投递了您的【Java web后端工程师】</a></li>
-						<li><a href="#" class="notification-item"><span class="dot bg-warning"></span>【王谋】投递了您的【JavaScript前端工程师】岗位</a></li>
-						<li><a href="#" class="notification-item"><span class="dot bg-danger"></span>【李彦鹏】投递了您的【Java web后端工程师】</a></li>
-						<li><a href="#" class="notification-item"><span class="dot bg-warning"></span>【王谋】投递了您的【JavaScript前端工程师】岗位</a></li>
-						<li><a href="#" class="notification-item"><span class="dot bg-danger"></span>【李彦鹏】投递了您的【Java web后端工程师】</a></li>
+						<li><a href="/comp/msglist.html" class="notification-item"><span class="dot bg-warning"></span>【王谋】投递了您的【JavaScript前端工程师】岗位</a></li>
+						<li><a href="/comp/msglist.html" class="notification-item"><span class="dot bg-danger"></span>【李彦鹏】投递了您的【Java web后端工程师】</a></li>
+						<li><a href="/comp/msglist.html" class="notification-item"><span class="dot bg-warning"></span>【王谋】投递了您的【JavaScript前端工程师】岗位</a></li>
+						<li><a href="/comp/msglist.html" class="notification-item"><span class="dot bg-danger"></span>【李彦鹏】投递了您的【Java web后端工程师】</a></li>
+						<li><a href="/comp/msglist.html" class="notification-item"><span class="dot bg-warning"></span>【王谋】投递了您的【JavaScript前端工程师】岗位</a></li>
+						<li><a href="/comp/msglist.html" class="notification-item"><span class="dot bg-danger"></span>【李彦鹏】投递了您的【Java web后端工程师】</a></li>
 					</ul>
 				</li>
 				<li class="dropdown">

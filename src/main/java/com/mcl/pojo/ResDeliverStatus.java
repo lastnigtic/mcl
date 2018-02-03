@@ -1,5 +1,7 @@
 package com.mcl.pojo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class ResDeliverStatus {
@@ -18,6 +20,17 @@ public class ResDeliverStatus {
     private String openid;
 
     private String description;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date entrytime;
+
+    public Date getEntrytime() {
+        return entrytime;
+    }
+
+    public void setEntrytime(Date entrytime) {
+        this.entrytime = entrytime;
+    }
 
     public ResDeliverStatus(Integer id, Integer joid, Integer reid, Integer status, Integer viewed, Date updatetime, String openid, String description) {
         this.id = id;
