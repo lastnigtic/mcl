@@ -10,11 +10,12 @@
       <arg column="viewed" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="openid" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="entrytime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, joid, reid, status, viewed, updatetime, openid
+    id, joid, reid, status, viewed, updatetime, openid ,entrytime
   </sql>
   <sql id="Blob_Column_List" >
     description
@@ -39,7 +40,7 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="isUserHaveAuthorityScoreCompany" resultType="com.mcl.pojo.ResDeliverStatus">
-    select  <include refid="Base_Column_List"/> from resdeliverstatus where joid in (select id from joboffers where companyid = #{companyid}) and reid in (select id from resume where openid=#{openid}) and status=#{status} order by updatetime desc limit 1,1
+    select  <include refid="Base_Column_List"/> from resdeliverstatus where joid in (select id from joboffers where companyid = #{companyid}) and reid in (select id from resume where openid=#{openid}) and status=#{status} order by updatetime desc
   </select>
   <select id="getResumeStatusBox" resultType="com.mcl.pojo.ResDeliverStatus">
     select resdeliverstatus.*
@@ -81,13 +82,16 @@
         viewed,
       </if>
       <if test="updatetime != null" >
-        now(),
+        updatetime,
       </if>
       <if test="openid != null" >
         openid,
       </if>
       <if test="description != null" >
         description,
+      </if>
+      <if test="entrytime!=null">
+        entrytime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -115,6 +119,9 @@
       <if test="description != null" >
         #{description,jdbcType=LONGVARCHAR},
       </if>
+      <if test="entrytime!=null">
+        #{entrytime,jdbcType=TIMESTAMP}
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.mcl.pojo.ResDeliverStatus" >
@@ -140,6 +147,9 @@
       </if>
       <if test="description != null" >
         description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="entrytime!=null">
+        entrytime = #{entrytime,jdbcType=TIMESTAMP}
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -173,6 +183,10 @@
     SELECT COUNT(1) FROM resdeliverstatus where id = #{id} and reid = #{reid} and joid = #{joid}
   </select>
   <update id="updateStatusById" >
-    UPDATE resdeliverstatus set status = #{status} WHERE id = #{id}
+    UPDATE resdeliverstatus set status = #{status,jdbcType=INTEGER}
+    <if test="entrytime!=null">
+      and entrytime = #{entrytime}
+    </if>
+    WHERE id =  #{id,jdbcType=INTEGER}
   </update>
 </mapper>

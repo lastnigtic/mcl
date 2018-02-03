@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -299,13 +300,14 @@ public class IResumeServiceImpl implements IResumeService {
      * 对投递到自己岗位的简历进行邀约面试，通过面试，更改为不合适
      * @param id
      * @param joid
-     *@param companyid
+     * @param companyid
      * @param status
      * @param msg    @return
-     */
+     * @param entrytime
+     * */
     @Override
     @Transactional
-    public ServerResponse changeResumeStatus(Integer id, Integer joid, String companyid, Integer status, String msg) {
+    public ServerResponse changeResumeStatus(Integer id, Integer joid, String companyid, Integer status, String msg, Date entrytime) {
         if(id==null||status==null)
             return ServerResponse.createByErrorMessage("传入的参数为空");
 
@@ -313,7 +315,7 @@ public class IResumeServiceImpl implements IResumeService {
 
         if(reid==null)return ServerResponse.createByErrorMessage("找不到数据");
 
-        //TODO 待完善
+        //TODO 第二版待完善
         int row = resDeliverStatusMapper.checkResumeCanGet(reid,joid,id);//看看有无权限获取该简历
 
         if(row > 0){
@@ -342,7 +344,11 @@ public class IResumeServiceImpl implements IResumeService {
 
             }else if(status == Const.DeliveryStatus.PassInterview){
 
+                if(entrytime==null)
+                    return ServerResponse.createByErrorMessage("未输入入职时间");
+
                 userMsg = new UserMsg(openid,MsgTemplate.passInterviewMsg(jobOffers),MsgTemplate.MsgType.JobDeliveryMsg);
+
 
             }else if(status == Const.DeliveryStatus.FailInterview){
 
@@ -366,7 +372,12 @@ public class IResumeServiceImpl implements IResumeService {
 
             int rowInsert = userMsgMapper.insert(userMsg);
 
-            int rowUpdate = resDeliverStatusMapper.updateStatusById(id,status);
+            ResDeliverStatus rds_update = new ResDeliverStatus();
+            rds_update.setStatus(status);
+            rds_update.setEntrytime(entrytime);
+            rds_update.setId(id);
+
+            int rowUpdate = resDeliverStatusMapper.updateByPrimaryKeySelective(rds_update);
 
             if(rowInsert>0&&rowUpdate>0){
 

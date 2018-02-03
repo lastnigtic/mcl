@@ -1,17 +1,21 @@
 package com.mcl.controller.wechat;
 
 import com.github.pagehelper.PageInfo;
+import com.mcl.common.Const;
 import com.mcl.common.ServerResponse;
-import com.mcl.pojo.Opinion;
-import com.mcl.pojo.UserBaseInfo;
+import com.mcl.pojo.*;
+import com.mcl.service.IScoreService;
 import com.mcl.service.IUserService;
 import com.mcl.util.DateTimeUtil;
 import com.mcl.util.PropertiesUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -26,6 +30,9 @@ public class UserController {
 
     @Autowired
     private IUserService iUserService ;
+
+    @Autowired
+    private IScoreService iScoreService ;
 
     /**
      * 进入小程序后存储或更新用户基本信息
@@ -207,17 +214,29 @@ public class UserController {
 
     /**
      * 用户给公司评分
-     * @param openid
-     * @param companyid
-     * @param credit
+     * @param companyScore
      * @return
      */
     @RequestMapping(value = "ratetocompany.do" ,method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse rateToCompany(String openid,String companyid,Double credit){
-        return iUserService.rateToCompany(openid,companyid,credit);
+    public ServerResponse rateToCompany(CompanyScore companyScore){
+        return iUserService.rateToCompany(companyScore);
     }
-
+    /**
+     * 判断用户能否对公司评分
+     * @param openid
+     * @param companyid
+     * @return
+     */
+    @RequestMapping(value = "canscorecompany.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse isUserHaveAuthorityScoreCompany(String openid,String companyid){
+        boolean canscorecompany = iUserService.isUserHaveAuthorityScoreCompany(openid,companyid);
+        if(canscorecompany){
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.createByError();
+    }
     /**
      * 上传头像
      * @param file
@@ -259,20 +278,38 @@ public class UserController {
         return ServerResponse.createBySuccess(backpath);
     }
 
+
     /**
-     * 判断用户能否对公司评分
+     * 获取用户的六种能力平均分
      * @param openid
+     * @return
+     */
+    @RequestMapping(value = "getuseravgability.do",method = RequestMethod.POST)
+    public ServerResponse getUserAvgAbility(String openid){
+        return iScoreService.getUserAvgAbility(openid);
+    }
+
+    /**
+     * 获取企业的六种能力平均分
      * @param companyid
      * @return
      */
-    @RequestMapping(value = "canscorecompany.do",method = RequestMethod.POST)
+    @RequestMapping(value = "getcompavgrate.do",method = RequestMethod.POST)
+    public ServerResponse get(String companyid){
+        return iScoreService.getCompAvgAbility(companyid);
+    }
+
+    /**
+     * 获取评分列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "ratelist.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse isUserHaveAuthorityScoreCompany(String openid,String companyid){
-        boolean canscorecompany = iUserService.isUserHaveAuthorityScoreCompany(openid,companyid);
-        if(canscorecompany){
-            return ServerResponse.createBySuccess();
-        }
-        return ServerResponse.createByError();
+    public ServerResponse rateList(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                   @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,UserScore userScore){
+        return iScoreService.getUserRateList(pageNum,pageSize,userScore);
     }
 
 }

@@ -35,4 +35,8 @@ public class Const {
 
 
     }
+
+    public interface RatingDuration{
+        long  Day30 = 60*60*24*30 ;
+    }
 }

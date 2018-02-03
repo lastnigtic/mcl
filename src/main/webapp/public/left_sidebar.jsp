@@ -24,6 +24,9 @@
 						</ul>
 					</div>
 				</li>
+				<li><a href="/comp/msglist.html" ><i class="lnr lnr-home"></i> <span>消息列表</span></a></li>
+				<li><a href="/comp/ratelist.html" ><i class="lnr lnr-home"></i> <span>评分列表</span></a></li>
+
 			</ul>
 		</nav>
 	</div>
