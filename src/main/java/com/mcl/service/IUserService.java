@@ -48,6 +48,6 @@ public interface IUserService {
 
     ServerResponse rateToCompany(CompanyScore companyScore);
 
-    boolean isUserHaveAuthorityScoreCompany(String openid, String companyid);
+    boolean isUserHaveAuthorityScoreCompany(String openid, String companyid,Integer joid);
 
 }

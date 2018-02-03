@@ -230,8 +230,8 @@ public class UserController {
      */
     @RequestMapping(value = "canscorecompany.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse isUserHaveAuthorityScoreCompany(String openid,String companyid){
-        boolean canscorecompany = iUserService.isUserHaveAuthorityScoreCompany(openid,companyid);
+    public ServerResponse isUserHaveAuthorityScoreCompany(String openid,String companyid,Integer joid){
+        boolean canscorecompany = iUserService.isUserHaveAuthorityScoreCompany(openid,companyid,joid);
         if(canscorecompany){
             return ServerResponse.createBySuccess();
         }

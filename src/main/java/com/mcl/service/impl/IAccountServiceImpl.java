@@ -42,6 +42,9 @@ public class IAccountServiceImpl implements IAccountService {
     @Autowired
     private CompanyMsgMapper companyMsgMapper ;
 
+    @Autowired
+    private JobOffersMapper jobOffersMapper ;
+
 
     /**
      * 商家登录
@@ -199,7 +202,13 @@ public class IAccountServiceImpl implements IAccountService {
 
         long subtractionResult = new Date().getTime()-entrytime.getTime();
 
-        if(subtractionResult < Const.RatingDuration.Day30)//小于30天
+        JobOffers jobOffers  = jobOffersMapper.selectByPrimaryKey(joid);
+        if(jobOffers==null||jobOffers.getDuration()==null)
+            return false;
+
+
+
+        if(subtractionResult < Const.RatingDuration.Day30*jobOffers.getDuration())//小于规定天数
             return false;
 
         return true ;

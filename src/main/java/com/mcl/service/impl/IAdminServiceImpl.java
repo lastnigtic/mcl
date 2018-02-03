@@ -2,15 +2,18 @@ package com.mcl.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mcl.common.Const;
 import com.mcl.common.ServerResponse;
 import com.mcl.dao.*;
 import com.mcl.pojo.*;
 import com.mcl.service.IAdminService;
 import com.mcl.util.MD5Util;
+import com.mcl.util.MsgTemplate;
 import com.mcl.vo.StatisticsVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,6 +40,10 @@ public class IAdminServiceImpl implements IAdminService {
 
     @Autowired
     private OpinionMapper opinionMapper ;
+
+    @Autowired
+    private CompanyMsgMapper companyMsgMapper ;
+
     /**
      * 管理员登录
      * @param id
@@ -129,6 +136,7 @@ public class IAdminServiceImpl implements IAdminService {
      * @return
      */
     @Override
+    @Transactional
     public ServerResponse passCompany(String companyid, Integer checked) {
         Company company = companyMapper.selectByPrimaryKey(companyid);
         if(company!=null){
@@ -138,6 +146,16 @@ public class IAdminServiceImpl implements IAdminService {
             }else {
                 company.setChecked(checked);
                 int rowCount = companyMapper.updateByPrimaryKey(company);
+
+                /**
+                 * 发送消息
+                 */
+                if(checked== Const.CompStatus.SuccessTOPass){
+                    companyMsgMapper.insert(MsgTemplate.newCompanyPassMsg(company));
+                }else if (checked==Const.CompStatus.FailTOPass){
+                    companyMsgMapper.insert(MsgTemplate.newCompanyRejectMsg(company));
+                }
+
                 if (rowCount>0){
                     return ServerResponse.createBySuccess("修改成功");
                 }
@@ -164,6 +182,15 @@ public class IAdminServiceImpl implements IAdminService {
             }else {
                 jobOffers.setChecked(checked);
                 int rowCount = jobOffersMapper.updateByPrimaryKey(jobOffers);
+
+                /**
+                 * 发送消息
+                 */
+                if(checked== Const.CompStatus.SuccessTOPass){
+                    companyMsgMapper.insert(MsgTemplate.newJobPassMsg(jobOffers));
+                }else if (checked==Const.CompStatus.FailTOPass){
+                    companyMsgMapper.insert(MsgTemplate.newJobRejectMsg(jobOffers));
+                }
                 if (rowCount>0){
                     return ServerResponse.createBySuccess("修改成功");
                 }

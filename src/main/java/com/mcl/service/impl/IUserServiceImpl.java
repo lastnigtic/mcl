@@ -515,7 +515,7 @@ public class IUserServiceImpl implements IUserService {
      * @param companyid
      * @return
      */
-    public boolean isUserHaveAuthorityScoreCompany(String openid, String companyid) {
+    public boolean isUserHaveAuthorityScoreCompany(String openid, String companyid,Integer joid) {
 
         //已经评分的就不能再评
         int row = companyScoreMapper.isUserHaveAuthorityScoreCompany(openid,companyid);
@@ -533,7 +533,13 @@ public class IUserServiceImpl implements IUserService {
 
         long subtractionResult = new Date().getTime()-entrytime.getTime();
 
-        if(subtractionResult < Const.RatingDuration.Day30) //小于30天
+        JobOffers jobOffers  = jobOffersMapper.selectByPrimaryKey(joid);
+        if(jobOffers==null||jobOffers.getDuration()==null)
+            return false;
+
+
+
+        if(subtractionResult < Const.RatingDuration.Day30*jobOffers.getDuration())//小于规定天数
             return false;
 
         return true ;
@@ -564,7 +570,7 @@ public class IUserServiceImpl implements IUserService {
         if(company==null)
             return ServerResponse.createByErrorMessage("找不到公司");
 
-        boolean havaAuthority = resDeliverStatusMapper.isUserHaveAuthorityScoreCompany(companyScore.getOpenid(),companyScore.getCompanyid(), Const.DeliveryStatus.PassInterview)==null?false:true;
+        boolean havaAuthority = isUserHaveAuthorityScoreCompany(companyScore.getOpenid(),companyScore.getCompanyid(),companyScore.getJoid());
 
         if(havaAuthority){
 
@@ -578,6 +584,7 @@ public class IUserServiceImpl implements IUserService {
             return ServerResponse.createByErrorMessage("无权评分");
         }
     }
+
 
     /**
      * 检查某用户的某个简历是否完善，是否可以投递

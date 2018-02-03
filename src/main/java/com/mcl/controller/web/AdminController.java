@@ -270,7 +270,14 @@ public class AdminController {
         return iAdminService.getStatistics();
     }
 
-    @RequestMapping(value = "opinionlist.html",method = RequestMethod.GET)
+    /**
+     * 意见反馈列表
+     * @param pageNum
+     * @param pageSize
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "opinionlist.html")
     public String getOpinionList( @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                   @RequestParam(value = "pageSize",defaultValue = "10") int pageSize, Model model){
         List<Opinion> list = iAdminService.getOpinionList(pageNum,pageSize);
