@@ -53,7 +53,7 @@
 										<button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
 									</div>
 								</div>
-								<div class="panel-body no-padding">
+								<div class="panel-body">
 									<table class="table table-striped">
 										<thead>
 											<tr>
@@ -96,6 +96,9 @@
 										<%--<tbody id="informationBody">--%>
 										<%--</tbody>--%>
 									</table>
+									<jsp:include page="/public/page.jsp">
+										<jsp:param name="url" value="/admin/userlist.html"></jsp:param>
+									</jsp:include>
 								</div>
 							</div>
 							<!-- END RECENT PURCHASES -->

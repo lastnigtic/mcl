@@ -53,11 +53,10 @@
 										<button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
 									</div>
 								</div>
-								<div class="panel-body no-padding">
+								<div class="panel-body">
 									<table class="table table-striped">
 										<thead>
 											<tr>
-												<th>#</th>
 												<th>岗位名称</th>
 												<th>岗位类型</th>
 												<th>月工资</th>
@@ -72,7 +71,6 @@
 											<c:when test="${pageInfo!=null}">
 												<c:forEach items="${pageInfo.list}" var="job" varStatus="xh" >
 													<tr>
-														<td>${xh.count}</td>
 														<td>${job.jobname}</td>
 														<td>${job.type}</td>
 														<td>${job.wage}</td>
@@ -97,6 +95,9 @@
 										<%--<tbody id="informationBody">--%>
 										<%--</tbody>--%>
 									</table>
+									<jsp:include page="/public/page.jsp">
+										<jsp:param name="url" value="/admin/reviewjob.html"></jsp:param>
+									</jsp:include>
 								</div>
 							</div>
 							<!-- END RECENT PURCHASES -->
@@ -133,7 +134,8 @@
                         },function(res){
                             if(res.status === 0){
                                 toastr.success('通过一项实习岗位审核', tar.data('name'), {timeOut: 2000});
-                                tar.closest('table').display = 'none';
+                                var tr = tar.closest('tr');
+                                tr.remove();
                             }else{
                                 toastr.warning('提交失败请重试', {timeOut: 2000})
                             }
@@ -146,7 +148,8 @@
                         $.post('/admin/passjob.do?id=' + tar.data('id') + '&checked=2', {}, function (res) {
                             if (res.status === 0) {
                                 toastr.success('拒绝一项实习岗位审核', tar.data('name'), {timeOut: 2000});
-                                tar.closest('table').display = 'none';
+                                var tr = tar.closest('tr');
+                                tr.remove();
                             } else {
                                 toastr.warning('提交失败请重试', {timeOut: 2000})
                             }

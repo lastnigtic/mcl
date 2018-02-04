@@ -74,12 +74,12 @@
                             <div class="media-right" style="text-align: center">
                                 <a href="#">
                                     <img class="media-object" src="/assets/img/user-medium.png" alt="..." style="display: inline-block">
-                                    <c:choose>
-                                        <c:when test="${job.checked == 0}">
-                                    <a href="/comp/updatejob.html?id=${job.id}"><button type="button" class="btn btn-primary" style="padding: 6px 16px;margin-top: 30px">修改要求</button></a>
-                                        </c:when>
-                                    </c:choose>
-                                        </a>
+                                </a>
+                                <c:choose>
+                                    <c:when test="${job.checked == 2}">
+                                        <a href="/comp/updatejob.html?id=${job.id}"><button type="button" class="btn btn-primary" style="padding: 6px 16px;margin-top: 30px">修改要求</button></a>
+                                    </c:when>
+                                </c:choose>
                             </div>
                         </div>
                     </div>

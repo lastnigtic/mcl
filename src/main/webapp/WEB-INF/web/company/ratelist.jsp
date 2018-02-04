@@ -25,10 +25,11 @@
 	<link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicon.png">
 	<style>
-		table td:not(:first-child),
-		table th:not(:first-child){
-			text-align: center
+		td:not(:first-child),
+		th:not(:first-child){
+			text-align: center;
 		}
+		table tr td:only-child{ text-align: center;}
 
 	</style>
 </head>
@@ -68,7 +69,7 @@
 										<tbody id="table-body">
 										<c:choose>
 
-										<c:when test="${pageInfo!=null}">
+										<c:when test="${pageInfo!=null&&pageInfo.size!=0}">
 											<c:forEach items="${pageInfo.list}" var="rate" varStatus="xh" >
 												<tr>
 													<td>${xh.count}</td>
@@ -79,7 +80,7 @@
 													<td>${rate.environmentrate}</td>
 													<td>${rate.atmosphererate}</td>
 													<td>${rate.wagerate}</td>
-													<td>${rate.updatetime}</td>
+													<td class="J-Date">${rate.updatetime}</td>
 												</tr>
 											</c:forEach>
 										</c:when>

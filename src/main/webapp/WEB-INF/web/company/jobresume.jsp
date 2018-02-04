@@ -21,6 +21,13 @@
     <!-- ICONS -->
     <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
     <link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicon.png">
+    <style>
+        td:not(:first-child),
+        th:not(:first-child){
+            text-align: center;
+        }
+        table tr td:only-child{ text-align: center;}
+    </style>
 </head>
 
 <body>
@@ -57,7 +64,7 @@
                                     </thead>
                                     <tbody id="table-body">
                                     <c:choose>
-                                        <c:when test="${resumelist!=null}">
+                                        <c:when test="${resumelist!=null&&resumelist.size()>0}">
                                         <c:forEach items="${resumelist}" var="item" varStatus="xh">
                                             <tr>
                                                 <td>${xh.count}</td>
@@ -87,14 +94,13 @@
                                                             <td><span class="label label-danger">其他</span></td>
                                                         </c:otherwise>
                                                     </c:choose>
-
                                                 <td><a href="/comp/resume.html?resumeid=${item.id}&id=${item.resDeliverStatus.id}">查看</a></td>
                                             </tr>
                                         </c:forEach>
                                         </c:when>
                                         <c:otherwise>
                                             <tr>
-                                                <td colspan="8">暂无数据</td>
+                                                <td colspan="9">暂无数据</td>
                                             </tr>
                                         </c:otherwise>
 
