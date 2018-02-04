@@ -85,6 +85,9 @@
             padding-bottom: 0.5em;
             border-bottom: 1px solid #f1f1f1;
         }
+        input[type=date].form-control{
+            line-height: 1.4em;
+        }
     </style>
 </head>
 
@@ -101,10 +104,12 @@
                 <%--操作--%>
                 <div class="ctrl-box">
                     <span class="title">简历状态: </span>
-                    <select class="form-control" id="statusList" data-id="${id}" data-joid="${resume.resDeliverStatus.joid}" data-status="${resume.resDeliverStatus.status}">
+                    <select class="form-control" id="statusList" data-openid="${resume.userBaseInfo.openid}" data-id="${id}" data-joid="${resume.resDeliverStatus.joid}" data-status="${resume.resDeliverStatus.status}">
                     </select>
                     <input id="msg" class="form-control" placeholder="请输入邀约信息" style="display: none;">
+                    <input id="entryTime" type="date" class="form-control" title="请选择入职时间" style="display: none;">
                     <button id="changeStatus" class="btn btn-primary form-control" style="height: auto; padding: 2px 16px;">确认</button>
+                    <button id="toEvaluate" style="display: none" class="btn btn-primary form-control" style="height: auto; padding: 2px 16px;float:right" data-toggle="modal" data-target="#evaluateModal">进行点评</button>
                 </div>
                 <div class="panel panel-profile">
                     <div class="clearfix">
@@ -124,7 +129,6 @@
                                 <div class="profile-info">
                                     <h4 class="heading">基本信息</h4>
                                     <ul class="list-unstyled list-justify">
-                                        <li display="none" id="openid" data-openid="${resume.userBaseInfo.openid}"></li>
                                         <li>性别 <span>${resume.userBaseInfo.gender==1?'男':'女'}</span></li>
                                         <li>生日 <span class="J-Date">${resume.userBaseInfo.birthday}</span></li>
                                         <li>手机 <span>${resume.userBaseInfo.phone}</span></li>
@@ -197,6 +201,45 @@
         </div>
         <!-- END MAIN CONTENT -->
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="evaluateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">点评(1~5分)</h4>
+                </div>
+                <div class="modal-body">
+                    <label>组织能力</label>
+                    <input type="number" name="organizationability" class="form-control J-limit" placeholder="请输入分数...">
+                    <br>
+                    <label>沟通能力</label>
+                    <input type="number" name="communicateability" class="form-control J-limit" placeholder="请输入分数...">
+                    <br>
+                    <label>学习能力</label>
+                    <input type="number" name="learnability" class="form-control J-limit" placeholder="请输入分数...">
+                    <br>
+                    <label>创新能力</label>
+                    <input type="number" name="innovationability" class="form-control J-limit" placeholder="请输入分数...">
+                    <br>
+                    <label>适应能力</label>
+                    <input type="number" name="adaptability" class="form-control J-limit" placeholder="请输入分数...">
+                    <br>
+                    <label>技术能力</label>
+                    <input type="number" name="technicalability" class="form-control J-limit" placeholder="请输入分数...">
+                    <br>
+                    <label>文字点评</label>
+                    <input name="comment" class="form-control" placeholder="请输入您对他(她)的表现的简短点评">
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="evaluateSubmit">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal-end -->
     <!-- END MAIN -->
     <div class="clearfix"></div>
     <footer>
@@ -217,13 +260,15 @@
     $(function(){
         var staBox = $('#statusList');
         var msgInp = $('#msg');
+        var entryTimeInp = $('#entryTime');
 //        拿到所需数据
         function params(){
             var _status = staBox.data('status');
             var _id = staBox.data('id');
             var _joid = staBox.data('joid');
+            var _openid = staBox.data('openid');
             if(_status === 1){
-                doChangeStatus(_id, _joid, 2, '', true);
+                doChangeStatus(true, _id, _joid, 2);
                 _status = 2;
             }
             params = function(str){
@@ -233,16 +278,23 @@
                     return _status
                 }if(str === 'joid'){
                     return _joid
+                }if(str === 'openid'){
+                    return _openid
                 }
             }
         }
         params();
-//       邀约面试时显示信息输入框
+//       邀约面试时显示信息输入框(邀约面试需要邀请消息,通过面试设置入职时间)
         staBox.on('change', function(e){
-            if(staBox.find("option:selected")[0].value == 3){
+            var status = staBox.find("option:selected")[0].value;
+            if( status== 3 && params('status') !== 3){
                 msgInp.css('display','inline-block');
-            }else{
-                msgInp.hide()
+            }else if(status == 4 && params('status') !== 4){
+                entryTimeInp.css('display','inline-block');
+            }
+            else{
+                msgInp.hide();
+                entryTimeInp.hide();
             }
         })
 //        初始化状态组件
@@ -254,6 +306,9 @@
             for(; i < len; i++){
                 staBox.append('<option value='+ (Number(i)+1) +'>'+ statArr[i] +'</option>')
             }
+            if(n == 4){
+               $(staBox.find('option:last-child')).remove()
+            }
         }
         initCtrl(params('status'));
 
@@ -261,15 +316,19 @@
         $('#changeStatus').on('click', function(){
             var status = staBox.find("option:selected")[0].value,
                 id = params('id'),
-                joid = params('joid');
-                msg;
+                joid = params('joid'),
+                msg,
+                entrytime;
             if(status == 3){
                 msg = msgInp.val();
+            }else if(status == 4){
+                entrytime = entryTimeInp.val();
+                console.log(entrytime)
             }
 
-            doChangeStatus(id, joid, status, msg)
+            doChangeStatus(false, id, joid, status, msg, entrytime)
         })
-        function doChangeStatus(id, joid, status, msg, isInit){
+        function doChangeStatus(isInit, id, joid, status, msg, entrytime){
             var data={
                 id: id,
                 status: status,
@@ -280,11 +339,20 @@
                     return window.alert('请输入邀约信息')
                 }
                 data.msg = msg
+            }else if(status == 4){
+                if(!entrytime){
+                    return window.alert('请设置入职时间')
+                }
+                data.entrytime = entrytime
             }
+            console.log(data);
             $.post('/comp/changeresumestatus.do',data, function(res){
                 if(res.status === 0){
                     if(!isInit){
-                        window.alert('操作成功')
+                        window.alert('操作成功');
+                        setTimeout(function(){
+                            window.location.reload(true);
+                        },1000)
                     }
                 }else{
                     if(!isInit){
@@ -296,7 +364,7 @@
 //        用户能力六维图
 
 //        获取用户能力数值
-        var openid = $('#openid').data('openid');
+        var openid = params('openid');
         var eva = document.getElementById('evaluation');
         var ablityArr = [
             {name:'organizationability'},
@@ -353,6 +421,57 @@
             };
             myChart.setOption(option)
         }
+//      判断能否评分
+        function canScore(){
+            $.post('/comp/canscoreuser.do',{
+                openid: params('openid'),
+                joid: params('joid'),
+            },function(res){
+                if(res.status === 0){
+                    $('#toEvaluate').show();
+                }
+            })
+        }
+        canScore();
+//      分值在1-5
+        $('.J-limit').on('change', function(e){
+            var val = e.currentTarget.value;
+            if( val > 5){
+                e.currentTarget.value = 5
+            }else if(val < 1){
+                e.currentTarget.value = 1
+            }
+        })
+//      提交评价
+        $('#evaluateSubmit').on('click', function(e){
+            var body = $(e.currentTarget).closest('modal-body');
+            var cansubmit = true;
+            var data = {};
+            // 取到所有数据
+            body.find('input').each(function(idx, item){
+                item = $(item);
+                if(!item.val()){
+                  item.addClass('has-error');
+                  cansubmit = false;
+                  data[item.attr('name')] = item.val()
+                }else{
+                  item.removeClass('has-error')
+                }
+            })
+            if(cansubmit){
+                data.openid = params('openid');
+                data.joid = params('joid');
+                $.post('/comp/canscoreuser.do',data,function(res){
+                    if(res.status === 0){
+                        window.alert('评价成功');
+                        $('#evaluateModal').remove();
+                        $('#toEvaluate').remove();
+                    }else{
+                        window.alert('评价失败请重试');
+                    }
+                })
+            }
+        })
     })
 </script>
 </body>
