@@ -27,6 +27,6 @@
                 </c:otherwise>
             </c:choose>
         </ul>
+        <p>共${pageInfo.pages}页 , 共${pageInfo.total}条记录 ,当前第${pageInfo.pageNum}页</p>
     </c:when>
 </c:choose>
-<p>共${pageInfo.pages}页 , 共${pageInfo.total}条记录 ,当前第${pageInfo.pageNum}页</p>

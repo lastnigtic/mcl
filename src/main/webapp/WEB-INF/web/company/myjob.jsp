@@ -25,10 +25,11 @@
 	<link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicon.png">
 	<style>
-		table td:not(:first-child),
-		table th:not(:first-child){
-			text-align: center
+		td:not(:first-child),
+		th:not(:first-child){
+			text-align: center;
 		}
+		table tr td:only-child{ text-align: center;}
 
 	</style>
 </head>
@@ -65,7 +66,7 @@
 										<tbody id="table-body">
 										<c:choose>
 
-										<c:when test="${joblist!=null}">
+										<c:when test="${joblist!=null&&joblist.size()!=0}">
 											<c:forEach items="${joblist}" var="job" varStatus="xh" >
 												<tr>
 													<td>${xh.count}</td>
@@ -102,7 +103,7 @@
 										</c:when>
 										<c:otherwise>
 											<tr>
-												<td colspan="5">暂无数据</td>
+												<td colspan="6">暂无数据</td>
 											</tr>
 										</c:otherwise>
 										</c:choose>

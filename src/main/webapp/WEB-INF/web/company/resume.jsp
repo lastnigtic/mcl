@@ -109,7 +109,7 @@
                 <div class="panel panel-profile">
                     <div class="clearfix">
                         <!-- LEFT COLUMN -->
-                        <div class="profile-left">
+                        <div class="profile-left" style="position: relative">
                             <!-- PROFILE HEADER -->
                             <div class="profile-header">
                                 <div class="overlay"></div>
@@ -124,6 +124,7 @@
                                 <div class="profile-info">
                                     <h4 class="heading">基本信息</h4>
                                     <ul class="list-unstyled list-justify">
+                                        <li display="none" id="openid" data-openid="${resume.userBaseInfo.openid}"></li>
                                         <li>性别 <span>${resume.userBaseInfo.gender==1?'男':'女'}</span></li>
                                         <li>生日 <span class="J-Date">${resume.userBaseInfo.birthday}</span></li>
                                         <li>手机 <span>${resume.userBaseInfo.phone}</span></li>
@@ -133,6 +134,8 @@
                                         <li>就读学校 <span>${resume.userBaseInfo.schoolname}</span></li>
                                         <li>专业 <span>${resume.userBaseInfo.majortype}</span></li>
                                     </ul>
+                                    <h4 class="heading">用户评分</h4>
+                                    <div class="evaluation" id="evaluation"></div>
                                 </div>
                             </div>
                             <!-- END PROFILE DETAIL -->
@@ -207,16 +210,22 @@
 <script src="/assets/vendor/jquery/jquery.min.js"></script>
 <script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 <script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/assets/vendor/echarts/echarts.min.js"></script>
 <script src="/assets/scripts/klorofil-common.js"></script>
 <script src="/assets/js/tool.js"></script>
 <script>
     $(function(){
         var staBox = $('#statusList');
         var msgInp = $('#msg');
+//        拿到所需数据
         function params(){
             var _status = staBox.data('status');
             var _id = staBox.data('id');
             var _joid = staBox.data('joid');
+            if(_status === 1){
+                doChangeStatus(_id, _joid, 2, '', true);
+                _status = 2;
+            }
             params = function(str){
                 if(str === 'id'){
                     return _id;
@@ -228,7 +237,7 @@
             }
         }
         params();
-
+//       邀约面试时显示信息输入框
         staBox.on('change', function(e){
             if(staBox.find("option:selected")[0].value == 3){
                 msgInp.css('display','inline-block');
@@ -236,7 +245,7 @@
                 msgInp.hide()
             }
         })
-//        初始化组件
+//        初始化状态组件
         function initCtrl(n){
             var statArr = ['已投递','被查看','邀约面试','面试通过','不合适'];
             var i = n - 1,
@@ -260,7 +269,7 @@
 
             doChangeStatus(id, joid, status, msg)
         })
-        function doChangeStatus(id, joid, status, msg){
+        function doChangeStatus(id, joid, status, msg, isInit){
             var data={
                 id: id,
                 status: status,
@@ -274,11 +283,75 @@
             }
             $.post('/comp/changeresumestatus.do',data, function(res){
                 if(res.status === 0){
-                    window.alert('操作成功')
+                    if(!isInit){
+                        window.alert('操作成功')
+                    }
                 }else{
-                    window.alert('操作失败，请重试')
+                    if(!isInit){
+                        window.alert('操作失败，请重试')
+                    }
                 }
             })
+        }
+//        用户能力六维图
+
+//        获取用户能力数值
+        var openid = $('#openid').data('openid');
+        var eva = document.getElementById('evaluation');
+        var ablityArr = [
+            {name:'organizationability'},
+            {name:'communicateability'},
+            {name:'learnability'},
+            {name:'innovationability'},
+            {name:'adaptability'},
+            {name:'technicalability'},
+        ]
+        $.post('/comp/getuseravgability.do',{
+            openid: openid
+        },function (res) {
+            if(res.status === 0){
+                drawRadia(res.data)
+            }else{
+                eva.innerText = '暂无数据'
+            }
+        })
+        function drawRadia(data){
+            eva.style.height = eva.offsetWidth + 'px';
+            var myChart = echarts.init(eva);
+            var value = [];
+            $(ablityArr).each(function(idx, item){
+                value.push(data[item.name])
+            });
+            var option = {
+                radar: {
+                    name: {
+                        textStyle: {
+                            color: '#fff',
+                            backgroundColor: '#999',
+                            borderRadius: 3,
+                            padding: [3, 5]
+                        }
+                    },
+                    indicator: [
+                        { name: '组织能力', max: 5},
+                        { name: '沟通能力', max: 5},
+                        { name: '学习能力', max: 5},
+                        { name: '创新能力', max: 5},
+                        { name: '适应能力', max: 5},
+                        { name: '技术能力', max: 5}
+                    ]
+                },
+                series: [{
+                    name: '能力评分',
+                    type: 'radar',
+                    // areaStyle: {normal: {}},
+                    data : [{
+                        value : value,
+                        name : '能力评分'
+                    }]
+                }]
+            };
+            myChart.setOption(option)
         }
     })
 </script>

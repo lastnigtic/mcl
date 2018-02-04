@@ -61,6 +61,9 @@
 			bottom: 10px;
 			z-index: -1;	
 		}
+		.evaluation{
+			width: 100%;
+		}
 		.media-name{
 			margin-bottom: 0.5em;
 			text-align: center;
@@ -113,6 +116,8 @@
 											<li>就读学校 <span>华南师范大学</span></li>
 											<li>专业 <span>工学</span></li>
 										</ul>
+									<h4 class="heading">用户评分</h4>
+									<div class="evaluation" id="evaluation"></div>
 									</div>
 								</div>
 								<!-- END PROFILE DETAIL -->
@@ -186,7 +191,46 @@
 	<script src="/assets/vendor/jquery/jquery.min.js"></script>
 	<script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="/assets/vendor/echarts/echarts.min.js"></script>
 	<script src="/assets/scripts/klorofil-common.js"></script>
+	<script type="text/javascript">
+		$(function(){
+		    var eva = document.getElementById('evaluation');
+		    eva.style.height = eva.offsetWidth + 'px';
+			var myChart = echarts.init(eva);
+
+			var option = {
+				radar: {
+					name: {
+						textStyle: {
+							color: '#fff',
+							backgroundColor: '#999',
+							borderRadius: 3,
+							padding: [3, 5]
+						}
+					},
+					indicator: [
+					{ name: '组织能力', max: 5},
+					{ name: '沟通能力', max: 5},
+					{ name: '学习能力', max: 5},
+					{ name: '创新能力', max: 5},
+					{ name: '适应能力', max: 5},
+					{ name: '技术能力', max: 5}
+					]
+			  },
+			  series: [{
+				name: '能力评分',
+				type: 'radar',
+				// areaStyle: {normal: {}},
+				data : [{
+					value : [3.5, 4, 4.5, 4.6, 3.2, 5],
+					name : '能力评分'
+				}]
+			  }]
+			};
+			myChart.setOption(option)
+		  })
+</script>
 </body>
 
 </html>

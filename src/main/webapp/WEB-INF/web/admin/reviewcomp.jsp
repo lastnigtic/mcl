@@ -56,11 +56,10 @@
 										<button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
 									</div>
 								</div>
-								<div class="panel-body no-padding">
-									<table class="table table-striped">
+								<div class="panel-body">
+									<table class="table table-striped" id="compTable">
 										<thead>
 											<tr>
-												<th>#</th>
 												<th>企业名称</th>
 												<th>公司规模</th>
 												<th>法人代表</th>
@@ -76,7 +75,6 @@
 											<c:when test="${pageInfo!=null}">
 												<c:forEach items="${pageInfo.list}" var="comp" varStatus="xh" >
 													<tr>
-														<td>${xh.count}</td>
 														<td>${comp.companyname}</td>
 														<td>${comp.companysize}</td>
 														<td>${comp.legalrepresentative}</td>
@@ -102,6 +100,10 @@
 										<%--<tbody id="informationBody">--%>
 										<%--</tbody>--%>
 									</table>
+
+									<jsp:include page="/public/page.jsp">
+										<jsp:param name="url" value="/admin/reviewcomp.html"></jsp:param>
+									</jsp:include>
 								</div>
 							</div>
 							<!-- END RECENT PURCHASES -->
@@ -136,8 +138,9 @@
 					$.post('/admin/passcompany.do?companyid='+tar.data('id')+'&checked=1',{
 					},function(res){
 					    if(res.status === 0){
-                            toastr.success('通过一项企业实名审核', tar.data('name'), {timeOut: 2000})
-                            tar.closest('table').display = 'none';
+                            toastr.success('通过一项企业实名审核', tar.data('name'), {timeOut: 2000});
+                            var tr = tar.closest('tr');
+                            tr.remove();
 						}else{
                             toastr.warning('提交失败请重试', {timeOut: 2000})
 						}
@@ -150,8 +153,9 @@
                     $.post('/admin/passcompany.do?companyid='+tar.data('id')+'&checked=2',{
                     },function(res){
                         if(res.status === 0){
-                            toastr.success('拒绝一项企业实名审核', tar.data('name'), {timeOut: 2000})
-                            tar.closest('table').display = 'none';
+                            toastr.success('拒绝一项企业实名审核', tar.data('name'), {timeOut: 2000});
+                            var tr = tar.closest('tr');
+                            tr.remove();
                         }else{
                             toastr.warning('提交失败请重试', {timeOut: 2000})
                         }
