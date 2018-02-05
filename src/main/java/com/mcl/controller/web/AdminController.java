@@ -85,8 +85,7 @@ public class AdminController {
         jobOffers.setChecked(0);
         ServerResponse response = iAdminService.getJobList(pageNum,pageSize,jobOffers);
         if(response.isSuccess()){
-            PageInfo<JobOffers> pageInfo = (PageInfo<JobOffers>) response.getData();
-            model.addAttribute("pageInfo",pageInfo);
+            model.addAttribute("pageInfo",response.getData());
         }
         return "/admin/reviewjob";
     }
