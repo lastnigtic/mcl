@@ -338,7 +338,7 @@ public class IResumeServiceImpl implements IResumeService {
 
             if(status == Const.DeliveryStatus.InvitedToInterview){
 
-                userMsg = new UserMsg(openid,StringUtils.isNotBlank(msg)?msg:"",MsgTemplate.MsgType.JobDeliveryMsg);
+                userMsg = new UserMsg(openid,StringUtils.isNotBlank(msg)?msg:"",MsgTemplate.MsgType.JobDeliveryMsg,joid);
 
                 userMsg.setMsgtitle(MsgTemplate.interviewMsg(company,jobOffers));
 
@@ -347,17 +347,17 @@ public class IResumeServiceImpl implements IResumeService {
                 if(entrytime==null)
                     return ServerResponse.createByErrorMessage("未输入入职时间");
 
-                userMsg = new UserMsg(openid,MsgTemplate.passInterviewMsg(jobOffers),MsgTemplate.MsgType.JobDeliveryMsg);
+                userMsg = new UserMsg(openid,MsgTemplate.passInterviewMsg(jobOffers),MsgTemplate.MsgType.JobDeliveryMsg,joid);
 
 
             }else if(status == Const.DeliveryStatus.FailInterview){
 
-                userMsg = new UserMsg(openid,MsgTemplate.failInterviewMsg(jobOffers),MsgTemplate.MsgType.JobDeliveryMsg);
+                userMsg = new UserMsg(openid,MsgTemplate.failInterviewMsg(jobOffers),MsgTemplate.MsgType.JobDeliveryMsg,joid);
 
             }else if(status == Const.DeliveryStatus.AlreadyViewed){
                 if(rds.getStatus()==null||rds.getStatus()==1){
 
-                    userMsg = new UserMsg(openid,MsgTemplate.alreadyViewedMsg(jobOffers),MsgTemplate.MsgType.JobDeliveryMsg);
+                    userMsg = new UserMsg(openid,MsgTemplate.alreadyViewedMsg(jobOffers),MsgTemplate.MsgType.JobDeliveryMsg,joid);
 
                 }else{
 

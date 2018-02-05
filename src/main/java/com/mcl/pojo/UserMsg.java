@@ -20,6 +20,16 @@ public class UserMsg {
 
     private String msg;
 
+    private Integer joid ;
+
+    public Integer getJoid() {
+        return joid;
+    }
+
+    public void setJoid(Integer joid) {
+        this.joid = joid;
+    }
+
     public UserMsg(Integer id, String openid, String type, String msgtime, Integer readstatus, String msgtitle, Date updatetime, String msg) {
         this.id = id;
         this.openid = openid;
@@ -35,13 +45,14 @@ public class UserMsg {
         super();
     }
 
-    public UserMsg(String openid, String msg, String type) {
+    public UserMsg(String openid, String msg, String type,Integer joid) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         this.openid = openid;
         this.type = type;
         this.msgtime = sdf.format(new Date());
         this.readstatus = 0;
         this.msg = msg;
+        this.joid = joid ;
     }
 
     public Integer getId() {

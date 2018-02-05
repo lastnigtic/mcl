@@ -4,6 +4,7 @@ import com.mcl.common.ServerResponse;
 import com.mcl.pojo.CompanyScore;
 import com.mcl.pojo.UserScore;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by Administrator on 2018/2/3 0003.
