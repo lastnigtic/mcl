@@ -77,6 +77,9 @@ public class JobOffersVO {
         this.jobname = jobname;
     }
 
+    public String getTemptation() {
+        return temptation;
+    }
 
     public void setTemptation(String temptation) {
         this.temptation = temptation;
