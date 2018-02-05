@@ -69,6 +69,14 @@
 										<h3 class="title">截止时间</h3>
 										<p class="detail">2018-03-03</p>
 									</div>
+									<div class="media-main-info">
+                                    <h3 class="title">职位标签</h3>
+                                    <p class="detail" data-tag="${job.tag}" id="jobTags">
+                                            <c:forEach items="${job.tag}"  var="tag" varStatus="xh" >
+												<span class='label label-primary'>${tag}</span>
+											</c:forEach>
+                                    </p>
+								</div>
 								</div>
 								<div class="media-right">
 									<a href="#">

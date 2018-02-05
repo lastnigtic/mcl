@@ -92,7 +92,7 @@
 					<div class="panel panel-profile">
 						<div class="clearfix">
 							<!-- LEFT COLUMN -->
-							<div class="profile-left">
+							<div class="profile-left" style="position: relative">
 								<!-- PROFILE HEADER -->
 								<div class="profile-header">
 									<div class="overlay"></div>

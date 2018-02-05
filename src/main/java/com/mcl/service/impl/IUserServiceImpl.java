@@ -519,12 +519,12 @@ public class IUserServiceImpl implements IUserService {
     public boolean isUserHaveAuthorityScoreCompany(String openid, String companyid,Integer joid) {
 
         //已经评分的就不能再评
-        int row = companyScoreMapper.isUserHaveAuthorityScoreCompany(openid,companyid);
+        int row = companyScoreMapper.isUserScoredCompany(openid,companyid);
 
         if(row>0)
             return false;
 
-        ResDeliverStatus deliverStatus = resDeliverStatusMapper.isUserHaveAuthorityScoreCompany(openid, companyid, Const.DeliveryStatus.PassInterview);
+        ResDeliverStatus deliverStatus = resDeliverStatusMapper.isUserHaveAuthorityScoreCompany(openid, companyid, Const.DeliveryStatus.PassInterview, joid);
 
         if(deliverStatus==null)
             return false ;

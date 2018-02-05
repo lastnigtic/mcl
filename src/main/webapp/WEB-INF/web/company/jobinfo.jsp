@@ -60,18 +60,26 @@
                                 </div>
                                 <div class="media-main-info">
                                     <h3 class="title">职位描述</h3>
-                                    <p class="detial">
+                                    <p class="detail">
                                         ${job.description}
                                     </p>
                                 </div>
                                 <div class="media-main-info">
                                     <h3 class="title">职位要求</h3>
-                                    <p class="detial">
+                                    <p class="detail">
                                         ${job.requirements}
                                     </p>
                                 </div>
+                                <div class="media-main-info">
+                                    <h3 class="title">职位标签</h3>
+                                    <p class="detail" data-tag="${job.tag}" id="jobTags">
+                                            <c:forEach items="${job.tag}"  var="tag" varStatus="xh" >
+                                                <span class='label label-primary'>${tag}</span>
+                                            </c:forEach>
+                                    </p>
+                                </div>
                             </div>
-                            <div class="media-right" style="text-align: center">
+                            <div class="media-right" style="text-align: center;">
                                 <a href="#">
                                     <img class="media-object" src="/assets/img/user-medium.png" alt="..." style="display: inline-block">
                                 </a>
@@ -103,6 +111,12 @@
 <script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <script src="/assets/scripts/klorofil-common.js"></script>
 <script src="/assets/js/tool.js"></script>
+<script>
+    $(function(){
+//        显示出所有职位标签
+        var tagBox = $('#jobTag');
+    })
+</script>
 </body>
 
 </html>

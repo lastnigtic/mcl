@@ -40,7 +40,13 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="isUserHaveAuthorityScoreCompany" resultType="com.mcl.pojo.ResDeliverStatus">
-    select  <include refid="Base_Column_List"/> from resdeliverstatus where joid in (select id from joboffers where companyid = #{companyid}) and reid in (select id from resume where openid=#{openid}) and status=#{status} order by updatetime desc
+    select  <include refid="Base_Column_List"/>
+    FROM resdeliverstatus
+    WHERE joid= #{joid}
+    AND reid
+    IN ( SELECT id FROM resume WHERE openid = #{openid} ) AND STATUS = #{status}
+    ORDER BY updatetime
+
   </select>
   <select id="getResumeStatusBox" resultType="com.mcl.pojo.ResDeliverStatus">
     select resdeliverstatus.*
