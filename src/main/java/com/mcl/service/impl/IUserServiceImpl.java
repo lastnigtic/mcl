@@ -7,8 +7,9 @@ import com.mcl.common.Const;
 import com.mcl.common.ServerResponse;
 import com.mcl.dao.*;
 import com.mcl.pojo.*;
+import com.mcl.service.IJobOffersServcie;
 import com.mcl.service.IUserService;
-import com.mcl.vo.JobOffersListVO;
+import com.mcl.vo.JobOffersVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,7 @@ public class IUserServiceImpl implements IUserService {
     private CompanyScoreMapper companyScoreMapper ;
 
     @Autowired
-    private UserScoreMapper userScoreMapper ;
+    private IJobOffersServcie iJobOffersServcie ;
 
 
     /**
@@ -129,9 +130,9 @@ public class IUserServiceImpl implements IUserService {
                 PageHelper.startPage(pageNum,pageSize);
                 //联表查询已收藏的招聘信息
                 List<JobOffers> jobOffersList = userCollectionMapper.selectUserCollectedJobOffersList(openid);
-                List<JobOffersListVO> list = Lists.newArrayList();
+                List<JobOffersVO> list = Lists.newArrayList();
                 for(JobOffers jo:jobOffersList){
-                    JobOffersListVO vo = assembleJobOffersListVO(jo);
+                    JobOffersVO vo = iJobOffersServcie.getJobOffersVOFromJobOffers(jo);
                     list.add(vo);
                 }
                 PageInfo pageResult = new PageInfo(jobOffersList);
@@ -355,9 +356,9 @@ public class IUserServiceImpl implements IUserService {
                     //联表查询已投递的招聘信息（全部）
                     jobOffersList = jobOffersMapper.selectUserDeliveredJobOffersList(openid);
                 }
-                List<JobOffersListVO> list = Lists.newArrayList();
+                List<JobOffersVO> list = Lists.newArrayList();
                 for(JobOffers jo:jobOffersList){
-                    JobOffersListVO vo = assembleJobOffersListVO(jo);
+                    JobOffersVO vo = iJobOffersServcie.getJobOffersVOFromJobOffers(jo);
                     list.add(vo);
                 }
                 PageInfo pageResult = new PageInfo(jobOffersList);
@@ -675,30 +676,4 @@ public class IUserServiceImpl implements IUserService {
     }
 
 
-    private JobOffersListVO assembleJobOffersListVO(JobOffers jobOffers){
-        JobOffersListVO vo = new JobOffersListVO();
-        vo.setAddress(jobOffers.getAddress());
-        vo.setChecked(jobOffers.getChecked());
-        vo.setCity(jobOffers.getCity());
-        vo.setDescription(jobOffers.getDescription());
-        vo.setDuration(jobOffers.getDuration());
-        vo.setEducation(jobOffers.getEducation());
-        vo.setId(jobOffers.getId());
-        vo.setJobname(jobOffers.getJobname());
-        vo.setWage(jobOffers.getWage());
-        vo.setType(jobOffers.getType());
-        vo.setWorkfrequency(jobOffers.getWorkfrequency());
-        vo.setTag(jobOffers.getTag());
-        vo.setUpdatetime(jobOffers.getUpdatetime());
-        String[] temptations = jobOffers.getTemptation().split(",");
-        vo.setTemptation(temptations);
-        if(jobOffers.getCompanyid()!=null){
-            vo.setCompanyid(jobOffers.getCompanyid());
-            Company company = companyMapper.selectByPrimaryKey(jobOffers.getCompanyid());
-            if(company!=null){
-                vo.setCompany(company);
-            }
-        }
-        return vo;
-    }
 }

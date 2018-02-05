@@ -66,8 +66,8 @@
 										<tbody id="table-body">
 										<c:choose>
 
-										<c:when test="${joblist!=null&&joblist.size()!=0}">
-											<c:forEach items="${joblist}" var="job" varStatus="xh" >
+										<c:when test="${pageInfo.list!=null&&pageInfo.list.size()!=0}">
+											<c:forEach items="${pageInfo.list}" var="job" varStatus="xh" >
 												<tr>
 													<td>${xh.count}</td>
 													<td>${job.jobname}</td>

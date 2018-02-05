@@ -87,10 +87,8 @@ public class CompController {
 
         ServerResponse serverResponse = iJobOffersServcie.getJob(id,account.getCompanyid());
 
-        JobOffers job = (JobOffers) serverResponse.getData();
-
         if(serverResponse.isSuccess()){
-            model.addAttribute("job",job);
+            model.addAttribute("job",serverResponse.getData());
         }
         return "/company/jobinfo";
     }
@@ -132,9 +130,7 @@ public class CompController {
         ServerResponse response = iJobOffersServcie.list(pageNum,pageSize,account,jobOffers);
 
         if(response.isSuccess()){
-            PageInfo<JobOffers> pageInfo = (PageInfo<JobOffers>) response.getData();
-            model.addAttribute("pageInfo",pageInfo);
-            model.addAttribute("joblist",pageInfo.getList());
+            model.addAttribute("pageInfo",response.getData());
         }
 
         return "/company/myjob";
@@ -226,8 +222,7 @@ public class CompController {
         ServerResponse response = iJobOffersServcie.getJob(id,account.getCompanyid());
 
         if(response.isSuccess()){
-            JobOffers job = (JobOffers)response.getData();
-            model.addAttribute("job",job);
+            model.addAttribute("job",response.getData());
         }
         model.addAttribute("eduproperty",iTagPropertyService.getEduPropertyList());
         model.addAttribute("cityproperty",iTagPropertyService.getCityPropertyList());
@@ -399,7 +394,7 @@ public class CompController {
     }
 
     /**
-     * 获取我的简历箱
+     * 获取我的简历箱(弃用)
      * @param pageNum
      * @param pageSize
      * @param resume

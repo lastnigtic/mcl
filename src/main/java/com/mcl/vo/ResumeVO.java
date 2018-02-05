@@ -16,7 +16,6 @@ public class ResumeVO {
 
     private String openid;
 
-
     private String resumename;
 
     private String avatarurl;

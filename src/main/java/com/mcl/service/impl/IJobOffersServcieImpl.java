@@ -6,16 +6,19 @@ import com.google.common.collect.Lists;
 import com.mcl.common.Const;
 import com.mcl.common.ServerResponse;
 import com.mcl.dao.CompanyMapper;
+import com.mcl.dao.CompanyScoreMapper;
 import com.mcl.dao.JobOffersMapper;
 import com.mcl.pojo.Account;
+import com.mcl.pojo.CompAvgAbility;
 import com.mcl.pojo.Company;
 import com.mcl.pojo.JobOffers;
 import com.mcl.service.IJobOffersServcie;
-import com.mcl.vo.JobOffersListVO;
+import com.mcl.vo.JobOffersVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +31,9 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
 
     @Autowired
     private CompanyMapper companyMapper ;
+
+    @Autowired
+    private CompanyScoreMapper companyScoreMapper ;
 
     /**
      * 发布招聘信息
@@ -141,7 +147,13 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
         PageHelper.orderBy("updatetime desc");
         jobOffers.setCompanyid(account.getCompanyid());
         List<JobOffers> list = jobOffersMapper.myJobList(jobOffers);
+        List<JobOffersVO> rtnlist = new ArrayList<>();
         PageInfo pageResult = new PageInfo(list);
+        for(JobOffers jo:list){
+            JobOffersVO vo = getJobOffersVOFromJobOffers(jo);
+            rtnlist.add(vo);
+        }
+        pageResult.setList(rtnlist);
         return ServerResponse.createBySuccess(pageResult);
     }
 
@@ -157,7 +169,7 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
         JobOffers jobOffers = jobOffersMapper.selectByPrimaryKey(id);
         if(jobOffers==null)return ServerResponse.createByErrorMessage("获取失败");
         if(!jobOffers.getCompanyid().equals(companyid))return ServerResponse.createByErrorMessage("错误！没有权限");
-        return ServerResponse.createBySuccess("获取成功",jobOffers);
+        return ServerResponse.createBySuccess("获取成功",getJobOffersVOFromJobOffers(jobOffers));
     }
 
     /**
@@ -200,9 +212,9 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
             jobOffers.setJobname(k);
         }
         List<JobOffers> jobOffersList = jobOffersMapper.selectList(jobOffers);
-        List<JobOffersListVO> list = Lists.newArrayList();
+        List<JobOffersVO> list = Lists.newArrayList();
         for(JobOffers jo:jobOffersList){
-            JobOffersListVO vo = assembleJobOffersListVO(jo);
+            JobOffersVO vo = getJobOffersVOFromJobOffers(jo);
             list.add(vo);
         }
         PageInfo pageResult = new PageInfo(jobOffersList);
@@ -222,7 +234,7 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
         if (joid!=null){
             JobOffers jo = jobOffersMapper.selectByPrimaryKey(joid);
             if (jo != null) {
-                JobOffersListVO v = assembleJobOffersListVO(jo);
+                JobOffersVO v = getJobOffersVOFromJobOffers(jo);
                 return ServerResponse.createBySuccess(v);
             }
             return ServerResponse.createByErrorMessage("找不到该招聘信息！");
@@ -242,9 +254,9 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
         PageHelper.startPage(pageNum,pageSize);
         PageHelper.orderBy("wage desc");
         List<JobOffers> jobOffersList = jobOffersMapper.recommendList();
-        List<JobOffersListVO> list = Lists.newArrayList();
+        List<JobOffersVO> list = Lists.newArrayList();
         for(JobOffers jo:jobOffersList){
-            JobOffersListVO vo = assembleJobOffersListVO(jo);
+            JobOffersVO vo = getJobOffersVOFromJobOffers(jo);
             list.add(vo);
         }
         PageInfo pageResult = new PageInfo(jobOffersList);
@@ -254,8 +266,13 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
     }
 
 
-    private JobOffersListVO assembleJobOffersListVO(JobOffers jobOffers){
-        JobOffersListVO vo = new JobOffersListVO();
+    /**
+     * 将joboffers转为jobvo
+     * @param jobOffers
+     * @return
+     */
+    public JobOffersVO getJobOffersVOFromJobOffers(JobOffers jobOffers){
+        JobOffersVO vo = new JobOffersVO();
         vo.setAddress(jobOffers.getAddress());
         vo.setChecked(jobOffers.getChecked());
         vo.setCity(jobOffers.getCity());
@@ -267,16 +284,22 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
         vo.setWage(jobOffers.getWage());
         vo.setType(jobOffers.getType());
         vo.setWorkfrequency(jobOffers.getWorkfrequency());
-        vo.setTag(jobOffers.getTag());
         vo.setUpdatetime(jobOffers.getUpdatetime());
-        String[] temptations = jobOffers.getTemptation().split(",");
+        vo.setRequirements(jobOffers.getRequirements());
+        String temptation = jobOffers.getTemptation();
+        String tag = jobOffers.getTag();
+        String[] temptations = StringUtils.isBlank(temptation)?null:temptation.split(",");
+        String[] tags = StringUtils.isBlank(tag)?null:tag.split(",");
+        vo.setTag(tags);
         vo.setTemptation(temptations);
-        if(jobOffers.getCompanyid()!=null){
+        if(StringUtils.isNotBlank(jobOffers.getCompanyid())){
             vo.setCompanyid(jobOffers.getCompanyid());
             Company company = companyMapper.selectByPrimaryKey(jobOffers.getCompanyid());
-            if(company!=null){
+            CompAvgAbility compAvgAbility = companyScoreMapper.getCompAvgAbitlity(jobOffers.getCompanyid());
+            if(company!=null)
                 vo.setCompany(company);
-            }
+            if(compAvgAbility!=null)
+                vo.setCompAvgAbility(compAvgAbility);
         }
         return vo;
     }

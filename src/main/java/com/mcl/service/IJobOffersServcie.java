@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.mcl.common.ServerResponse;
 import com.mcl.pojo.Account;
 import com.mcl.pojo.JobOffers;
+import com.mcl.vo.JobOffersVO;
 
 /**
  * Created by Administrator on 2018/1/13 0013.
@@ -25,4 +26,6 @@ public interface IJobOffersServcie {
     ServerResponse getOfferDetail(Integer joid);
 
     ServerResponse<PageInfo> recommendList(int pageNum, int pageSize);
+
+    JobOffersVO getJobOffersVOFromJobOffers(JobOffers jobOffers);
 }

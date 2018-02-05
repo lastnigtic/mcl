@@ -1,5 +1,6 @@
 package com.mcl.vo;
 
+import com.mcl.pojo.CompAvgAbility;
 import com.mcl.pojo.Company;
 
 import java.util.Date;
@@ -7,14 +8,14 @@ import java.util.Date;
 /**
  * Created by Administrator on 2018/1/10 0010.
  */
-public class JobOffersListVO {
+public class JobOffersVO {
     private Integer id;
 
     private String jobname;
 
     private String[] temptation;
 
-    private String tag;
+    private String[] tag;
 
     private String type;
 
@@ -36,9 +37,29 @@ public class JobOffersListVO {
 
     private Integer checked;
 
+    private String requirements;
+
     private String description;
 
     private Company company ;
+
+    private CompAvgAbility compAvgAbility;
+
+    public CompAvgAbility getCompAvgAbility() {
+        return compAvgAbility;
+    }
+
+    public void setCompAvgAbility(CompAvgAbility compAvgAbility) {
+        this.compAvgAbility = compAvgAbility;
+    }
+
+    public String getRequirements() {
+        return requirements;
+    }
+
+    public void setRequirements(String requirements) {
+        this.requirements = requirements;
+    }
 
     public Integer getId() {
         return id;
@@ -64,11 +85,11 @@ public class JobOffersListVO {
         this.temptation = temptation;
     }
 
-    public String getTag() {
+    public String[] getTag() {
         return tag;
     }
 
-    public void setTag(String tag) {
+    public void setTag(String[] tag) {
         this.tag = tag;
     }
 
