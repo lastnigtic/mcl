@@ -247,13 +247,20 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
      * 获取推荐招聘信息列表
      * @param pageNum
      * @param pageSize
+     * @param job
      * @return
      */
     @Override
-    public ServerResponse<PageInfo> recommendList(int pageNum, int pageSize) {
+    public ServerResponse<PageInfo> recommendList(int pageNum, int pageSize, JobOffers job) {
         PageHelper.startPage(pageNum,pageSize);
         PageHelper.orderBy("wage desc");
-        List<JobOffers> jobOffersList = jobOffersMapper.recommendList();
+
+        if(job!=null&&StringUtils.isNotBlank(job.getTag())){
+            String str = job.getTag() ;
+            str = new StringBuilder().append("%").append(str).append("%").toString();
+            job.setTag(str);
+        }
+        List<JobOffers> jobOffersList = jobOffersMapper.recommendList(job);
         List<JobOffersVO> list = Lists.newArrayList();
         for(JobOffers jo:jobOffersList){
             JobOffersVO vo = getJobOffersVOFromJobOffers(jo);

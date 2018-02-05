@@ -75,9 +75,12 @@
       AND tag=#{tag,jdbcType=VARCHAR}
     </if>
   </select>
-  <select id="recommendList" resultType="com.mcl.pojo.JobOffers" >
+  <select id="recommendList" resultType="com.mcl.pojo.JobOffers" parameterType="com.mcl.pojo.JobOffers">
     SELECT <include refid="Base_Column_List"/>
     FROM joboffers WHERE checked = 1
+    <if test="tag">
+      AND tag like #{tag}
+    </if>
   </select>
   <select id="selectList" resultType="com.mcl.pojo.JobOffers" parameterType="com.mcl.pojo.JobOffers">
     SELECT
