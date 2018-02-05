@@ -19,7 +19,7 @@ public interface CompanyScoreMapper {
 
     int updateByPrimaryKey(CompanyScore record);
 
-    int isUserHaveAuthorityScoreCompany(@Param("openid") String openid,@Param("companyid") String companyid);
+    int isUserScoredCompany(@Param("openid") String openid,@Param("companyid") String companyid);
 
     CompAvgAbility getCompAvgAbitlity(@Param("companyid")String companyid);
 

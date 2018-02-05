@@ -323,7 +323,6 @@
                 msg = msgInp.val();
             }else if(status == 4){
                 entrytime = entryTimeInp.val();
-                console.log(entrytime)
             }
 
             doChangeStatus(false, id, joid, status, msg, entrytime)
@@ -345,7 +344,6 @@
                 }
                 data.entrytime = entrytime
             }
-            console.log(data);
             $.post('/comp/changeresumestatus.do',data, function(res){
                 if(res.status === 0){
                     if(!isInit){

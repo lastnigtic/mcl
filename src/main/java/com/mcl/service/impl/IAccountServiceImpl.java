@@ -193,7 +193,7 @@ public class IAccountServiceImpl implements IAccountService {
         if(row>0)
             return false;
 
-        ResDeliverStatus deliverStatus = resDeliverStatusMapper.isUserHaveAuthorityScoreCompany(openid, companyid, Const.DeliveryStatus.PassInterview);
+        ResDeliverStatus deliverStatus = resDeliverStatusMapper.isUserHaveAuthorityScoreCompany(openid, companyid, Const.DeliveryStatus.PassInterview, joid);
 
         if(deliverStatus==null)
             return false ;
