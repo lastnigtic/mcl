@@ -286,12 +286,10 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
         vo.setWorkfrequency(jobOffers.getWorkfrequency());
         vo.setUpdatetime(jobOffers.getUpdatetime());
         vo.setRequirements(jobOffers.getRequirements());
-        String temptation = jobOffers.getTemptation();
         String tag = jobOffers.getTag();
-        String[] temptations = StringUtils.isBlank(temptation)?null:temptation.split(",");
         String[] tags = StringUtils.isBlank(tag)?null:tag.split(",");
         vo.setTag(tags);
-        vo.setTemptation(temptations);
+        vo.setTemptation(jobOffers.getTemptation());
         if(StringUtils.isNotBlank(jobOffers.getCompanyid())){
             vo.setCompanyid(jobOffers.getCompanyid());
             Company company = companyMapper.selectByPrimaryKey(jobOffers.getCompanyid());
