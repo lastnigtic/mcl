@@ -38,18 +38,12 @@ public interface IUserService {
     ServerResponse info(String openid);
 
     ServerResponse myResumeList(String openid);
-
-    ServerResponse myMsg(String openid, int pageNum, int pageSize, Integer readstatus);
-
-    ServerResponse msg(Integer id, String openid);
-
-    ServerResponse delMsg(Integer id, String openid);
-
+    
     boolean checkOpenid(String openid);
 
     ServerResponse rateToCompany(CompanyScore companyScore);
 
     boolean isUserHaveAuthorityScoreCompany(String openid, String companyid,Integer joid);
 
-    ServerResponse readMsg(String openid, Integer id);
+
 }

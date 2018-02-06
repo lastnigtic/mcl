@@ -1,5 +1,6 @@
 package com.mcl.dao;
 
+import com.mcl.common.ServerResponse;
 import com.mcl.pojo.UserMsg;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,4 +21,6 @@ public interface UserMsgMapper {
     int updateByPrimaryKey(UserMsg record);
 
     List<UserMsg> selectList(@Param("openid") String openid,@Param("readstatus") Integer readstatus);
+
+
 }

@@ -20,6 +20,9 @@
     <select id="selectEduList" resultType="java.lang.String">
       SELECT name FROM tagproperty WHERE type='edu'
     </select>
+  <select id="getTagType" resultType="java.lang.String">
+    SELECT DISTINCT( type ) FROM tagproperty
+  </select>
   <select id="selectListByType" resultType="java.lang.String">
     SELECT name FROM tagproperty WHERE type=#{type}
   </select>

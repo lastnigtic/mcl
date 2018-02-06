@@ -1,5 +1,7 @@
 package com.mcl.service;
 
+import com.mcl.common.ServerResponse;
+
 import java.util.List;
 
 /**
@@ -21,5 +23,9 @@ public interface ITagPropertyService {
 
     List<String> getCompSizeList();
 
+    List<String> getTagPropertiesByType(String type);
 
+    ServerResponse getTagPropertiesByType(int pageNum, int pageSize, String type);
+
+    ServerResponse getTagType();
 }

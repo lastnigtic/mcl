@@ -142,6 +142,7 @@
       joid = #{joid}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <select id="selectList" resultType="com.mcl.pojo.UserMsg">
     SELECT <include refid="Base_Column_List"/>
     FROM usermsg

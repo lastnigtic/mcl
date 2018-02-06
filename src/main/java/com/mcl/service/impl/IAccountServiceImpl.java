@@ -214,44 +214,7 @@ public class IAccountServiceImpl implements IAccountService {
         return true ;
     }
 
-    /**
-     * 获取消息列表
-     *
-     * @param pageNum
-     * @param pageSize
-     *@param companyMsg  @return
-     */
-    @Override
-    public ServerResponse msgList(int pageNum, int pageSize, CompanyMsg companyMsg) {
-        PageHelper.startPage(pageNum,pageSize);
 
-        if(StringUtils.isBlank(companyMsg.getCompanyid()))
-            return ServerResponse.createByErrorMessage("参数为空");
-
-        List<CompanyMsg> list = companyMsgMapper.selectList(companyMsg);
-
-        PageInfo pageInfo = new PageInfo(list);
-
-        return ServerResponse.createBySuccess(pageInfo);
-    }
-
-    /**
-     * 将消息设置为已读
-     * @param id
-     * @return
-     */
-    @Override
-    public ServerResponse readMsg(Integer id) {
-        if(id==null)
-            return ServerResponse.createByErrorMessage("参数为空");
-
-        int row = companyMsgMapper.readMsg(id);
-
-        if(row>0)
-            return ServerResponse.createBySuccess("成功");
-
-        return ServerResponse.createByErrorMessage("错误");
-    }
 
 
     /**

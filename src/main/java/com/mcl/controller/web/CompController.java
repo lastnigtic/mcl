@@ -1,15 +1,14 @@
 package com.mcl.controller.web;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.mcl.common.Const;
-import com.mcl.common.ResponseCode;
 import com.mcl.common.ServerResponse;
 import com.mcl.pojo.*;
 import com.mcl.service.*;
 import com.mcl.util.DateTimeUtil;
 import com.mcl.util.PropertiesUtil;
 import com.mcl.vo.ResumeVO;
+import com.mcl.vo.TagVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -52,6 +53,10 @@ public class CompController {
 
     @Autowired
     private IScoreService iScoreService ;
+
+    @Autowired
+    private IMsgService iMsgService ;
+
     /**
      * 取首页
      * @return
@@ -586,7 +591,7 @@ public class CompController {
         if(companyMsg!=null&&StringUtils.isBlank(companyMsg.getCompanyid())){
             companyMsg.setCompanyid(account.getCompanyid());
         }
-        return iAccountService.msgList(pageNum,pageSize,companyMsg);
+        return iMsgService.getCompMsgList(pageNum,pageSize,companyMsg);
     }
 
 
@@ -598,7 +603,7 @@ public class CompController {
     @RequestMapping(value = "readmsg.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse readMsg(Integer id){
-        return iAccountService.readMsg(id);
+        return iMsgService.readCompMsg(id);
     }
 
 
@@ -640,5 +645,31 @@ public class CompController {
         }
         return "/company/ratelist";
     }
+
+    /**
+     * 获取消息的详情
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "getmsg.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse getMsg(Integer id){
+        return iMsgService.getCompMsg(id);
+
+    }
+
+
+    /**
+     * 删除某条消息
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "delmsg.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse delMsg(Integer id){
+        return iMsgService.delCompMsg(id);
+
+    }
+
 
 }
