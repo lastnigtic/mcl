@@ -10,11 +10,12 @@
       <arg column="readstatus" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="msgtitle" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="joid" jdbcType="INTEGER" javaType="java.lang.Integer" />
     </constructor>
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, openid, type, msgtime, readstatus, msgtitle, updatetime
+    id, openid, type, msgtime, readstatus, msgtitle, updatetime,msg,joid
   </sql>
   <sql id="Blob_Column_List" >
     msg
@@ -27,10 +28,10 @@
   <insert id="insert" parameterType="com.mcl.pojo.UserMsg" >
     insert into usermsg (id, openid, type, 
       msgtime, readstatus, msgtitle, 
-      updatetime, msg)
+      updatetime, msg,joid)
     values (#{id,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
       #{msgtime,jdbcType=VARCHAR}, #{readstatus,jdbcType=INTEGER}, #{msgtitle,jdbcType=VARCHAR}, 
-      now(), #{msg,jdbcType=LONGVARCHAR})
+      now(), #{msg,jdbcType=LONGVARCHAR},#{joid})
   </insert>
   <insert id="insertSelective" parameterType="com.mcl.pojo.UserMsg" >
     insert into usermsg
@@ -59,6 +60,9 @@
       <if test="msg != null" >
         msg,
       </if>
+      <if test="joid != null" >
+        joid,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -84,6 +88,9 @@
       </if>
       <if test="msg != null" >
         #{msg,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="joid != null" >
+        #{joid},
       </if>
     </trim>
   </insert>
@@ -117,6 +124,9 @@
       <if test="msg != null" >
         msg = #{msg,jdbcType=LONGVARCHAR},
       </if>
+      <if test="joid != null" >
+        joid = #{joid},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -128,7 +138,8 @@
       msgtime = #{msgtime,jdbcType=VARCHAR},
       readstatus = #{readstatus,jdbcType=INTEGER},
       msgtitle = #{msgtitle,jdbcType=VARCHAR},
-      updatetime = now()
+      updatetime = now(),
+      joid = #{joid}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectList" resultType="com.mcl.pojo.UserMsg">

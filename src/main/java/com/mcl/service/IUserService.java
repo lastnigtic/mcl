@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 /**
  * Created by Administrator on 2018/1/9 0009.
  */
+
 public interface IUserService {
     ServerResponse saveOrUpdateUser(UserBaseInfo userBaseInfo);
 
@@ -50,4 +51,5 @@ public interface IUserService {
 
     boolean isUserHaveAuthorityScoreCompany(String openid, String companyid,Integer joid);
 
+    ServerResponse readMsg(String openid, Integer id);
 }

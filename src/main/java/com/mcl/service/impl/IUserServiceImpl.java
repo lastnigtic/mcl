@@ -8,13 +8,16 @@ import com.mcl.common.ServerResponse;
 import com.mcl.dao.*;
 import com.mcl.pojo.*;
 import com.mcl.service.IJobOffersServcie;
+import com.mcl.service.IMsgService;
 import com.mcl.service.IUserService;
 import com.mcl.vo.JobOffersVO;
+import com.mcl.vo.MsgVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,6 +56,9 @@ public class IUserServiceImpl implements IUserService {
 
     @Autowired
     private IJobOffersServcie iJobOffersServcie ;
+
+    @Autowired
+    private IMsgService iMsgService ;
 
 
     /**
@@ -447,14 +453,20 @@ public class IUserServiceImpl implements IUserService {
         PageHelper.startPage(pageNum,pageSize);
         PageHelper.orderBy("updatetime desc");
         List<UserMsg> list = userMsgMapper.selectList(openid,readstatus);
+        List<MsgVO> volist = new ArrayList<>();
         PageInfo pageResult = new PageInfo(list);
+
+        for(UserMsg userMsg : list){
+            volist.add(iMsgService.getMsgVOFromUserMsg(userMsg));
+        }
         //将封装好的volist放进去
+        pageResult.setList(volist);
         return ServerResponse.createBySuccess(pageResult);
 
     }
 
     /**
-     * 获取个人某条信息（并自动设置为已读）
+     * 获取个人某条信息
      * @param id
      * @param openid
      * @return
@@ -467,9 +479,11 @@ public class IUserServiceImpl implements IUserService {
                 //存在
                 UserMsg userMsg = userMsgMapper.selectByPrimaryKey(id);
                 if(userMsg!=null){
-                    userMsg.setReadstatus(1);
-                    userMsgMapper.updateByPrimaryKey(userMsg);
-                    return ServerResponse.createBySuccess(userMsg);
+                    if(userMsg.getReadstatus()!=null&&userMsg.getReadstatus()!=1){
+                        userMsg.setReadstatus(1);
+                        userMsgMapper.updateByPrimaryKey(userMsg);
+                    }
+                    return ServerResponse.createBySuccess(iMsgService.getMsgVOFromUserMsg(userMsg));
                 }
                 return ServerResponse.createByErrorMessage("不存在的消息");
             }
@@ -545,6 +559,38 @@ public class IUserServiceImpl implements IUserService {
 
         return true ;
 
+    }
+
+    /***
+     * 将某条消息设置为已读
+     * @param openid
+     * @param id
+     * @return
+     */
+    @Override
+    public ServerResponse readMsg(String openid, Integer id) {
+        if(StringUtils.isBlank(openid)||id==null)
+            return ServerResponse.createByErrorMessage("参数为空");
+
+        //验证用户是否存在
+        int rowUser = userBaseInfoMapper.checkUserByOpenid(openid);
+
+        if(rowUser>0)
+            return ServerResponse.createByErrorMessage("用户不存在");
+
+        UserMsg msg = userMsgMapper.selectByPrimaryKey(id);
+
+        if(msg.getReadstatus()==1)
+            return ServerResponse.createBySuccess("已经是已读状态");
+
+        msg.setReadstatus(1);
+
+        int row = userMsgMapper.updateByPrimaryKey(msg);
+
+        if(row==0)
+            return ServerResponse.createByErrorMessage("修改失败");
+
+        return ServerResponse.createBySuccess("已读",msg);
     }
 
 

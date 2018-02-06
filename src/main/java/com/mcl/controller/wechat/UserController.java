@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -200,6 +201,18 @@ public class UserController {
     public ServerResponse msg(Integer id,String openid){
         return iUserService.msg(id,openid);
     }
+
+    /**
+     * 将某消息设为已读
+     * @param openid
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "readmsg.do",method = RequestMethod.POST)
+    public ServerResponse readMsg(String openid ,Integer id){
+        return iUserService.readMsg(openid,id);
+    }
+
 
     /**
      * 删除自己的某条消息

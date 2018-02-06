@@ -25,7 +25,7 @@ public interface IJobOffersServcie {
 
     ServerResponse getOfferDetail(Integer joid);
 
-    ServerResponse<PageInfo> recommendList(int pageNum, int pageSize);
+    ServerResponse<PageInfo> recommendList(int pageNum, int pageSize, JobOffers job);
 
     JobOffersVO getJobOffersVOFromJobOffers(JobOffers jobOffers);
 }

@@ -45,8 +45,8 @@ public class OffersController {
      */
     @RequestMapping(value = "recommendlist.do" ,method = RequestMethod.POST)
     public ServerResponse<PageInfo> recommendList(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
-                                                 @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
-        return iOffersService.recommendList(pageNum,pageSize);
+                                                 @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,JobOffers job){
+        return iOffersService.recommendList(pageNum,pageSize,job);
     }
 
     /**
