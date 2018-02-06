@@ -20,6 +20,9 @@
     <include refid="Base_Column_List" />
     from companymsg
     where id = #{id,jdbcType=INTEGER}
+    <if test="status!=null">
+      and status = #{status,jdbcType=INTEGER}
+    </if>
   </select>
   <select id="selectList" resultType="com.mcl.pojo.CompanyMsg">
     SELECT <include refid="Base_Column_List"/> FROM companymsg

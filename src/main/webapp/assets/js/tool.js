@@ -21,6 +21,13 @@ function _fix(n) {
 	}
 	return n
 }
+//限制长度
+$('.J-len').each(function(idx, item){
+	item = $(item);
+	if(item.text().length > 26){
+		item.text(item.text().substring(0, 25)+'...')
+	}
+})
 
 // checkbox选中
 $('.J-tag').each(function(){

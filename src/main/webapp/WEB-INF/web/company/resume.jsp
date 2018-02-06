@@ -109,7 +109,7 @@
                     <input id="msg" class="form-control" placeholder="请输入邀约信息" style="display: none;">
                     <input id="entryTime" type="date" class="form-control" title="请选择入职时间" style="display: none;">
                     <button id="changeStatus" class="btn btn-primary form-control" style="height: auto; padding: 2px 16px;">确认</button>
-                    <button id="toEvaluate" style="display: none" class="btn btn-primary form-control" style="height: auto; padding: 2px 16px;float:right" data-toggle="modal" data-target="#evaluateModal">进行点评</button>
+                    <button id="toEvaluate" style="display: none;height: auto; padding: 2px 16px;float:right;" class="btn btn-primary form-control" data-toggle="modal" data-target="#evaluateModal">进行点评</button>
                 </div>
                 <div class="panel panel-profile">
                     <div class="clearfix">

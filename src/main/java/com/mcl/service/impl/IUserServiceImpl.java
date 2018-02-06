@@ -575,7 +575,7 @@ public class IUserServiceImpl implements IUserService {
         //验证用户是否存在
         int rowUser = userBaseInfoMapper.checkUserByOpenid(openid);
 
-        if(rowUser>0)
+        if(rowUser == 0)
             return ServerResponse.createByErrorMessage("用户不存在");
 
         UserMsg msg = userMsgMapper.selectByPrimaryKey(id);
