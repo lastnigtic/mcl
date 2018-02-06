@@ -156,7 +156,7 @@
 
                         if(res.status==0){
                             alert('更新成功');
-                            $(window).attr('location','/comp/index.jsp');
+                            $(window).attr('location','/comp/index.html');
                         }else{
                             alert(res.msg);
                             $(window).attr('location','/comp/editinfo.html');

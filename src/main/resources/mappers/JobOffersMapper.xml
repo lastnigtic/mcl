@@ -74,6 +74,9 @@
     <if test="tag!=null">
       AND tag=#{tag,jdbcType=VARCHAR}
     </if>
+    <if test="checked!=null">
+      AND checked=#{checked,jdbcType=INTEGER}
+    </if>
   </select>
   <select id="recommendList" resultType="com.mcl.pojo.JobOffers" parameterType="com.mcl.pojo.JobOffers">
     SELECT <include refid="Base_Column_List"/>

@@ -29,7 +29,14 @@
 		table th:not(:first-child){
 			text-align: center
 		}
-
+		.status-select{
+			width: auto;
+			float:right;
+			display: inline-block;
+		}
+		.dropdown-menu{
+			min-width: 110px
+		}
 	</style>
 </head>
 
@@ -48,7 +55,19 @@
 						<div class="col-md-12">
 							<div class="panel">
 								<div class="panel-heading">
-									<h3 class="panel-title">消息列表</h3>
+									<h3 class="panel-title">消息列表
+										<div class="dropdown status-select">
+											<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="padding: 6px 16px;">
+												状态筛选
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+												<li><a href="/comp/msglist.html">全部</a></li>
+												<li><a href="/comp/msglist.html?status=0">未读</a></li>
+												<li><a href="/comp/msglist.html?status=1">已读</a></li>
+											</ul>
+										</div>
+									</h3>
 								</div>
 								<div class="panel-body">
 									<table class="table table-striped">
@@ -57,8 +76,9 @@
 												<th>#</th>
 												<th>标题</th>
 												<th>类型</th>
+												<th>详情</th>
 												<th>更新时间</th>
-												<th>已读状态</th>
+												<th>状态</th>
 												<th>操作</th>
 											</tr>
 										</thead>
@@ -71,16 +91,20 @@
 													<td>${xh.count}</td>
 													<td>${msg.title}</td>
 													<td>${msg.type}</td>
-													<td>${msg.updatetime}</td>
+													<td class="J-len">${msg.content}</td>
+													<td class="J-Date">${msg.updatetime}</td>
 													<c:choose>
 														<c:when test="${msg.status==0}">
-															<td>未读</td>
+															<td><span class="label label-danger">未读</span></td>
 														</c:when>
 														<c:when test="${msg.status==1}">
-															<td>已读</td>
+															<td><span class="label label-success">已读</span></td>
 														</c:when>
 													</c:choose>
-													<td><a href="/comp/msgdetail.html?id=${msg.id}" style="cursor: pointer">详情</a> &nbsp;</td>
+													<td>
+														<a href="#" class="J-detail" style="cursor: pointer" data-id="${msg.id}">详情</a> &nbsp;
+														<a href="#" class="J-delete" data-id="${msg.id}" style="cursor: pointer">删除</a>
+													</td>
 												</tr>
 											</c:forEach>
 										</c:when>
@@ -106,6 +130,23 @@
 			<!-- END MAIN CONTENT -->
 		</div>
 		<!-- END MAIN -->
+		<!-- Modal -->
+		<%--<div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">--%>
+			<%--<div class="modal-dialog" role="document">--%>
+				<%--<div class="modal-content">--%>
+					<%--<div class="modal-header">--%>
+						<%--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--%>
+						<%--<h4 class="modal-title" id="myModalLabel">消息详情</h4>--%>
+					<%--</div>--%>
+					<%--<div class="modal-body">--%>
+						<%--<p></p>--%>
+					<%--</div>--%>
+					<%--<div class="modal-footer">--%>
+					<%--</div>--%>
+				<%--</div>--%>
+			<%--</div>--%>
+		<%--</div>--%>
+		<!-- Modal-end -->
 		<div class="clearfix"></div>
 		<footer>
 			<div class="container-fluid">
@@ -121,6 +162,36 @@
 	<script src="/assets/scripts/klorofil-common.js"></script>
 	<script src="/assets/js/public.js"></script>
 	<script src="/assets/js/tool.js"></script>
+	<script>
+		$(function(){
+//		   已读消息消息
+            $('.J-detail').on('click',function(e){
+                var tar = $(e.target);
+                var id = tar.data('id');
+                console.log(id)
+                $.post('/comp/readmsg.do',{id: id},function(res){
+                    if(res.status === 0){
+						var label = $(tar.parent().prev().find('.label'));
+						label.removeClass('label-danger');
+						label.addClass('label-success');
+					}
+                })
+            })
+//		   删除消息
+			$('.J-delete').on('click',function(e){
+			    var tar = $(e.target);
+			    var id = tar.data('id');
+//			    $.post('',{id: id},function(res){
+//				if(res.status === 0){
+//                    tar.closest('tr').remove();
+//                    window.alert('删除成功')
+//                }else{
+//				    window.alert('操作失败，请重试')
+//				}
+//				})
+			})
+		})
+	</script>
 </body>
 
 </html>

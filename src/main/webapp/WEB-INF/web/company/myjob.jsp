@@ -30,7 +30,14 @@
 			text-align: center;
 		}
 		table tr td:only-child{ text-align: center;}
-
+		.status-select{
+			width: auto;
+			float:right;
+			display: inline-block;
+		}
+		.dropdown-menu{
+			min-width: 110px
+		}
 	</style>
 </head>
 
@@ -49,7 +56,21 @@
 						<div class="col-md-12">
 							<div class="panel">
 								<div class="panel-heading">
-									<h3 class="panel-title">我发布的岗位</h3>
+									<h3 class="panel-title">我发布的岗位
+										<div class="dropdown status-select">
+											<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="padding: 6px 16px;">
+												状态筛选
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+												<li><a href="/comp/myjob.html">全部</a></li>
+												<li><a href="/comp/myjob.html?checked=0">未审核</a></li>
+												<li><a href="/comp/myjob.html?checked=1">通过</a></li>
+												<li><a href="/comp/myjob.html?checked=2">未通过</a></li>
+												<li><a href="/comp/myjob.html?checked=3">过期</a></li>
+											</ul>
+										</div>
+									</h3>
 								</div>
 								<div class="panel-body">
 									<table class="table table-striped">
