@@ -7,6 +7,7 @@ import com.mcl.common.ServerResponse;
 import com.mcl.pojo.*;
 import com.mcl.service.IAdminService;
 import com.mcl.service.ITagPropertyService;
+import com.mcl.service.IUserService;
 import com.mcl.vo.StatisticsVO;
 import com.mcl.vo.TagVO;
 import com.sun.org.apache.xpath.internal.operations.Mod;
@@ -32,6 +33,9 @@ public class AdminController {
 
     @Autowired
     private ITagPropertyService iTagPropertyService ;
+
+    @Autowired
+    private IUserService iUserService ;
 
     /**
      * 公司待审核列表
@@ -137,8 +141,20 @@ public class AdminController {
         return "/admin/search";
     }
 
+    /**
+     * 用户详情页
+     * @param model
+     * @param openid
+     * @return
+     */
     @RequestMapping(value = "/userdetail")
-    public String userdetail(){
+    public String userdetail(Model model,String openid){
+        ServerResponse response = getUserDetailInfo(openid);
+        if(response.isSuccess()){
+            model.addAttribute("userinfo",response.getData());
+        }else {
+            model.addAttribute("msg",response.getMsg());
+        }
         return "/admin/userdetail";
     }
 
@@ -389,6 +405,18 @@ public class AdminController {
     @ResponseBody
     public ServerResponse updateTag(TagProperty tag){
         return iTagPropertyService.updateTag(tag);
+    }
+
+
+    /**
+     *  获取用户详细信息
+     * @param openid
+     * @return
+     */
+    @RequestMapping(value = "getuserdetailinfo.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse getUserDetailInfo(String openid){
+        return iUserService.getUserDetailInfo(openid);
     }
 
 }

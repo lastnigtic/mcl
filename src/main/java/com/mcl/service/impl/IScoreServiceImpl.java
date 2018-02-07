@@ -4,16 +4,18 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mcl.common.ServerResponse;
 import com.mcl.dao.CompanyScoreMapper;
+import com.mcl.dao.JobOffersMapper;
+import com.mcl.dao.UserBaseInfoMapper;
 import com.mcl.dao.UserScoreMapper;
-import com.mcl.pojo.CompAvgAbility;
-import com.mcl.pojo.CompanyScore;
-import com.mcl.pojo.UserAvgAbility;
-import com.mcl.pojo.UserScore;
+import com.mcl.pojo.*;
+import com.mcl.service.IJobOffersServcie;
 import com.mcl.service.IScoreService;
+import com.mcl.vo.CompScoreVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +30,15 @@ public class IScoreServiceImpl implements IScoreService {
 
     @Autowired
     private CompanyScoreMapper companyScoreMapper ;
+
+    @Autowired
+    private JobOffersMapper jobOffersMapper ;
+
+    @Autowired
+    private IJobOffersServcie iJobOffersServcie ;
+
+    @Autowired
+    private UserBaseInfoMapper userBaseInfoMapper ;
 
     /**
      * 获取用户的六种能力分数
@@ -89,6 +100,30 @@ public class IScoreServiceImpl implements IScoreService {
         List<CompanyScore> list = companyScoreMapper.selectList(companyScore);
 
         PageInfo pageInfo = new PageInfo(list);
+
+        List<CompScoreVO> voList = new ArrayList<>();
+
+        /**
+         * 组装volist
+         */
+        for (CompanyScore c:list){
+            CompScoreVO vo = new CompScoreVO();
+            vo.setCompanyScore(c);
+            if(c.getJoid()!=null){
+                JobOffers jobOffers = jobOffersMapper.selectByPrimaryKey(c.getJoid());
+                if(jobOffers!=null){
+                    vo.setJobOffersVO(iJobOffersServcie.getJobOffersVOFromJobOffers(jobOffers));
+                }
+            }
+            if(StringUtils.isNotBlank(c.getOpenid())){
+                UserBaseInfo userBaseInfo = userBaseInfoMapper.selectByPrimaryKey(c.getOpenid());
+                if(userBaseInfo!=null){
+                    vo.setUserBaseInfo(userBaseInfo);
+                }
+            }
+        }
+
+        pageInfo.setList(voList);
 
         return ServerResponse.createBySuccess(pageInfo);
     }
