@@ -142,6 +142,7 @@ public class AdminController {
         return "/admin/userdetail";
     }
 
+
     @RequestMapping(value = "/join")
     public String join(){
         return "/admin/join";
@@ -345,7 +346,7 @@ public class AdminController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "jobtag.html")
+    @RequestMapping(value = "managetag.html")
     public String jobtag( @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                   @RequestParam(value = "pageSize",defaultValue = "10") int pageSize, Model model){
         ServerResponse response = getTagPropertiesByType("jobtag",pageNum,pageSize);
@@ -354,7 +355,7 @@ public class AdminController {
         }else {
             model.addAttribute("msg",response.getMsg());
         }
-        return "/admin/jobtag";
+        return "/admin/managetag";
     }
 
     /**

@@ -44,20 +44,19 @@
 								<div class="profile-header">
 									<div class="overlay"></div>
 									<div class="profile-main">
-										<img src="assets/img/user-medium.png" class="img-circle" alt="Avatar">
+										<img src="${comp.imgurl}" class="img-circle" alt="Avatar">
 										<h3 class="name">${comp.companyname}</h3>
-										<span class="status-available">让天下人爱学习</span>
 									</div>
 									<div class="profile-stat">
 										<div class="row">
 											<div class="col-md-4 stat-item">
-												成都
+												${comp.city}
 											</div>
 											<div class="col-md-4 stat-item">
-												50-150人
+												${comp.companysize}
 											</div>
 											<div class="col-md-4 stat-item">
-												互联网
+												${comp.industry}
 											</div>
 										</div>
 									</div>
@@ -68,61 +67,60 @@
 							<!-- RIGHT COLUMN -->
 							<div class="col-md-12">
 								<!-- TABBED CONTENT -->
-								<div class="custom-tabs-line tabs-line-bottom  text-center">
-									<ul class="nav row" role="tablist" style="display: block">
-										<li class="active col-md-6"><a href="#tab-bottom-left1" role="tab" data-toggle="tab">企业信息</a></li>
-										<li class="col-md-6"><a href="#tab-bottom-left2" role="tab" data-toggle="tab">在招职位</a></li>
-									</ul>
-								</div>
+								<%--<div class="custom-tabs-line tabs-line-bottom  text-center">--%>
+									<%--<ul class="nav row" role="tablist" style="display: block">--%>
+										<%--<li class="active col-md-6"><a href="#tab-bottom-left1" role="tab" data-toggle="tab">企业信息</a></li>--%>
+										<%--<li class="col-md-6"><a href="#tab-bottom-left2" role="tab" data-toggle="tab">在招职位</a></li>--%>
+									<%--</ul>--%>
+								<%--</div>--%>
 								<div class="tab-content">
 									<div class="tab-pane fade in active" id="tab-bottom-left1">
 										<h3>企业介绍</h3>
 										<p style="line-height: 2em">${comp.introduction}</p>
-										<h3>企业资料</h3>
-										<p>成都超有爱科技有限公司<p>
-										<a href="www.baicizhan.com/hello">www.baicizhan.com/hello</a>
+										<h3>企业网址</h3>
+										<span>${comp.companyname}:<span>
+										<a href="${comp.website}">${comp.website}</a>
 										<h3>工商信息</h3>
 										<ul class="list-unstyled">
-											<li>公司类型：其他有限责任公司</li>
-											<li>注册号：510109000161814</li>
-											<li>成立日期：2011-01-20</li>
-											<li>注册资本：222.8893 万元人民币</li>
+											<li>注册号：${comp.companylicense}</li>
+											<li>成立日期：<span class="J-Date">${comp.setuptime}</span></li>
+											<li>融资阶段：${comp.financingstage}</li>
 										</ul>
 									</div>
-									<div class="tab-pane fade" id="tab-bottom-left2">
-										<div class="table-responsive">
-											<table class="table project-table">
-												<thead>
-													<tr>
-														<th>实习名称</th>
-														<th>地区</th>
-														<th>工资</th>
-														<th>天数</th>
-														<th>月数</th>
-														<th>更新日期</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>百词斩编辑</td>
-														<td>成都</td>
-														<td>120/天</td>
-														<td>4天</td>
-														<td>6月</td>
-														<td>2018-01-27 更新</td>
-													</tr>
-													<tr>
-														<td>百词斩编辑</td>
-														<td>成都</td>
-														<td>120/天</td>
-														<td>4天</td>
-														<td>6月</td>
-														<td>2018-01-27 更新</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-									</div>
+									<%--<div class="tab-pane fade" id="tab-bottom-left2">--%>
+										<%--<div class="table-responsive">--%>
+											<%--<table class="table project-table">--%>
+												<%--<thead>--%>
+													<%--<tr>--%>
+														<%--<th>实习名称</th>--%>
+														<%--<th>地区</th>--%>
+														<%--<th>工资</th>--%>
+														<%--<th>天数</th>--%>
+														<%--<th>月数</th>--%>
+														<%--<th>更新日期</th>--%>
+													<%--</tr>--%>
+												<%--</thead>--%>
+												<%--<tbody>--%>
+													<%--<tr>--%>
+														<%--<td>百词斩编辑</td>--%>
+														<%--<td>成都</td>--%>
+														<%--<td>120/天</td>--%>
+														<%--<td>4天</td>--%>
+														<%--<td>6月</td>--%>
+														<%--<td>2018-01-27 更新</td>--%>
+													<%--</tr>--%>
+													<%--<tr>--%>
+														<%--<td>百词斩编辑</td>--%>
+														<%--<td>成都</td>--%>
+														<%--<td>120/天</td>--%>
+														<%--<td>4天</td>--%>
+														<%--<td>6月</td>--%>
+														<%--<td>2018-01-27 更新</td>--%>
+													<%--</tr>--%>
+												<%--</tbody>--%>
+											<%--</table>--%>
+										<%--</div>--%>
+									<%--</div>--%>
 								</div>
 								<!-- END TABBED CONTENT -->
 							</div>

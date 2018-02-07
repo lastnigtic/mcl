@@ -28,6 +28,13 @@ $('.J-len').each(function(idx, item){
 		item.text(item.text().substring(0, 25)+'...')
 	}
 })
+//限制正数
+$('.J-positiveNum').on('blur',function(e){
+	var tar = $(e.target);
+	if(tar.val() < 0){
+		tar.val(0)
+	}
+})
 
 // checkbox选中
 $('.J-tag').each(function(){

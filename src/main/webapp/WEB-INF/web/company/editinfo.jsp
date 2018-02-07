@@ -42,14 +42,17 @@
 								
 								<div class="panel-body">
 									<h3 class="page-title">编辑公司信息</h3>
+									<label>公司商标</label>
+									<input type="file" class="form-control" name="imgurl" id="imgurl" value="${company.imgurl}">
+									<br>
 									<label>公司名称</label>
 									<input type="text" class="form-control" name="companyname" id="companyname" value="${company.companyname}" placeholder="请输入公司名称...">
 									<br>
 									<label>公司地址</label>
-									<input type="text" class="form-control" name="address" id="address" value="${company.address}" placeholder="请输入公司地址...">
+									<input class="form-control" name="address" id="address" value="${company.address}" placeholder="请输入公司地址...">
 									<br>
 									<label>成立时间</label>
-									<input type="text" class=" J-Date form-control" id="setuptime" name="setuptime" value="${company.setuptime}" />
+									<input type="date" class="J-positiveNum J-Date form-control" id="setuptime" name="setuptime" value="${company.setuptime}" />
 									<br>
 									<label>注册资本</label>
 									<input  class="form-control" name="registeredcapital" id="registeredcapital" type="text" value="${company.registeredcapital}">
@@ -63,115 +66,135 @@
 									<label>所在城市</label>
 									<select class="form-control" name="city" id="city">
 										<c:forEach items="${city}" var="item">
-											<option value="${item}" <c:if test="${item eq company.city}">selected</c:if>>${item}</option>
-										</c:forEach>
-									</select>
-									<br>
-									<label>公司规模</label>
-									<select class="form-control" name="companysize" id="companysize">
-										<c:forEach items="${compsize}" var="item">
-											<option value="${item}" <c:if test="${item eq company.companysize}">selected</c:if>>${item}</option>
-										</c:forEach>
-									</select>
-									<br>
-									<label>融资阶段</label>
-									<select class="form-control" name="financingstage" id="financingstage">
-										<c:forEach items="${financings}" var="item">
-											<option value="${item}" <c:if test="${item eq company.financingstage}">selected</c:if>>${item}</option>
-										</c:forEach>
-									</select>
-									<br>
-									<label>公司行业</label>
-									<select class="form-control" name="industry" id="industry">
-										<c:forEach items="${industry}" var="item">
-											<option value="${item}" <c:if test="${item eq company.industry}">selected</c:if>>${item}</option>
-										</c:forEach>
-									</select>
-									<br>
-									<label>公司简介</label>
-									<textarea class="form-control" name="introduction" id="introduction" placeholder="请输入公司简介..." rows="4">${company.introduction}</textarea>
-									<br>
-									<input type="hidden" id="companyid" name="id" value="${company.id}"/>
-									<button type="button" id="button-update" class="btn btn-primary" style="float: right">提交</button>
-								</div>
-							</div>
-							<!-- END INPUTS -->
-						</div>
-						
-					</div>
+										<option value="${item}" <c:if test="${item eq company.city}">selected</c:if>>${item}</option>
+									</c:forEach>
+								</select>
+								<br>
+								<label>公司规模</label>
+								<select class="form-control" name="companysize" id="companysize">
+									<c:forEach items="${compsize}" var="item">
+									<option value="${item}" <c:if test="${item eq company.companysize}">selected</c:if>>${item}</option>
+								</c:forEach>
+							</select>
+							<br>
+							<label>融资阶段</label>
+							<select class="form-control" name="financingstage" id="financingstage">
+								<c:forEach items="${financings}" var="item">
+								<option value="${item}" <c:if test="${item eq company.financingstage}">selected</c:if>>${item}</option>
+							</c:forEach>
+						</select>
+						<br>
+						<label>公司行业</label>
+						<select class="form-control" name="industry" id="industry">
+							<c:forEach items="${industry}" var="item">
+							<option value="${item}" <c:if test="${item eq company.industry}">selected</c:if>>${item}</option>
+						</c:forEach>
+					</select>
+					<br>
+					<label>公司简介</label>
+					<textarea class="form-control" name="introduction" id="introduction" placeholder="请输入公司简介..." rows="4">${company.introduction}</textarea>
+					<br>
+					<input type="hidden" id="companyid" name="id" value="${company.id}"/>
+					<button type="button" id="button-update" class="btn btn-primary" style="float: right">提交</button>
 				</div>
 			</div>
-			<!-- END MAIN CONTENT -->
+			<!-- END INPUTS -->
 		</div>
-		<!-- END MAIN -->
-		<div class="clearfix"></div>
-		<footer>
-			<div class="container-fluid">
-				<p class="copyright">Copyright &copy; 2017.Company name All rights reserved.</p>
-			</div>
-		</footer>
+
 	</div>
-	<!-- END WRAPPER -->
-	<!-- Javascript -->
-	<script src="/assets/vendor/jquery/jquery.min.js"></script>
-	<script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-	<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-	<script src="/assets/scripts/klorofil-common.js"></script>
-	<script src="/assets/js/tool.js"></script>
-	<script>
-        $(function () {
-            $("#button-update").click(function () {
+</div>
+</div>
+<!-- END MAIN CONTENT -->
+</div>
+<!-- END MAIN -->
+<div class="clearfix"></div>
+<footer>
+	<div class="container-fluid">
+		<p class="copyright">Copyright &copy; 2017.Company name All rights reserved.</p>
+	</div>
+</footer>
+</div>
+<!-- END WRAPPER -->
+<!-- Javascript -->
+<script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/assets/scripts/klorofil-common.js"></script>
+<script src="/assets/js/tool.js"></script>
+<script>
+	$(function () {
+		// 点击后先上传文件后上传其它信息
+		$("#button-update").click(function(){
+			var file = $('imgurl').prop('files')[0];
+			if(!file){
+				window.alert('请上传商标')
+			}
+			var form = new FormData(); 
+			form.append("file", file); 
+			$.ajax({
+				url: '',
+				method: 'POST',
+				data: form,
+				success: function(res){
+					if(res.status === 0){
+						upBasic();
+					}else{
+						window.alert('上传失败请重试')
+					}
+				}
+			})
+		});
 
-				var companyname = $("#companyname").val();
-				var address = $("#address").val();
-				var setuptime = $("#setuptime").val();
-				var registeredcapital = $("#registeredcapital").val();
-                var city = $("#city").val();
-                var introduction = $("#introduction").val();
-                var legalrepresentative = $("#legalrepresentative").val();
-                var id = $("#companyid").val();
-				var industry = $("#industry").val();
-				var financingstage = $("#financingstage").val();
-				var companysize = $("#companysize").val();
-				var website = $("#website").val();
+		function upBasic(){
+			var companyname = $("#companyname").val();
+			var address = $("#address").val();
+			var setuptime = $("#setuptime").val();
+			var registeredcapital = $("#registeredcapital").val();
+			var city = $("#city").val();
+			var introduction = $("#introduction").val();
+			var legalrepresentative = $("#legalrepresentative").val();
+			var id = $("#companyid").val();
+			var industry = $("#industry").val();
+			var financingstage = $("#financingstage").val();
+			var companysize = $("#companysize").val();
+			var website = $("#website").val();
 
-                $.ajax({
-                    url:'/comp/saveorupdatecompany.do',
-                    type:'POST',
-                    data:{
-                        id:id,
-                        companyname:companyname,
-                        address:address,
-                        setuptime:setuptime,
-                        registeredcapital:registeredcapital,
-                        city:city,
-                        introduction:introduction,
-                        legalrepresentative:legalrepresentative,
-                        industry:industry,
-                        financingstage:financingstage,
-                        companysize:companysize,
-                        website:website
-                    },
-                    success:function (res) {
+			$.ajax({
+				url:'/comp/saveorupdatecompany.do',
+				type:'POST',
+				data:{
+					id:id,
+					companyname:companyname,
+					address:address,
+					setuptime:setuptime,
+					registeredcapital:registeredcapital,
+					city:city,
+					introduction:introduction,
+					legalrepresentative:legalrepresentative,
+					industry:industry,
+					financingstage:financingstage,
+					companysize:companysize,
+					website:website
+				},
+				success:function (res) {
 
-                        if(res.status==0){
-                            alert('更新成功');
-                            $(window).attr('location','/comp/index.html');
-                        }else{
-                            alert(res.msg);
-                            $(window).attr('location','/comp/editinfo.html');
-                        }
-                    }
-                });
-            });
-
-            function isBlank(str) {
-                if(str==null||str=='')
-                    return true ;
-                return false;
-            }
-        })
-	</script>x
+					if(res.status==0){
+						alert('更新成功');
+						$(window).attr('location','/comp/index.html');
+					}else{
+						alert(res.msg);
+						$(window).attr('location','/comp/editinfo.html');
+					}
+				}
+			});
+		}
+		function isBlank(str) {
+			if(str==null||str=='')
+				return true ;
+			return false;
+		}
+	})
+</script>x
 </body>
 
 </html>

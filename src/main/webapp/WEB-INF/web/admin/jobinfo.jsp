@@ -79,9 +79,9 @@
 								</div>
 								</div>
 								<div class="media-right">
-									<a href="#">
+									<a href="/admin/compinfo.html?id=${job.companyid}">
 										<img class="media-object" src="assets/img/user-medium.png" alt="...">
-										<h3 class="text-center">${job.companyid}<h3>
+										<h3 class="text-center">所在公司</h3>
 										</a>
 									</div>
 								</div>

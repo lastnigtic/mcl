@@ -72,7 +72,7 @@
 											</tr>
 										</thead>
 										<c:choose>
-											<c:when test="${pageInfo!=null}">
+											<c:when test="${pageInfo!=null&&pageInfo.list.size()>0}">
 												<c:forEach items="${pageInfo.list}" var="comp" varStatus="xh" >
 													<tr>
 														<td>${comp.companyname}</td>

@@ -70,8 +70,8 @@
 													<tr>
 														<td>${xh.count}</td>
 														<td>${opinion.description}</td>
-														<td>${opinion.contactinfo}</td>
 														<td class="J-Date">${opinion.updatetime}</td>
+														<td>${opinion.contactinfo}</td>
 													</tr>
 												</c:forEach>
 											</c:when>
