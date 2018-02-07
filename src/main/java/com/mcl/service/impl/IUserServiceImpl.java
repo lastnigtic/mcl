@@ -9,9 +9,11 @@ import com.mcl.dao.*;
 import com.mcl.pojo.*;
 import com.mcl.service.IJobOffersServcie;
 import com.mcl.service.IMsgService;
+import com.mcl.service.IScoreService;
 import com.mcl.service.IUserService;
 import com.mcl.vo.JobOffersVO;
 import com.mcl.vo.MsgVO;
+import com.mcl.vo.UserDetailVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +61,9 @@ public class IUserServiceImpl implements IUserService {
 
     @Autowired
     private IMsgService iMsgService ;
+
+    @Autowired
+    private IScoreService iScoreService;
 
 
     /**
@@ -490,6 +495,43 @@ public class IUserServiceImpl implements IUserService {
 
         return true ;
 
+    }
+
+    /**
+     * 获取用户的详细信息（包括多份简历）
+     * @param openid
+     * @return
+     */
+    @Override
+    public ServerResponse getUserDetailInfo(String openid) {
+        if(StringUtils.isBlank(openid))
+            return ServerResponse.createByErrorMessage("参数为空");
+
+        int rowUser = userBaseInfoMapper.checkUserByOpenid(openid);
+
+        if(rowUser==0)
+            return ServerResponse.createByErrorMessage("用户不存在");
+
+        //查询基本信息
+        UserBaseInfo userBaseInfo = userBaseInfoMapper.selectByPrimaryKey(openid);
+
+        UserDetailVO vo = new UserDetailVO() ;
+
+        if(userBaseInfo!=null)
+            vo.setUserBaseInfo(userBaseInfo);
+
+        List<Resume> list = resumeMapper.selectList(openid);
+
+        if(list!=null)
+            vo.setResumeList(list);
+
+        ServerResponse scoreResponse = iScoreService.getUserAvgAbility(openid);
+
+        if(scoreResponse.isSuccess()){
+            vo.setAvgAbility((UserAvgAbility) scoreResponse.getData());
+        }
+
+        return ServerResponse.createBySuccess(vo);
     }
 
 

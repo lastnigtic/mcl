@@ -35,8 +35,8 @@ public class LoginController {
      */
     @RequestMapping(value = "login.html")
     public String loginPage(HttpSession session){
-        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account != null){
+        Object account = session.getAttribute(Const.CURRENT_USER);
+        if(account instanceof Account&&account != null){
             return "/company/index";
         }
         return "/login";
@@ -50,8 +50,8 @@ public class LoginController {
     @RequestMapping(value = "login.do")
     public String login(String uname, String upass, HttpSession session, Model model){
 
-        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        if(account != null){
+        Object account = session.getAttribute(Const.CURRENT_USER);
+        if(account instanceof Account &&account != null){
             return "/company/index";
         }
 

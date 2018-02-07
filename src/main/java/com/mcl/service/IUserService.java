@@ -46,4 +46,6 @@ public interface IUserService {
     boolean isUserHaveAuthorityScoreCompany(String openid, String companyid,Integer joid);
 
 
+    ServerResponse getUserDetailInfo(String openid);
+
 }

@@ -7,8 +7,10 @@ import com.mcl.common.ServerResponse;
 import com.mcl.dao.*;
 import com.mcl.pojo.*;
 import com.mcl.service.IAdminService;
+import com.mcl.service.IJobOffersServcie;
 import com.mcl.util.MD5Util;
 import com.mcl.util.MsgTemplate;
+import com.mcl.vo.JobOffersVO;
 import com.mcl.vo.StatisticsVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,9 @@ public class IAdminServiceImpl implements IAdminService {
 
     @Autowired
     private CompanyMsgMapper companyMsgMapper ;
+
+    @Autowired
+    private IJobOffersServcie iJobOffersServcie ;
 
     /**
      * 管理员登录
@@ -253,7 +258,8 @@ public class IAdminServiceImpl implements IAdminService {
             return ServerResponse.createByErrorMessage("参数错误");
         JobOffers jobOffers = jobOffersMapper.selectByPrimaryKey(id);
         if(jobOffers!=null){
-            return ServerResponse.createBySuccess(jobOffers);
+            JobOffersVO vo = iJobOffersServcie.getJobOffersVOFromJobOffers(jobOffers);
+            return ServerResponse.createBySuccess(vo);
         }else {
             return ServerResponse.createByErrorMessage("查询失败");
         }
