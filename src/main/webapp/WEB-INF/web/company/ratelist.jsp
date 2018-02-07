@@ -105,45 +105,6 @@
 			</div>
 			<!-- END MAIN CONTENT -->
 		</div>
-		<!-- Modal -->
-		<div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">点评(1~5分)</h4>
-					</div>
-					<div class="modal-body">
-						<label>组织能力</label>
-						<input type="number" name="organizationability" class="form-control J-limit" placeholder="请输入分数...">
-						<br>
-						<label>沟通能力</label>
-						<input type="number" name="communicateability" class="form-control J-limit" placeholder="请输入分数...">
-						<br>
-						<label>学习能力</label>
-						<input type="number" name="learnability" class="form-control J-limit" placeholder="请输入分数...">
-						<br>
-						<label>创新能力</label>
-						<input type="number" name="innovationability" class="form-control J-limit" placeholder="请输入分数...">
-						<br>
-						<label>适应能力</label>
-						<input type="number" name="adaptability" class="form-control J-limit" placeholder="请输入分数...">
-						<br>
-						<label>技术能力</label>
-						<input type="number" name="technicalability" class="form-control J-limit" placeholder="请输入分数...">
-						<br>
-						<label>文字点评</label>
-						<input name="comment" class="form-control" placeholder="请输入您对他(她)的表现的简短点评">
-						<br>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-						<button type="button" class="btn btn-primary" id="evaluateSubmit">提交</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Modal-end -->
 		<!-- END MAIN -->
 		<div class="clearfix"></div>
 		<footer>

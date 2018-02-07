@@ -43,11 +43,11 @@
 								</div>
 								<div class="form-group">
 									<label for="signin-password" class="control-label sr-only">密码</label>
-									<input name="upass" type="password" class="form-control" id="signin-password" value="" placeholder="密码">
+									<input maxlength="13" name="upass" type="password" class="form-control" id="signin-password" value="" placeholder="密码">
 								</div>
 								<div class="form-group">
 									<label for="signin-password" class="control-label sr-only">确认密码</label>
-									<input  type="password" class="form-control" id="signin-password-again" value="" placeholder="确认密码">
+									<input maxlength="13" type="password" class="form-control" id="signin-password-again" value="" placeholder="确认密码">
 								</div>
 								<button type="submit" class="btn btn-primary btn-lg btn-block" id="button-login">注册</button>
 								<c:if test="${!empty msg}">
@@ -82,12 +82,12 @@
                 alert("未输入账号密码");
                 return ;
             }
+            if(pass.length < 6){
+                alert('密码至少为六位')
+			}
             if(pass!=pass_again){
                 alert('两次输入的密码不相同');
 			}
-            $.ajax({
-
-			})
 
         });
         

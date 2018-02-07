@@ -52,10 +52,10 @@
 									<input type="text" name="temptation" id="temptation" class="form-control" placeholder="请输入职位诱惑...">
 									<br>
 									<label>月薪</label>
-									<input type="number" name="wage"  id="wage" class="form-control" placeholder="请输入月薪...">
+									<input type="number" name="wage"  id="wage" class="J-positiveNum form-control" placeholder="请输入月薪...">
 									<br>
 									<label>工作时长</label>
-									<input type="number" name="duration" id="duration" class="form-control" placeholder="请输入工作时长（单位：月）...">
+									<input type="number" name="duration" id="duration" class="J-positiveNum form-control" placeholder="请输入工作时长（单位：月）..." >
 									<br>
 									<label>工作城市</label>
 									<select class="form-control" name="city" id="city">
@@ -124,6 +124,7 @@
 	<script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	<script src="/assets/scripts/klorofil-common.js"></script>
+	<script src="/assets/js/tool.js"></script>
 	<script>
 		$(function () {
 			$("#button-add").click(function () {
