@@ -714,12 +714,7 @@ public class CompController {
         ServerResponse response = this.rateList(pageNum,pageSize,session,companyScore);
 
         if(response.isSuccess()){
-
-            CompScoreVO compScoreVO = (CompScoreVO)response.getData();
-
-            model.addAttribute("pageInfo",compScoreVO.getCompanyScore());
-            model.addAttribute("job",compScoreVO.getJobOffersVO());
-            model.addAttribute("user",compScoreVO.getUserBaseInfo());
+            model.addAttribute("pageInfo",response.getData());
         }else {
             model.addAttribute("msg",response.getMsg());
         }
