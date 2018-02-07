@@ -28,6 +28,9 @@
   <select id="selectListByType" resultType="java.lang.String">
     SELECT name FROM tagproperty WHERE type=#{type}
   </select>
+  <select id="selectTagListByType" resultType="com.mcl.pojo.TagProperty">
+    SELECT <include refid="Base_Column_List" /> FROM tagproperty WHERE type=#{type}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tagproperty
     where id = #{id,jdbcType=INTEGER}
