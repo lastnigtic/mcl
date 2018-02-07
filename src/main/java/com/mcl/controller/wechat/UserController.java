@@ -1,22 +1,18 @@
 package com.mcl.controller.wechat;
 
 import com.github.pagehelper.PageInfo;
-import com.mcl.common.Const;
 import com.mcl.common.ServerResponse;
 import com.mcl.pojo.*;
+import com.mcl.service.IMsgService;
 import com.mcl.service.IScoreService;
 import com.mcl.service.IUserService;
 import com.mcl.util.DateTimeUtil;
 import com.mcl.util.PropertiesUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -34,6 +30,9 @@ public class UserController {
 
     @Autowired
     private IScoreService iScoreService ;
+
+    @Autowired
+    private IMsgService iMsgService ;
 
     /**
      * 进入小程序后存储或更新用户基本信息
@@ -189,7 +188,7 @@ public class UserController {
     public ServerResponse myMsg(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                 @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
                                 @RequestParam(value = "openid") String openid,@RequestParam(required = false)Integer readstatus){
-        return iUserService.myMsg(openid,pageNum,pageSize,readstatus);
+        return iMsgService.myMsg(openid,pageNum,pageSize,readstatus);
     }
 
     /**
@@ -199,7 +198,7 @@ public class UserController {
      */
     @RequestMapping(value = "msg.do",method = RequestMethod.POST)
     public ServerResponse msg(Integer id,String openid){
-        return iUserService.msg(id,openid);
+        return iMsgService.msg(id,openid);
     }
 
     /**
@@ -210,7 +209,7 @@ public class UserController {
      */
     @RequestMapping(value = "readmsg.do",method = RequestMethod.POST)
     public ServerResponse readMsg(String openid ,Integer id){
-        return iUserService.readMsg(openid,id);
+        return iMsgService.readCompMsg(openid,id);
     }
 
 
@@ -222,7 +221,7 @@ public class UserController {
      */
     @RequestMapping(value = "delmsg.do",method = RequestMethod.POST)
     public ServerResponse delMsg(Integer id,String openid){
-        return iUserService.delMsg(id,openid);
+        return iMsgService.delUserMsg(id,openid);
     }
 
     /**

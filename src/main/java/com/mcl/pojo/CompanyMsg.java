@@ -17,6 +17,16 @@ public class CompanyMsg {
 
     private String companyid;
 
+    private Integer joid ;
+
+    public Integer getJoid() {
+        return joid;
+    }
+
+    public void setJoid(Integer joid) {
+        this.joid = joid;
+    }
+
     public CompanyMsg(Integer id, String title, String content, Integer type, Integer status, Date updatetime, String companyid) {
         this.id = id;
         this.title = title;

@@ -25,7 +25,5 @@ public interface IAccountService {
     boolean isCompanyHaveAuthorityScoreUser(String openid, String companyid,Integer joid);
 
 
-    ServerResponse msgList(int pageNum, int pageSize, CompanyMsg companyMsg);
 
-    ServerResponse readMsg(Integer id);
 }

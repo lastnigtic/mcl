@@ -82,6 +82,9 @@ public class IJobOffersServcieImpl implements IJobOffersServcie {
 
             if(checkJobInfoComplete(jobOffers)){
                 //信息完整，可以更新
+                if(job.getChecked()==Const.JobStatus.FailTOPass)
+                    job.setChecked(Const.JobStatus.NoApproval);//未通过的，修改之后，变为未审核，重新提交
+
                 int rowUpdate = jobOffersMapper.updateByPrimaryKeySelective(jobOffers);
                 if(rowUpdate>0){
                     return ServerResponse.createBySuccess("修改成功",jobOffers);

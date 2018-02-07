@@ -10,10 +10,12 @@
       <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="updatetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="companyid" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="joid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, title, content, type, status, updatetime, companyid
+    id, title, content, type, status, updatetime, companyid,joid
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -41,10 +43,10 @@
   <insert id="insert" parameterType="com.mcl.pojo.CompanyMsg" >
     insert into companymsg (id, title, content, 
       type, status, updatetime, 
-      companyid)
+      companyid,joid)
     values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
       #{type,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{updatetime,jdbcType=TIMESTAMP}, 
-      #{companyid,jdbcType=VARCHAR})
+      #{companyid,jdbcType=VARCHAR},#{joid})
   </insert>
   <insert id="insertSelective" parameterType="com.mcl.pojo.CompanyMsg" >
     insert into companymsg
@@ -70,6 +72,9 @@
       <if test="companyid != null" >
         companyid,
       </if>
+      <if test="joid != null" >
+      joid,
+    </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -92,6 +97,9 @@
       </if>
       <if test="companyid != null" >
         #{companyid,jdbcType=VARCHAR},
+      </if>
+      <if test="joid != null" >
+        #{joid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -116,6 +124,9 @@
       <if test="companyid != null" >
         companyid = #{companyid,jdbcType=VARCHAR},
       </if>
+      <if test="joid != null" >
+      joid = #{joid,jdbcType=INTEGER},
+    </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -126,7 +137,8 @@
       type = #{type,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       updatetime = #{updatetime,jdbcType=TIMESTAMP},
-      companyid = #{companyid,jdbcType=VARCHAR}
+      companyid = #{companyid,jdbcType=VARCHAR},
+      joid = #{joid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="readMsg">

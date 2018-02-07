@@ -6,7 +6,9 @@ import com.mcl.common.ResponseCode;
 import com.mcl.common.ServerResponse;
 import com.mcl.pojo.*;
 import com.mcl.service.IAdminService;
+import com.mcl.service.ITagPropertyService;
 import com.mcl.vo.StatisticsVO;
+import com.mcl.vo.TagVO;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +29,9 @@ public class AdminController {
 
     @Autowired
     private IAdminService iAdminService ;
+
+    @Autowired
+    private ITagPropertyService iTagPropertyService ;
 
     /**
      * 公司待审核列表
@@ -286,4 +292,102 @@ public class AdminController {
         return "/admin/opinionlist";
 
     }
+
+
+    /**
+     * 获取不同的type属性
+     * @param type
+     * @return
+     */
+    @RequestMapping(value = "gettagepropertiesbytype.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse getTagPropertiesByType(String type,@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                                 @RequestParam(value = "pageSize",defaultValue = "10") int pageSize){
+        return iTagPropertyService.getTagPropertiesByType(pageNum,pageSize,type);
+    }
+
+    /**
+     * 获取所有的属性type名称
+     * @return
+     */
+    @RequestMapping(value = "getagtype.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse getTagType(){
+        return iTagPropertyService.getTagType();
+    }
+
+    /**
+     * 获取所有tag信息
+     * @return
+     */
+    @RequestMapping(value = "getalltag.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse getAllTag(){
+        ServerResponse response = iTagPropertyService.getTagType();
+        List<TagVO> tagVOList = new ArrayList<>();
+        if(response.isSuccess()){
+            List<String> list = (List<String>) response.getData();
+            for (String s :list){
+                TagVO vo = new TagVO();
+                vo.setType(s);
+                vo.setList(iTagPropertyService.getTagPropertiesByType(s));
+                tagVOList.add(vo);
+            }
+            return ServerResponse.createBySuccess(tagVOList);
+        }
+        return ServerResponse.createByErrorMessage("找不到记录");
+    }
+
+    /**
+     * 微信小程序自定义分类
+     * @param pageNum
+     * @param pageSize
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "jobtag.html")
+    public String jobtag( @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                  @RequestParam(value = "pageSize",defaultValue = "10") int pageSize, Model model){
+        ServerResponse response = getTagPropertiesByType("jobtag",pageNum,pageSize);
+        if(response.isSuccess()){
+            model.addAttribute("pageInfo",response.getData());
+        }else {
+            model.addAttribute("msg",response.getMsg());
+        }
+        return "/admin/jobtag";
+    }
+
+    /**
+     * 删除标签
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "deltag.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse delTag(Integer id){
+        return iTagPropertyService.delTag(id);
+    }
+
+    /**
+     * 新增标签
+     * @param tag
+     * @return
+     */
+    @RequestMapping(value = "addtag.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse addTag(TagProperty tag){
+        return iTagPropertyService.addTag(tag);
+    }
+
+    /**
+     * 更改标签
+     * @param tag
+     * @return
+     */
+    @RequestMapping(value = "updatetag.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse updateTag(TagProperty tag){
+        return iTagPropertyService.updateTag(tag);
+    }
+
 }

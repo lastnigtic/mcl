@@ -440,78 +440,9 @@ public class IUserServiceImpl implements IUserService {
         return ServerResponse.createByErrorMessage("找不到用户信息");
     }
 
-    /**
-     * 获取个人消息列表（可以筛选已读未读）
-     * @param openid
-     * @param pageNum
-     * @param pageSize
-     * @param readstatus
-     * @return
-     */
-    @Override
-    public ServerResponse<PageInfo> myMsg(String openid, int pageNum, int pageSize, Integer readstatus) {
-        PageHelper.startPage(pageNum,pageSize);
-        PageHelper.orderBy("updatetime desc");
-        List<UserMsg> list = userMsgMapper.selectList(openid,readstatus);
-        List<MsgVO> volist = new ArrayList<>();
-        PageInfo pageResult = new PageInfo(list);
 
-        for(UserMsg userMsg : list){
-            volist.add(iMsgService.getMsgVOFromUserMsg(userMsg));
-        }
-        //将封装好的volist放进去
-        pageResult.setList(volist);
-        return ServerResponse.createBySuccess(pageResult);
 
-    }
 
-    /**
-     * 获取个人某条信息
-     * @param id
-     * @param openid
-     * @return
-     */
-    @Override
-    public ServerResponse msg(Integer id, String openid) {
-        if(StringUtils.isNotBlank(openid)&&id!=null){
-            int rowUser = userBaseInfoMapper.checkUserByOpenid(openid);
-            if(rowUser>0){
-                //存在
-                UserMsg userMsg = userMsgMapper.selectByPrimaryKey(id);
-                if(userMsg!=null){
-                    if(userMsg.getReadstatus()!=null&&userMsg.getReadstatus()!=1){
-                        userMsg.setReadstatus(1);
-                        userMsgMapper.updateByPrimaryKey(userMsg);
-                    }
-                    return ServerResponse.createBySuccess(iMsgService.getMsgVOFromUserMsg(userMsg));
-                }
-                return ServerResponse.createByErrorMessage("不存在的消息");
-            }
-            return ServerResponse.createByErrorMessage("找不到用户信息");
-        }
-        return ServerResponse.createByErrorMessage("传入参数错误");
-    }
-
-    @Override
-    public ServerResponse delMsg(Integer id, String openid) {
-        if(StringUtils.isNotBlank(openid)&&id!=null) {
-            int rowUser = userBaseInfoMapper.checkUserByOpenid(openid);
-            if (rowUser > 0) {
-                //存在
-                UserMsg userMsg = userMsgMapper.selectByPrimaryKey(id);
-                if (userMsg != null&&userMsg.getOpenid().equals(openid)) {
-                    int rowDel = userMsgMapper.deleteByPrimaryKey(id);
-                    if (rowDel > 0) {
-                        return ServerResponse.createBySuccess("删除成功");
-                    }
-                    return ServerResponse.createByErrorMessage("删除失败");
-                }
-                return ServerResponse.createByErrorMessage("不存在的消息");
-            }
-            return ServerResponse.createByErrorMessage("找不到用户信息");
-        }
-        return ServerResponse.createByErrorMessage("传入参数错误");
-    }
 
     /**
      * 是否存在用户
@@ -559,38 +490,6 @@ public class IUserServiceImpl implements IUserService {
 
         return true ;
 
-    }
-
-    /***
-     * 将某条消息设置为已读
-     * @param openid
-     * @param id
-     * @return
-     */
-    @Override
-    public ServerResponse readMsg(String openid, Integer id) {
-        if(StringUtils.isBlank(openid)||id==null)
-            return ServerResponse.createByErrorMessage("参数为空");
-
-        //验证用户是否存在
-        int rowUser = userBaseInfoMapper.checkUserByOpenid(openid);
-
-        if(rowUser == 0)
-            return ServerResponse.createByErrorMessage("用户不存在");
-
-        UserMsg msg = userMsgMapper.selectByPrimaryKey(id);
-
-        if(msg.getReadstatus()==1)
-            return ServerResponse.createBySuccess("已经是已读状态");
-
-        msg.setReadstatus(1);
-
-        int row = userMsgMapper.updateByPrimaryKey(msg);
-
-        if(row==0)
-            return ServerResponse.createByErrorMessage("修改失败");
-
-        return ServerResponse.createBySuccess("已读",msg);
     }
 
 

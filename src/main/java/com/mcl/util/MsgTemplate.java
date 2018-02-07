@@ -51,7 +51,8 @@ public class MsgTemplate {
         companyMsg.setContent("恭喜您！！您的"+jobOffers.getJobname()+"岗位已被审核通过！");
         companyMsg.setTitle("岗位审核通过");
         companyMsg.setStatus(0);
-        companyMsg.setType(MsgType.SysMsg);
+        companyMsg.setJoid(jobOffers.getId());
+        companyMsg.setType(MsgType.JobMsg);
         return  companyMsg ;
     }
 
@@ -66,13 +67,15 @@ public class MsgTemplate {
         companyMsg.setContent("很遗憾！！您的"+jobOffers.getJobname()+"岗位已被退回！");
         companyMsg.setTitle("岗位审核不通过");
         companyMsg.setStatus(0);
-        companyMsg.setType(MsgType.SysMsg);
+        companyMsg.setJoid(jobOffers.getId());
+        companyMsg.setType(MsgType.JobMsg);
         return  companyMsg ;
     }
 
     public interface MsgType{
         String JobDeliveryMsg = "岗位投递消息";
         int SysMsg = 1 ;
+        int JobMsg = 2 ;
     }
 
     public static String interviewMsg(Company company, JobOffers jobOffers){
