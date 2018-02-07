@@ -7,6 +7,28 @@ public class TagProperty {
 
     private String name;
 
+    private String icon ;
+
+    private Integer iconorder ;
+
+    public Integer getIconorder() {
+        return iconorder;
+    }
+
+    public void setIconorder(Integer iconorder) {
+        this.iconorder = iconorder;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+
+
     public TagProperty(Integer id, String type, String name) {
         this.id = id;
         this.type = type;

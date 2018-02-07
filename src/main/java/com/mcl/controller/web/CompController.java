@@ -172,9 +172,8 @@ public class CompController {
         if(response.isSuccess()){
             Company company = (Company) response.getData();
             model.addAttribute("company",company);
-            return "/company/verified";
         }
-        return "/company/index";
+        return "/company/verified";
     }
 
     /**
@@ -193,10 +192,10 @@ public class CompController {
         if(serverResponse.isSuccess()){
             Company company = (Company)serverResponse.getData();
             model.addAttribute("company",company);
-            return "/company/editinfo";
+
         }
 
-        return "/company/index";
+        return "/company/editinfo";
     }
 
 
@@ -301,7 +300,7 @@ public class CompController {
     public ServerResponse addJob(JobOffers jobOffers, HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
         Company company = iAccountService.getCompanyByAccount(account.getId());
-        if(company.getChecked()==0){
+        if(company==null||company.getChecked()==0){
             return ServerResponse.createByErrorMessage("未通过认证");
         }
         jobOffers.setCompanyid(company.getId());
