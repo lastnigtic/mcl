@@ -57,7 +57,6 @@
 											<tr>
 												<th>#</th>
 												<th>岗位</th>
-												<th>评分者</th>
 												<th>评论</th>
 												<th>信用分</th>
 												<th>环境</th>
@@ -69,17 +68,16 @@
 										<tbody id="table-body">
 										<c:choose>
 
-										<c:when test="${pageInfo!=null&&pageInfo.size!=0}">
+										<c:when test="${pageInfo!=null&&pageInfo.list.size()>0}">
 											<c:forEach items="${pageInfo.list}" var="rate" varStatus="xh" >
 												<tr>
 													<td>${xh.count}</td>
-													<td></td>
-													<td></td>
-													<td>${rate.comment}</td>
-													<td>${rate.creditrate}</td>
-													<td>${rate.environmentrate}</td>
-													<td>${rate.atmosphererate}</td>
-													<td>${rate.wagerate}</td>
+													<td>${rate.getJobOffersVO().getJobname()}</td>
+													<td>${rate.CompScore.comment}</td>
+													<td>${rate.CompScore.creditrate}</td>
+													<td>${rate.CompScore.environmentrate}</td>
+													<td>${rate.CompScore.atmosphererate}</td>
+													<td>${rate.CompScore.wagerate}</td>
 													<td class="J-Date">${rate.updatetime}</td>
 												</tr>
 											</c:forEach>

@@ -4,7 +4,7 @@
 	<div class="sidebar-scroll">
 		<nav>
 			<ul class="nav">
-				<li><a href="/comp/index.html" class="active"><i class="lnr lnr-home"></i> <span>首页</span></a></li>
+				<li><a href="/comp/index.html" class=""><i class="lnr lnr-home"></i> <span>首页</span></a></li>
 
 				<li>
 					<a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i><span>兼职实习管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
@@ -30,5 +30,14 @@
 			</ul>
 		</nav>
 	</div>
+	<script>
+        var href = window.location.href;
+        var as = document.getElementsByTagName('a');
+        for(var s = 0, len = as.length;s<len;s++){
+            if(href.indexOf(as[s].getAttribute('href'))>0){
+                as[s].className = 'active'
+            }
+        }
+	</script>
 </div>
 <!-- END LEFT SIDEBAR -->
