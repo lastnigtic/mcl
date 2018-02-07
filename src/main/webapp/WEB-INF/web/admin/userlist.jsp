@@ -73,7 +73,7 @@
 												<c:forEach items="${pageInfo.list}" var="user" varStatus="xh" >
 													<tr>
 														<td>${xh.count}</td>
-														<td><a href="/admin/userdetail.html?id=${user.openid}">${user.realname}</a></td>
+														<td><a href="/admin/userdetail.html?openid=${user.openid}">${user.realname}</a></td>
 														<c:choose>
 														<c:when test="${user.gender==1}"><td>男</td></c:when>
 														<c:otherwise><td>女</td></c:otherwise>

@@ -27,6 +27,7 @@
 	<style type="text/css">
 		.resume {
 			display: inline-block;
+			max-width: 800px;
 			margin: 20px;
 			background-color: #fff;
 			border: 1px solid #eee;
@@ -76,6 +77,11 @@
 			padding-bottom: 0.5em;
 			border-bottom: 1px solid #f1f1f1;
 		}
+		.resume span,
+		.resume p{
+			color: #5c5c5c;
+			font-weight:bold;
+		}
 	</style>
 </head>
 
@@ -96,9 +102,9 @@
 								<!-- PROFILE HEADER -->
 								<div class="profile-header">
 									<div class="overlay"></div>
-									<div class="profile-main">
-										<img src="assets/img/user-medium.png" class="img-circle" alt="Avatar">
-										<h3 class="name">${user.realname}</h3>
+									<div class="profile-main" id="userinfo" data-id="${userinfo.userBaseInfo.openid}">
+										<img src="${userinfo.userBaseInfo.avatarurl}" class="img-circle" alt="Avatar">
+										<h3 class="name">${userinfo.userBaseInfo.realname}</h3>
 									</div>
 								</div>
 								<!-- END PROFILE HEADER -->
@@ -107,14 +113,23 @@
 									<div class="profile-info">
 										<h4 class="heading">基本信息</h4>
 										<ul class="list-unstyled list-justify">
-											<li>性别 <span>不祥</span></li>
-											<li>生日 <span>1996-05-04</span></li>
-											<li>手机 <span>110</span></li>
-											<li>邮箱 <span>scnuyz@21cn.com</span></li>
-											<li>所在城市 <span>广州</span></li>
-											<li>学历 <span>本科</span></li>
-											<li>就读学校 <span>华南师范大学</span></li>
-											<li>专业 <span>工学</span></li>
+											<li>性别
+												<c:choose>
+													<c:when test="${userinfo.userBaseInfo.gender == 0}">
+														<span>女</span>
+													</c:when>
+													<c:otherwise>
+														<span>男</span>
+													</c:otherwise>
+												</c:choose>
+											</li>
+											<li>生日 <span class="J-Date">${userinfo.userBaseInfo.birthday}</span></li>
+											<li>手机 <span>${userinfo.userBaseInfo.phone}</span></li>
+											<li>邮箱 <span>${userinfo.userBaseInfo.email}</span></li>
+											<li>所在城市 <span>${userinfo.userBaseInfo.city}</span></li>
+											<li>学历 <span>${userinfo.userBaseInfo.education}</span></li>
+											<li>就读学校 <span>${userinfo.userBaseInfo.schoolname}</span></li>
+											<li>专业 <span>${userinfo.userBaseInfo.majortype}</span></li>
 										</ul>
 									<h4 class="heading">用户评分</h4>
 									<div class="evaluation" id="evaluation"></div>
@@ -125,51 +140,62 @@
 							<!-- END LEFT COLUMN -->
 							<!-- RIGHT COLUMN -->
 							<div class="profile-right">
-								<h4 class="heading">个人简历</h4>
-								<div class="container-fluid resume">
+									<h4 class="heading" style="padding-bottom: 20px">个人简历
+									<select id="resumeSelect" class="form-control" style="float:right; width: auto">
+										<c:forEach items="${userinfo.resumeList}" var="resume" varStatus="xh" >
+											<option value="${resume.resumename}" >${resume.resumename}</option>
+										</c:forEach>
+									</select>
+									</h4>
+									<c:forEach items="${userinfo.resumeList}" var="resume" varStatus="xh" >
+									<div class="container-fluid resume" data-idx="${xh}" style="display:none">
 									<div class="media col-md-10 col-md-offset-1">
-										<h3 class="media-name">智神六个蛋</h3>
+										<h3 class="media-name">${resume.resumename}</h3>
 										<div class="media-left">
-											<img class="media-object" src="assets/img/user-medium.png" alt="...">
+											<img class="media-object" src="${resume.avatarurl}" alt="...">
 										</div>
 										<div class="media-body">
 											<div class="media-item">
 												<h4 class="media-heading">期望实习</h4>
 												<ul class="list-unstyled">
-													<li>java开发 | 广州市 | 5元/天</li>
-													<li>2天/周 | 一个月 | 2018-03-01可入职</li>
+													<li><span>${resume.jobapplied}</span> | <span>${resume.cityapplied}</span> | <span>${resume.wageapplied}</span>元/天</li>
+													<li><span>${resume.frequencyapplied}</span>天/周 | <span>${resume.durationapplied}</span>个月 | <span class="J-Date">${resume.entrytime}</span>可入职</li>
 												</ul>
 											</div>
 											<div class="media-item">
 												<h4 class="media-heading">教育背景</h4>
 												<ul class="list-unstyled list-justify">
-													<li>学历<span>本科</span></li>
-													<li>学校名称<span>scnu</span></li>
-													<li>专业类别<span>工学</span></li>
-													<li>毕业事件<span>2018-07-01</span></li>
-													<li>社团经历<p>君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君君</p></li>
+													<li>学历<span>${resume.education}</span></li>
+													<li>学校名称<span>${resume.schoolname}</span></li>
+													<li>专业类别<span>${resume.major}</span></li>
+													<li>毕业时间<span class="J-Date">${resume.graduationtime}</span></li>
+													<li>社团经历<p>${resume.campusexp}</p></li>
+													<li>获奖经历<p>${resume.awards}</p></li>
+													<li>证书<p>${resume.certificate}</p></li>
 												</ul>
 											</div>
 											<div class="media-item">
 												<h4 class="media-heading">实习经历</h4>
 												<ul class="list-unstyled list-justify">
-													<li>公司名称<span>世纪龙</span></li>
-													<li>担任职位<span>CEO</span></li>
-													<li>入职时间<span>2018-01-15</span></li>
-													<li>经历描述<span>什么都会做，没意思</span></li>
+													<li>公司名称<span>${resume.companyname}</span></li>
+													<li>担任职位<span>${resume.jobname}</span></li>
+													<li>入职时间<span class="J-Date">${resume.jobstarttime}</span></li>
+													<li>离职时间<span class="J-Date">${resume.jobendtime}</span></li>
+													<li>经历描述<span>${resume.jobdesc}</span></li>
 												</ul>
 											</div>
 											<div class="media-item">
 												<h4 class="media-heading">技能爱好</h4>
-												<p>什么都不爱，除了君</p>
+												<p>${resume.skills}</p>
 											</div>
 											<div class="media-item">
 												<h4 class="media-heading">自我评价</h4>
-												<p>我是世界上最伤心的人，也是世界上最爱君的人</p>
+												<p>${resume.selfevaluation}</p>
 											</div>
 										</div>
 									</div>
 								</div>
+								</c:forEach>
 							</div>
 							<!-- END RIGHT COLUMN -->
 						</div>
@@ -193,43 +219,90 @@
 	<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	<script src="/assets/vendor/echarts/echarts.min.js"></script>
 	<script src="/assets/scripts/klorofil-common.js"></script>
+	<script src="/assets/js/tool.js"></script>
 	<script type="text/javascript">
 		$(function(){
-		    var eva = document.getElementById('evaluation');
-		    eva.style.height = eva.offsetWidth + 'px';
-			var myChart = echarts.init(eva);
+//        用户能力六维图
 
-			var option = {
-				radar: {
-					name: {
-						textStyle: {
-							color: '#fff',
-							backgroundColor: '#999',
-							borderRadius: 3,
-							padding: [3, 5]
-						}
-					},
-					indicator: [
-					{ name: '组织能力', max: 5},
-					{ name: '沟通能力', max: 5},
-					{ name: '学习能力', max: 5},
-					{ name: '创新能力', max: 5},
-					{ name: '适应能力', max: 5},
-					{ name: '技术能力', max: 5}
-					]
-			  },
-			  series: [{
-				name: '能力评分',
-				type: 'radar',
-				// areaStyle: {normal: {}},
-				data : [{
-					value : [3.5, 4, 4.5, 4.6, 3.2, 5],
-					name : '能力评分'
-				}]
-			  }]
-			};
-			myChart.setOption(option)
+//        获取用户能力数值
+            var openid = $('#userinfo').data('id');
+            var eva = document.getElementById('evaluation');
+            var ablityArr = [
+                {name:'organizationability'},
+                {name:'communicateability'},
+                {name:'learnability'},
+                {name:'innovationability'},
+                {name:'adaptability'},
+                {name:'technicalability'},
+            ]
+            $.post('/comp/getuseravgability.do',{
+                openid: openid
+            },function (res) {
+                if(res.status === 0){
+                    drawRadia(res.data)
+                }else{
+                    eva.innerText = '暂无数据'
+                }
+            })
+            function drawRadia(data){
+                eva.style.height = eva.offsetWidth + 'px';
+                var myChart = echarts.init(eva);
+                var value = [];
+                $(ablityArr).each(function(idx, item){
+                    value.push(data[item.name])
+                });
+                var option = {
+                    radar: {
+                        name: {
+                            textStyle: {
+                                color: '#fff',
+                                backgroundColor: '#999',
+                                borderRadius: 3,
+                                padding: [3, 5]
+                            }
+                        },
+                        indicator: [
+                            { name: '组织能力', max: 5},
+                            { name: '沟通能力', max: 5},
+                            { name: '学习能力', max: 5},
+                            { name: '创新能力', max: 5},
+                            { name: '适应能力', max: 5},
+                            { name: '技术能力', max: 5}
+                        ]
+                    },
+                    series: [{
+                        name: '能力评分',
+                        type: 'radar',
+                        // areaStyle: {normal: {}},
+                        data : [{
+                            value : value,
+                            name : '能力评分'
+                        }]
+                    }]
+                };
+                myChart.setOption(option)
+            }
+           // 显示简历3
+			var resumeList = [];
+			$('.resume').each(function(idx, item){
+			    if(idx === 0){
+			        item.style.display = 'inline-block';
+				}
+                resumeList.push(item)
+			})
+			$('#resumeSelect').on('change',function(e){
+			    var tar = $(e.target);
+			    var sidx = tar.prop('selectedIndex');
+			    $(resumeList).each(function(idx,item){
+			        if(idx === sidx){
+			            item.style.display = 'inline-block'
+					}else{
+			            item.style.display = 'none'
+					}
+				})
+			})
 		  })
+
 </script>
 </body>
 
