@@ -6,10 +6,12 @@
       <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="type" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="icon" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="iconorder" jdbcType="VARCHAR" javaType="java.lang.Integer" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, type, name
+    id, type, name , icon , iconorder
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -26,14 +28,17 @@
   <select id="selectListByType" resultType="java.lang.String">
     SELECT name FROM tagproperty WHERE type=#{type}
   </select>
+  <select id="selectTagListByType" resultType="com.mcl.pojo.TagProperty">
+    SELECT <include refid="Base_Column_List" /> FROM tagproperty WHERE type=#{type}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tagproperty
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.mcl.pojo.TagProperty" >
-    insert into tagproperty (id, type, name
+    insert into tagproperty (id, type, name ,icon,iconorder
       )
-    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},#{icon,jdbcType=VARCHAR}, #{iconorder,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.mcl.pojo.TagProperty" >
@@ -48,6 +53,12 @@
       <if test="name != null" >
         name,
       </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="iconorder != null" >
+        iconorder,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -58,6 +69,12 @@
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="iconorder != null" >
+        #{iconorder,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -70,13 +87,21 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        iconorder = #{iconorder,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.mcl.pojo.TagProperty" >
     update tagproperty
     set type = #{type,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR}
+      name = #{name,jdbcType=VARCHAR},
+      iconorder = #{iconorder},
+      icon = #{icon}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

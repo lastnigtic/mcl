@@ -19,7 +19,9 @@ public interface TagPropertyMapper {
 
     List<String> selectEduList();
 
-    List<String> selectListByType(String type);
+    List<String>  selectListByType(String type);
 
     List<String>  getTagType();
+
+    List<TagProperty> selectTagListByType(String type);
 }

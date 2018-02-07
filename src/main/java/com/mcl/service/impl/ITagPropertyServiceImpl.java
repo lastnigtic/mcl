@@ -74,7 +74,7 @@ public class ITagPropertyServiceImpl implements ITagPropertyService {
 
         PageHelper.startPage(pageNum,pageSize);
 
-        List<String> list = tagPropertyMapper.selectListByType(type);
+        List<TagProperty> list = tagPropertyMapper.selectTagListByType(type);
 
         PageInfo pageInfo = new PageInfo(list);
 
