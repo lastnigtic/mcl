@@ -42,8 +42,11 @@
 								
 								<div class="panel-body">
 									<h3 class="page-title">编辑公司信息</h3>
+									<form enctype="multipart/form-data" method="post" action="/comp/compimg.do">
 									<label>公司商标</label>
-									<input type="file" class="form-control" name="imgurl" id="imgurl" value="${company.imgurl}">
+										<input type="file" name="uploadfile" multiple="" value="上传图片"  />
+										<button id="button-upload" type="submit" class="btn btn-primary" style="display: none">提交</button>
+									</form>
 									<br>
 									<label>公司名称</label>
 									<input type="text" class="form-control" name="companyname" id="companyname" value="${company.companyname}" placeholder="请输入公司名称...">
@@ -52,7 +55,8 @@
 									<input class="form-control" name="address" id="address" value="${company.address}" placeholder="请输入公司地址...">
 									<br>
 									<label>成立时间</label>
-									<input type="date" class="J-positiveNum J-Date form-control" id="setuptime" name="setuptime" value="${company.setuptime}" />
+									<input type="date" class="J-positiveNum form-control" data-date="${company.setuptime}" id="setuptime" name="setuptime" value="" />
+
 									<br>
 									<label>注册资本</label>
 									<input  class="form-control" name="registeredcapital" id="registeredcapital" type="text" value="${company.registeredcapital}">
@@ -123,28 +127,50 @@
 <script src="/assets/js/tool.js"></script>
 <script>
 	$(function () {
+	    var date = $('#setuptime').data('date');
+        function filterDate(str){
+            var date = new Date(str),
+                year = date.getFullYear(),
+                month = date.getMonth() + 1,
+                day = date.getDate();
+            return year + '-' + _fix(month) + '-' + _fix(day)
+        }
+        function _fix(n) {
+            if (n < 10) {
+                return '0' + n
+            }
+            return n
+        }
+        $('#setuptime').val(filterDate(date));
 		// 点击后先上传文件后上传其它信息
 		$("#button-update").click(function(){
-			var file = $('imgurl').prop('files')[0];
-			if(!file){
-				window.alert('请上传商标')
-			}
-			var form = new FormData(); 
-			form.append("file", file); 
-			$.ajax({
-				url: '',
-				method: 'POST',
-				data: form,
-				success: function(res){
-					if(res.status === 0){
-						upBasic();
-					}else{
-						window.alert('上传失败请重试')
-					}
-				}
-			})
+		    upBasic()
 		});
-
+		function uploadImg(){
+            var file = $('#imgurl').prop('files')[0];
+            if(!file){
+                window.alert('请上传商标')
+            }
+            var form = new FormData();
+            form.append("uploadfile", file);
+            $.ajax({
+                url: '/comp/compimg.do',
+                method: 'POST',
+                data: form,
+				// 告诉jQuery不要去处理发送的数据
+                processData : false,
+				// 告诉jQuery不要去设置Content-Type请求头
+                contentType : false,
+                success: function(res){
+                    if(res.status === 0){
+                        window.alert('上传成功')
+                        $(window).attr('location','/comp/index.html');
+                    }else{
+                        window.alert('上传失败请重试')
+                    }
+                }
+            })
+		}
 		function upBasic(){
 			var companyname = $("#companyname").val();
 			var address = $("#address").val();
@@ -179,11 +205,9 @@
 				success:function (res) {
 
 					if(res.status==0){
-						alert('更新成功');
-						$(window).attr('location','/comp/index.html');
+					    $('#button-upload').click();
 					}else{
-						alert(res.msg);
-						$(window).attr('location','/comp/editinfo.html');
+                        window.alert('上传失败请重试')
 					}
 				}
 			});
