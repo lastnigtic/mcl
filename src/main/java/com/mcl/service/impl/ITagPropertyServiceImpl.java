@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mcl.common.ServerResponse;
 import com.mcl.dao.TagPropertyMapper;
+import com.mcl.pojo.TagProperty;
 import com.mcl.service.ITagPropertyService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,5 +89,46 @@ public class ITagPropertyServiceImpl implements ITagPropertyService {
     @Override
     public ServerResponse getTagType() {
         return ServerResponse.createBySuccess(tagPropertyMapper.getTagType());
+    }
+
+
+    @Override
+    public ServerResponse delTag(Integer id) {
+        int row = tagPropertyMapper.deleteByPrimaryKey(id);
+        if(row>0){
+            return ServerResponse.createBySuccess("删除成功");
+        }
+        return ServerResponse.createByErrorMessage("删除失败");
+    }
+
+
+    public ServerResponse addTag(TagProperty tag){
+        if(tag==null||StringUtils.isBlank(tag.getName())||StringUtils.isBlank(tag.getType()))
+            return ServerResponse.createByErrorMessage("参数为空");
+
+        int row = tagPropertyMapper.insert(tag);
+
+        if(row>0){
+            return ServerResponse.createBySuccess(tag);
+        }
+        return ServerResponse.createByErrorMessage("新增失败");
+    }
+
+    /**
+     * 修改标签
+     * @param tag
+     * @return
+     */
+    @Override
+    public ServerResponse updateTag(TagProperty tag) {
+        if(tag==null||tag.getId()==null||StringUtils.isBlank(tag.getName())||StringUtils.isBlank(tag.getType()))
+            return ServerResponse.createByErrorMessage("参数为空");
+
+        int row = tagPropertyMapper.updateByPrimaryKey(tag);
+
+        if(row>0){
+            return ServerResponse.createBySuccess(tag);
+        }
+        return ServerResponse.createByErrorMessage("更新失败");
     }
 }

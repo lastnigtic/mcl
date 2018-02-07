@@ -1,6 +1,7 @@
 package com.mcl.service;
 
 import com.mcl.common.ServerResponse;
+import com.mcl.pojo.TagProperty;
 
 import java.util.List;
 
@@ -28,4 +29,10 @@ public interface ITagPropertyService {
     ServerResponse getTagPropertiesByType(int pageNum, int pageSize, String type);
 
     ServerResponse getTagType();
+
+    ServerResponse delTag(Integer id);
+
+    ServerResponse addTag(TagProperty tag);
+
+    ServerResponse updateTag(TagProperty tag);
 }

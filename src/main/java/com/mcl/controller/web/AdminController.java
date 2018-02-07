@@ -338,4 +338,56 @@ public class AdminController {
         return ServerResponse.createByErrorMessage("找不到记录");
     }
 
+    /**
+     * 微信小程序自定义分类
+     * @param pageNum
+     * @param pageSize
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "jobtag.html")
+    public String jobtag( @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                  @RequestParam(value = "pageSize",defaultValue = "10") int pageSize, Model model){
+        ServerResponse response = getTagPropertiesByType("jobtag",pageNum,pageSize);
+        if(response.isSuccess()){
+            model.addAttribute("pageInfo",response.getData());
+        }else {
+            model.addAttribute("msg",response.getMsg());
+        }
+        return "/admin/jobtag";
+    }
+
+    /**
+     * 删除标签
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "deltag.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse delTag(Integer id){
+        return iTagPropertyService.delTag(id);
+    }
+
+    /**
+     * 新增标签
+     * @param tag
+     * @return
+     */
+    @RequestMapping(value = "addtag.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse addTag(TagProperty tag){
+        return iTagPropertyService.addTag(tag);
+    }
+
+    /**
+     * 更改标签
+     * @param tag
+     * @return
+     */
+    @RequestMapping(value = "updatetag.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse updateTag(TagProperty tag){
+        return iTagPropertyService.updateTag(tag);
+    }
+
 }
