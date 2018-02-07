@@ -118,7 +118,7 @@ public class IAccountServiceImpl implements IAccountService {
                     int rowInsert = companyMapper.insert(company);  //插入一条公司信息
                     int rowAccount = accountMapper.updateByPrimaryKeySelective(account);  //更新商家的companyid
                     if(rowInsert>0&&rowAccount>0){
-                        return ServerResponse.createBySuccess("创建成功");
+                        return ServerResponse.createBySuccess(uuid,"创建成功");
                     }
                     return ServerResponse.createByErrorMessage("创建失败");
                 }

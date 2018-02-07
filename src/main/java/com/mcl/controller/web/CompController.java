@@ -7,6 +7,7 @@ import com.mcl.pojo.*;
 import com.mcl.service.*;
 import com.mcl.util.DateTimeUtil;
 import com.mcl.util.PropertiesUtil;
+import com.mcl.vo.CompScoreVO;
 import com.mcl.vo.ResumeVO;
 import com.mcl.vo.TagVO;
 import org.apache.commons.lang3.StringUtils;
@@ -475,6 +476,81 @@ public class CompController {
         return "/company/verified";
     }
 
+
+    /**
+     * 提交商标
+     * @param file
+     * @param session
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "compimg.do",method = RequestMethod.POST)
+    public ServerResponse compimg(@RequestParam(value = "uploadfile",required = false) MultipartFile file,HttpSession session, HttpServletRequest request){
+        Account account = (Account)session.getAttribute(Const.CURRENT_USER);
+
+        Company company = iAccountService.getCompanyByAccount(account.getId());
+
+        if(company==null)
+            return ServerResponse.createByErrorMessage("未找到公司信息");
+
+        //存放路径
+        String uploadpath = request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("ftp.uploadimg.rootpath"))+"/"+ DateTimeUtil.dateToStr(new Date(),"yyyyMMdd");
+
+        //文件原始名
+        String fileName = file.getOriginalFilename();
+
+        //扩展名
+        String fileExtensionName = fileName.substring(fileName.lastIndexOf(".")+1);
+
+        //上传后的文件名
+        String uploadFileName = UUID.randomUUID().toString()+"."+fileExtensionName;
+
+        //上传临时路径是否存在，不存在则要创建
+        File fileDir = new File(uploadpath);
+
+        if(!fileDir.exists()){
+            fileDir.setWritable(true);
+            fileDir.mkdirs();
+        }
+
+        File targetFile = new File(uploadpath,uploadFileName);
+
+        try {
+
+            file.transferTo(targetFile);
+
+        } catch (IOException e) {
+
+            if(targetFile.exists())
+                targetFile.delete();
+
+            return ServerResponse.createByErrorMessage("操作失败");
+
+        }
+
+        boolean havaOldImg = StringUtils.isBlank(company.getImgurl())?false:true;
+
+        //删除旧的
+        if(havaOldImg){
+
+            File f = new File(request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("ftp.uploadimg.rootpath"))+company.getImgurl());
+
+            if(f.exists())
+                f.delete();
+
+        }
+        //返回一个路径
+        String backpath = DateTimeUtil.dateToStr(new Date(),"yyyyMMdd")+"/"+targetFile.getName();
+
+        company.setImgurl(backpath);
+
+        iCompanyService.updateCompany(company);
+
+        //然后返回这个路径
+        return ServerResponse.createBySuccess(backpath);
+    }
+
+
     /**
      * 提交实名认证资料(ajax接口，备用)
      * @param file
@@ -638,7 +714,12 @@ public class CompController {
         ServerResponse response = this.rateList(pageNum,pageSize,session,companyScore);
 
         if(response.isSuccess()){
-            model.addAttribute("pageInfo",(PageInfo<CompanyScore>)response.getData());
+
+            CompScoreVO compScoreVO = (CompScoreVO)response.getData();
+
+            model.addAttribute("pageInfo",compScoreVO.getCompanyScore());
+            model.addAttribute("job",compScoreVO.getJobOffersVO());
+            model.addAttribute("user",compScoreVO.getUserBaseInfo());
         }else {
             model.addAttribute("msg",response.getMsg());
         }
