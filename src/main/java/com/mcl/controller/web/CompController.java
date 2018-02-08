@@ -440,7 +440,7 @@ public class CompController {
         }
 
         ServerResponse response = this.isPassVerified(session);
-        if(response.isSuccess()&&response.getData()==1){
+        if(response.isSuccess()&&(Integer)response.getData()==1){
             //已认证，直接返回
             model.addAttribute("msg","已认证，无需再认证");
             return "/comp/verified";
@@ -494,7 +494,7 @@ public class CompController {
             return ServerResponse.createByErrorMessage("未找到公司信息");
 
         //存放路径
-        String uploadpath = request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("ftp.uploadimg.rootpath"))+"/"+ DateTimeUtil.dateToStr(new Date(),"yyyyMMdd");
+        String uploadpath = request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("upload.avatar.rootpath"))+"/"+ DateTimeUtil.dateToStr(new Date(),"yyyyMMdd");
 
         //文件原始名
         String fileName = file.getOriginalFilename();
@@ -585,6 +585,12 @@ public class CompController {
             file.transferTo(targetFile);
         } catch (IOException e) {
             return null;
+        }
+        if(StringUtils.isNotBlank(company.getCompanylicense())){
+            //删除旧的
+            File f = new File(request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("ftp.uploadimg.rootpath"))+"/"+company.getCompanylicense());
+            if(f.exists())
+                f.delete();
         }
         //返回一个路径
         String backpath = DateTimeUtil.dateToStr(new Date(),"yyyyMMdd")+"/"+targetFile.getName();

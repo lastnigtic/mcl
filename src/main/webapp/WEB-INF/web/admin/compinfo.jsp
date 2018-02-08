@@ -44,7 +44,7 @@
 								<div class="profile-header">
 									<div class="overlay"></div>
 									<div class="profile-main">
-										<img src="${comp.imgurl}" class="img-circle" alt="Avatar">
+										<img src="/image/getimg.do?imgpath=${comp.imgurl}" class="img-circle" alt="Avatar">
 										<h3 class="name">${comp.companyname}</h3>
 									</div>
 									<div class="profile-stat">
@@ -82,7 +82,7 @@
 										<a href="${comp.website}">${comp.website}</a>
 										<h3>工商信息</h3>
 										<ul class="list-unstyled">
-											<li>注册号：${comp.companylicense}</li>
+											<li>认证资料图：<img src="/image/getlicenseimg.do?imgpath=${comp.companylicense}"  alt="实名认证图"></li>
 											<li>成立日期：<span class="J-Date">${comp.setuptime}</span></li>
 											<li>融资阶段：${comp.financingstage}</li>
 										</ul>

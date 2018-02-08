@@ -5,9 +5,11 @@ import com.mcl.common.ServerResponse;
 import com.mcl.pojo.*;
 import com.mcl.service.IMsgService;
 import com.mcl.service.IScoreService;
+import com.mcl.service.ITagPropertyService;
 import com.mcl.service.IUserService;
 import com.mcl.util.DateTimeUtil;
 import com.mcl.util.PropertiesUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +35,9 @@ public class UserController {
 
     @Autowired
     private IMsgService iMsgService ;
+
+    @Autowired
+    private ITagPropertyService iTagPropertyService ;
 
     /**
      * 进入小程序后存储或更新用户基本信息
@@ -280,6 +285,13 @@ public class UserController {
         } catch (IOException e) {
             return null;
         }
+        UserBaseInfo user = iUserService.getUserBaseInfo(openid);
+        if(user!=null&&StringUtils.isNotBlank(user.getAvatarurl())){
+            //删除旧的
+            File f = new File(request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("ftp.uploadimg.rootpath"))+"/"+user.getAvatarurl());
+            if(f.exists())
+                f.delete();
+        }
         //返回一个路径
         String backpath = DateTimeUtil.dateToStr(new Date(),"yyyyMMdd")+"/"+targetFile.getName();
         //保存或更新到数据库
@@ -322,6 +334,16 @@ public class UserController {
     public ServerResponse rateList(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                    @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,UserScore userScore){
         return iScoreService.getUserRateList(pageNum,pageSize,userScore);
+    }
+
+    /**
+     * 获取4个自定义标签
+     * @return
+     */
+    @RequestMapping(value = "customize.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse customize(){
+        return iTagPropertyService.customize();
     }
 
 }

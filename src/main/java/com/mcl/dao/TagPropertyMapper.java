@@ -1,6 +1,7 @@
 package com.mcl.dao;
 
 import com.mcl.pojo.TagProperty;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,4 +25,8 @@ public interface TagPropertyMapper {
     List<String>  getTagType();
 
     List<TagProperty> selectTagListByType(String type);
+
+    void cleanAllOrder();
+
+    List<TagProperty> get4Icon();
 }

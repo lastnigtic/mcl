@@ -35,4 +35,8 @@ public interface ITagPropertyService {
     ServerResponse addTag(TagProperty tag);
 
     ServerResponse updateTag(TagProperty tag);
+
+    void updateTagList(List<TagProperty> tagPropertyList);
+
+    ServerResponse customize();
 }

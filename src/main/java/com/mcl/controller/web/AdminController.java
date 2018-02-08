@@ -8,6 +8,8 @@ import com.mcl.pojo.*;
 import com.mcl.service.IAdminService;
 import com.mcl.service.ITagPropertyService;
 import com.mcl.service.IUserService;
+import com.mcl.util.DateTimeUtil;
+import com.mcl.util.PropertiesUtil;
 import com.mcl.vo.StatisticsVO;
 import com.mcl.vo.TagVO;
 import com.sun.org.apache.xpath.internal.operations.Mod;
@@ -15,10 +17,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Administrator on 2018/1/20 0020.
@@ -417,6 +425,60 @@ public class AdminController {
     @ResponseBody
     public ServerResponse getUserDetailInfo(String openid){
         return iUserService.getUserDetailInfo(openid);
+    }
+
+
+    /**
+     * 自定义标签
+     * @param files
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "customize.html",method = RequestMethod.POST)
+    public String customize(@RequestParam(value = "uploadfile",required = false) MultipartFile[] files, HttpServletRequest request, Model model){
+        //存放路径
+        String uploadpath = request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("ftp.uploadimg.rootpath"))+"/"+ DateTimeUtil.dateToStr(new Date(),"yyyyMMdd");
+        //文件原始名
+        List<TagProperty> tagPropertyList = new ArrayList<>();
+        int i = 1 ;
+        for (MultipartFile file:files){
+            String fileName = file.getOriginalFilename();
+            //扩展名
+            String fileExtensionName = fileName.substring(fileName.lastIndexOf(".")+1);
+            //上传后的文件名
+            String uploadFileName = UUID.randomUUID().toString()+"."+fileExtensionName;
+            //上传临时路径是否存在，不存在则要创建
+            File fileDir = new File(uploadpath);
+            if(!fileDir.exists()){
+                fileDir.setWritable(true);
+                fileDir.mkdirs();
+            }
+            File targetFile = new File(uploadpath,uploadFileName);
+            try {
+                file.transferTo(targetFile);
+            } catch (IOException e) {
+                return null;
+            }
+            //返回一个路径
+            String backpath = DateTimeUtil.dateToStr(new Date(),"yyyyMMdd")+"/"+targetFile.getName();
+            TagProperty tagProperty = new TagProperty();
+            tagProperty.setId( Integer.valueOf(request.getParameter("tagid"+i++)));
+            tagProperty.setIcon(backpath);
+            tagProperty.setIconorder(i);
+            tagPropertyList.add(tagProperty);
+
+        }
+        iTagPropertyService.updateTagList(tagPropertyList);
+        model.addAttribute("backlist",tagPropertyList);
+        //然后返回
+        ServerResponse response = getTagPropertiesByType("jobtag",1,10);
+        if(response.isSuccess()){
+            model.addAttribute("pageInfo",response.getData());
+        }else {
+            model.addAttribute("msg",response.getMsg());
+        }
+        return "/admin/managetag";
     }
 
 }
