@@ -469,7 +469,6 @@ public class AdminController {
             tagPropertyList.add(tagProperty);
 
         }
-        //TODO 更新
         iTagPropertyService.updateTagList(tagPropertyList);
         model.addAttribute("backlist",tagPropertyList);
         //然后返回

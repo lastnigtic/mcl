@@ -108,4 +108,7 @@
      update tagproperty
     set iconorder = 0
   </update>
+  <select id="get4Icon" resultType="com.mcl.pojo.TagProperty">
+    SELECT <include refid="Base_Column_List" /> FROM tagproperty WHERE iconorder>=1 ORDER BY iconorder
+  </select>
 </mapper>

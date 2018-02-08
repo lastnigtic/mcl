@@ -5,6 +5,7 @@ import com.mcl.common.ServerResponse;
 import com.mcl.pojo.*;
 import com.mcl.service.IMsgService;
 import com.mcl.service.IScoreService;
+import com.mcl.service.ITagPropertyService;
 import com.mcl.service.IUserService;
 import com.mcl.util.DateTimeUtil;
 import com.mcl.util.PropertiesUtil;
@@ -33,6 +34,9 @@ public class UserController {
 
     @Autowired
     private IMsgService iMsgService ;
+
+    @Autowired
+    private ITagPropertyService iTagPropertyService ;
 
     /**
      * 进入小程序后存储或更新用户基本信息
@@ -322,6 +326,16 @@ public class UserController {
     public ServerResponse rateList(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                    @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,UserScore userScore){
         return iScoreService.getUserRateList(pageNum,pageSize,userScore);
+    }
+
+    /**
+     * 获取4个自定义标签
+     * @return
+     */
+    @RequestMapping(value = "customize.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse customize(){
+        return iTagPropertyService.customize();
     }
 
 }

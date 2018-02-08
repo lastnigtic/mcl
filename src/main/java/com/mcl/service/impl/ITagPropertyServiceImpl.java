@@ -146,4 +146,14 @@ public class ITagPropertyServiceImpl implements ITagPropertyService {
             tagPropertyMapper.updateByPrimaryKeySelective(tagProperty);
         }
     }
+
+    /**
+     * 获取四个自定义标签
+     * @return
+     */
+    @Override
+    public ServerResponse customize() {
+        List<TagProperty> tagPropertyList = tagPropertyMapper.get4Icon();
+        return ServerResponse.createBySuccess(tagPropertyList);
+    }
 }
