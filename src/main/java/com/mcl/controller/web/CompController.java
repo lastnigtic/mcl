@@ -494,7 +494,7 @@ public class CompController {
             return ServerResponse.createByErrorMessage("未找到公司信息");
 
         //存放路径
-        String uploadpath = request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("ftp.uploadimg.rootpath"))+"/"+ DateTimeUtil.dateToStr(new Date(),"yyyyMMdd");
+        String uploadpath = request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("upload.avatar.rootpath"))+"/"+ DateTimeUtil.dateToStr(new Date(),"yyyyMMdd");
 
         //文件原始名
         String fileName = file.getOriginalFilename();

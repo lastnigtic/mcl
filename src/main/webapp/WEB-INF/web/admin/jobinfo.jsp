@@ -80,7 +80,7 @@
 								</div>
 								<div class="media-right">
 									<a href="/admin/compinfo.html?id=${job.companyid}">
-										<img class="media-object" src="assets/img/user-medium.png" alt="...">
+										<img class="media-object" src="/image/getimg.do?imgpath=${job.company.imgurl}" class="img-circle" alt="...">
 										<h3 class="text-center">所在公司</h3>
 										</a>
 									</div>
