@@ -9,6 +9,7 @@ import com.mcl.service.ITagPropertyService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -130,5 +131,19 @@ public class ITagPropertyServiceImpl implements ITagPropertyService {
             return ServerResponse.createBySuccess(tag);
         }
         return ServerResponse.createByErrorMessage("更新失败");
+    }
+
+    /**
+     * 更新自定义标签
+     * @param tagPropertyList
+     */
+    @Override
+    public void updateTagList(List<TagProperty> tagPropertyList) {
+        //先清掉所有排序（记录不多，影响性能不大）
+        tagPropertyMapper.cleanAllOrder();
+        //再逐个更新
+        for(TagProperty tagProperty : tagPropertyList){
+            tagPropertyMapper.updateByPrimaryKeySelective(tagProperty);
+        }
     }
 }

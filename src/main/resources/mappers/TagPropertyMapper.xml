@@ -104,4 +104,8 @@
       icon = #{icon}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="cleanAllOrder">
+     update tagproperty
+    set iconorder = 0
+  </update>
 </mapper>
