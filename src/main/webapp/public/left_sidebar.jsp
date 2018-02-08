@@ -33,11 +33,14 @@
 	<script>
         var href = window.location.href;
         var as = document.getElementsByTagName('a');
+        var isHigh = false;
         for(var s = 0, len = as.length;s<len;s++){
             if(href.indexOf(as[s].getAttribute('href'))>0){
-                as[s].className = 'active'
+                as[s].className = 'active';
+                isHigh = true;
             }
         }
+        if(!isHigh){as[0].className = 'active'}
 	</script>
 </div>
 <!-- END LEFT SIDEBAR -->
