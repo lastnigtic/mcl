@@ -9,6 +9,7 @@ import com.mcl.service.ITagPropertyService;
 import com.mcl.service.IUserService;
 import com.mcl.util.DateTimeUtil;
 import com.mcl.util.PropertiesUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -283,6 +284,13 @@ public class UserController {
             file.transferTo(targetFile);
         } catch (IOException e) {
             return null;
+        }
+        UserBaseInfo user = iUserService.getUserBaseInfo(openid);
+        if(user!=null&&StringUtils.isNotBlank(user.getAvatarurl())){
+            //删除旧的
+            File f = new File(request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("ftp.uploadimg.rootpath"))+"/"+user.getAvatarurl());
+            if(f.exists())
+                f.delete();
         }
         //返回一个路径
         String backpath = DateTimeUtil.dateToStr(new Date(),"yyyyMMdd")+"/"+targetFile.getName();

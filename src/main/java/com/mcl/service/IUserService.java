@@ -48,4 +48,5 @@ public interface IUserService {
 
     ServerResponse getUserDetailInfo(String openid);
 
+    UserBaseInfo getUserBaseInfo(String openid);
 }

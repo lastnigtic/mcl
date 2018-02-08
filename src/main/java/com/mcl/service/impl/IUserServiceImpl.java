@@ -534,6 +534,13 @@ public class IUserServiceImpl implements IUserService {
         return ServerResponse.createBySuccess(vo);
     }
 
+    @Override
+    public UserBaseInfo getUserBaseInfo(String openid) {
+        if(StringUtils.isBlank(openid))
+            return null;
+        return userBaseInfoMapper.selectByPrimaryKey(openid);
+    }
+
 
     /**
      * 用户向公司评分
