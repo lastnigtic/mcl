@@ -39,6 +39,7 @@
         }
         .resume {
             display: inline-block;
+            max-width: 830px;
             margin: 20px;
             background-color: #fff;
             border: 1px solid #eee;
@@ -48,7 +49,9 @@
             position: relative;
             *zoom: 1;
         }
-
+        img{
+            width: 80px;
+        }
         .resume:before {
             -webkit-transform: skew(-15deg) rotate(-6deg);
             -moz-transform: skew(-15deg) rotate(-6deg);
@@ -92,6 +95,12 @@
         .resume p{
             color: #5c5c5c;
             font-weight:bold;
+        }
+        /*评分*/
+        .star-wrapper img{
+            width: 30px;
+            height: 30px;
+            margin-left: 6px;
         }
         /*打印简历*/
         .pdf-wrapper{
@@ -152,7 +161,7 @@
                         <input id="msg" class="form-control" placeholder="请输入邀约信息" style="display: none;">
                         <input id="entryTime" type="date" class="form-control" title="请选择入职时间" style="display: none;">
                         <button id="changeStatus" class="btn btn-primary form-control" style="height: auto; padding: 2px 16px;">确认</button>
-                        <button id="toEvaluate" style="display: none;height: auto; padding: 2px 16px;float:right;" class="btn btn-primary form-control" data-toggle="modal" data-target="#evaluateModal">进行点评</button>
+                        <button id="toEvaluate" style="height: auto; padding: 2px 16px;float:right;" class="btn btn-primary form-control" data-toggle="modal" data-target="#evaluateModal">进行点评</button>
                     </div>
                     <div class="panel panel-profile">
                         <div class="clearfix">
@@ -254,29 +263,65 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">点评(1~5分)</h4>
+                        <h4 class="modal-title" id="myModalLabel">点评</h4>
                     </div>
                     <div class="modal-body">
                         <label>组织能力</label>
-                        <input type="number" name="organizationability" class="form-control J-limit" placeholder="请输入分数...">
+                        <div class="star-wrapper" score="5">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                        </div>
                         <br>
                         <label>沟通能力</label>
-                        <input type="number" name="communicateability" class="form-control J-limit" placeholder="请输入分数...">
+                        <div class="star-wrapper" score="5">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                        </div>
                         <br>
                         <label>学习能力</label>
-                        <input type="number" name="learnability" class="form-control J-limit" placeholder="请输入分数...">
+                        <div class="star-wrapper" score="5">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                        </div>
                         <br>
                         <label>创新能力</label>
-                        <input type="number" name="innovationability" class="form-control J-limit" placeholder="请输入分数...">
+                        <div class="star-wrapper" score="5">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                        </div>
                         <br>
                         <label>适应能力</label>
-                        <input type="number" name="adaptability" class="form-control J-limit" placeholder="请输入分数...">
+                        <div class="star-wrapper" score="5">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                        </div>
                         <br>
                         <label>技术能力</label>
-                        <input type="number" name="technicalability" class="form-control J-limit" placeholder="请输入分数...">
+                        <div class="star-wrapper" score="5">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                            <img  src="/public/star.png">
+                        </div>
                         <br>
                         <label>文字点评</label>
-                        <input name="comment" class="form-control" placeholder="请输入您对他(她)的表现的简短点评">
+                        <input name="comment" id="comment" class="form-control" placeholder="请输入您对他(她)的表现的简短点评">
                         <br>
                     </div>
                     <div class="modal-footer">
@@ -306,67 +351,67 @@
             <tr><td>学历：${resume.education} &nbsp;|&nbsp; 学校名称：${resume.schoolname}</td></tr>
             <tr><td>专业类别：${resume.major} &nbsp;|&nbsp; 毕业时间：<span class="J-Date">${resume.graduationtime}</span></td></tr>
             <c:choose>
-                <c:when test="${resume.campusexp!=null}">
-                    <tr><td class="sub-title">社团经历</td></tr>
-                    <tr><td>${resume.campusexp}</td></tr>
-                </c:when>
-            </c:choose>
+            <c:when test="${resume.campusexp!=null}">
+            <tr><td class="sub-title">社团经历</td></tr>
+            <tr><td>${resume.campusexp}</td></tr>
+        </c:when>
+    </c:choose>
 
-            <c:choose>
-                <c:when test="${resume.awards!=null}">
-                    <tr><td class="sub-title">获奖经历</td></tr>
-                    <tr><td>${resume.awards}</td></tr>
-                </c:when>
-            </c:choose>
+    <c:choose>
+    <c:when test="${resume.awards!=null}">
+    <tr><td class="sub-title">获奖经历</td></tr>
+    <tr><td>${resume.awards}</td></tr>
+</c:when>
+</c:choose>
 
-            <c:choose>
-                <c:when test="${certificate!=null}">
-                    <tr><td class="sub-title">证书</td></tr>
-                    <tr><td>${resume.certificate}</td></tr>
-                </c:when>
-            </c:choose>
-            <tr><td class="title">期望实习</td></tr>
-            <tr><td>期望职位:${resume.jobapplied} &nbsp;|&nbsp; 期望城市：${resume.cityapplied}</td></tr>
-            <tr><td>期望工作天数：${resume.frequencyapplied}天/周 &nbsp;|&nbsp; 期望工作长度：${resume.durationapplied}个月</td></tr>
-            <tr><td>期望薪资：${resume.wageapplied}元/天 &nbsp;|&nbsp; 预计入职时间：<span class="J-Date">${resume.entrytime}</span></td></tr>
-            <c:choose>
-                <c:when test="${resume.jobname!=null}">
-                    <tr><td class="title">实习经历</td></tr>
-                    <tr><td>公司名称：${resume.companyname} &nbsp;|&nbsp; 担任职位：${resume.jobname}</td></tr>
-                    <tr><td>入职时间：<span class="J-Date">${resume.jobstarttime}</span> &nbsp;|&nbsp; 离职时间：<span class="J-Date">${resume.jobendtime}</span></td></tr>
-                    <tr><td class="sub-title">经历描述</td></tr>
-                    <tr><td>${resume.jobdesc}</td></tr>
-                </c:when>
-            </c:choose>
-            <c:choose>
-                <c:when test="${resume.skills!=null}">
-                    <tr><td class="title">技能爱好</td></tr>
-                    <tr><td>${resume.skills}</td></tr>
-                </c:when>
-            </c:choose>
-            <c:choose>
-                <c:when test="${resume.selfevaluation!=null}">
-                    <tr><td class="title">自我评价</td></tr>
-                    <tr><td>${resume.selfevaluation}</td></tr>
-                </c:when>
-            </c:choose>
-        </table>
-    </div>
-    <!-- END WRAPPER -->
-    <!-- Javascript -->
-    <script src="/assets/vendor/jquery/jquery.min.js"></script>
-    <script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="/assets/vendor/echarts/echarts.min.js"></script>
-    <script src="/assets/vendor/jspdf/jsPdf.debug.js"></script>
-    <script src="/assets/vendor/jspdf/html2canvas.js"></script>
-    <script src="/assets/scripts/klorofil-common.js"></script>
-    <script src="/assets/js/tool.js"></script>
-    <script>
-        $(function(){
-            var staBox = $('#statusList');
-            var msgInp = $('#msg');
-            var entryTimeInp = $('#entryTime');
+<c:choose>
+<c:when test="${certificate!=null}">
+<tr><td class="sub-title">证书</td></tr>
+<tr><td>${resume.certificate}</td></tr>
+</c:when>
+</c:choose>
+<tr><td class="title">期望实习</td></tr>
+<tr><td>期望职位:${resume.jobapplied} &nbsp;|&nbsp; 期望城市：${resume.cityapplied}</td></tr>
+<tr><td>期望工作天数：${resume.frequencyapplied}天/周 &nbsp;|&nbsp; 期望工作长度：${resume.durationapplied}个月</td></tr>
+<tr><td>期望薪资：${resume.wageapplied}元/天 &nbsp;|&nbsp; 预计入职时间：<span class="J-Date">${resume.entrytime}</span></td></tr>
+<c:choose>
+<c:when test="${resume.jobname!=null}">
+<tr><td class="title">实习经历</td></tr>
+<tr><td>公司名称：${resume.companyname} &nbsp;|&nbsp; 担任职位：${resume.jobname}</td></tr>
+<tr><td>入职时间：<span class="J-Date">${resume.jobstarttime}</span> &nbsp;|&nbsp; 离职时间：<span class="J-Date">${resume.jobendtime}</span></td></tr>
+<tr><td class="sub-title">经历描述</td></tr>
+<tr><td>${resume.jobdesc}</td></tr>
+</c:when>
+</c:choose>
+<c:choose>
+<c:when test="${resume.skills!=null}">
+<tr><td class="title">技能爱好</td></tr>
+<tr><td>${resume.skills}</td></tr>
+</c:when>
+</c:choose>
+<c:choose>
+<c:when test="${resume.selfevaluation!=null}">
+<tr><td class="title">自我评价</td></tr>
+<tr><td>${resume.selfevaluation}</td></tr>
+</c:when>
+</c:choose>
+</table>
+</div>
+<!-- END WRAPPER -->
+<!-- Javascript -->
+<script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/assets/vendor/echarts/echarts.min.js"></script>
+<script src="/assets/vendor/jspdf/jsPdf.debug.js"></script>
+<script src="/assets/vendor/jspdf/html2canvas.js"></script>
+<script src="/assets/scripts/klorofil-common.js"></script>
+<script src="/assets/js/tool.js"></script>
+<script>
+    $(function(){
+        var staBox = $('#statusList');
+        var msgInp = $('#msg');
+        var entryTimeInp = $('#entryTime');
 //        拿到所需数据
 function params(){
     var _status = staBox.data('status');
@@ -395,8 +440,10 @@ staBox.on('change', function(e){
     var status = staBox.find("option:selected")[0].value;
     if( status== 3 && params('status') !== 3){
         msgInp.css('display','inline-block');
+        entryTimeInp.hide();
     }else if(status == 4 && params('status') !== 4){
         entryTimeInp.css('display','inline-block');
+        msgInp.hide();
     }
     else{
         msgInp.hide();
@@ -538,44 +585,49 @@ function canScore(){
 }
 canScore();
 //      分值在1-5
-$('.J-limit').on('change', function(e){
-    var val = e.currentTarget.value;
-    if( val > 5){
-        e.currentTarget.value = 5
-    }else if(val < 1){
-        e.currentTarget.value = 1
+$('.star-wrapper').on('click',function(e){
+    if(e.target.tagName === 'IMG'){
+        var tar = $(e.target);
+        var tidx = tar.index();
+        $(this).attr('score', tidx+1)
+        $(this).find('img').each(function(idx,item){
+            if(idx <= tidx){
+                item.src = '/public/star.png'
+            }else{
+                item.src = '/public/star_none.png'
+            }
+        })
     }
 })
-//      提交评价
+//提交评价
 $('#evaluateSubmit').on('click', function(e){
     var body = $(e.currentTarget).closest('modal-body');
     var cansubmit = true;
     var data = {};
-            // 取到所有数据
-            body.find('input').each(function(idx, item){
-                item = $(item);
-                if(!item.val()){
-                  item.addClass('has-error');
-                  cansubmit = false;
-                  data[item.attr('name')] = item.val()
-              }else{
-                  item.removeClass('has-error')
-              }
-          })
-            if(cansubmit){
-                data.openid = params('openid');
-                data.joid = params('joid');
-                $.post('/comp/canscoreuser.do',data,function(res){
-                    if(res.status === 0){
-                        window.alert('评价成功');
-                        $('#evaluateModal').remove();
-                        $('#toEvaluate').remove();
-                    }else{
-                        window.alert('评价失败请重试');
-                    }
-                })
+    // 取到所有数据
+    $('.star-wrapper').each(function(idx, item){
+        item = $(item);
+        data[ablityArr[idx].name] = item.attr('score');
+    })
+    var comment = $('$comment').val();
+    if(!comment){
+        alert('请输入文字评价')
+    }
+    data.comment = comment
+    if(cansubmit){
+        data.openid = params('openid');
+        data.joid = params('joid');
+        $.post('/comp/ratetouser.do',data,function(res){
+            if(res.status === 0){
+                window.alert('评价成功');
+                $('#evaluateModal').remove();
+                $('#toEvaluate').remove();
+            }else{
+                window.alert('评价失败请重试');
             }
         })
+    }
+})
         // 导出pdf
         var pdfel = document.getElementById('pdfWrapper');
         var avHeight = document.documentElement.clientHeight;
@@ -587,20 +639,20 @@ $('#evaluateSubmit').on('click', function(e){
             'maxWidth': avWidth + 'px',
             'margin': '-' + avHeight/2 + 'px 0 0 -' + avWidth/2 + 'px'
         })
-         $('#downPDF').on('click',function(e){
-             $('#wrapper').hide();
-             $(pdfel).show();
-             var avatar  = $(pdfel).find('img')[0];
-             html2canvas(avatar,{
-                 onrendered: function(canvas){
-                     var imgData = canvas.toDataURL('image/jpeg', 1.0);
-                     avatar.src = imgData;
-                     avatar.onload = function(){
-                         createPDF();
-                     }
+        $('#downPDF').on('click',function(e){
+         $('#wrapper').hide();
+         $(pdfel).show();
+         var avatar  = $(pdfel).find('img')[0];
+         html2canvas(avatar,{
+             onrendered: function(canvas){
+                 var imgData = canvas.toDataURL('image/jpeg', 1.0);
+                 avatar.src = imgData;
+                 avatar.onload = function(){
+                     createPDF();
                  }
-             })
-        })
+             }
+         })
+     })
         function createPDF(){
             html2canvas(pdfel,{
                 onrendered: function(canvas){
@@ -613,7 +665,7 @@ $('#evaluateSubmit').on('click', function(e){
                 }
             })
         }
-})
+    })
 </script>
 </body>
 
