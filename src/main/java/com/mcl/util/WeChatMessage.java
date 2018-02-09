@@ -7,4 +7,5 @@ public class WeChatMessage {
     private static final String InterviewTemplateID = PropertiesUtil.getProperty("weapp.interviewtemplateid");
 
     //TODO 发送消息模版
+
 }
