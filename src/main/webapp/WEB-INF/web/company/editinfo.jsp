@@ -44,7 +44,7 @@
 									<h3 class="page-title">编辑公司信息</h3>
 									<form enctype="multipart/form-data" method="post" action="/comp/compimg.do">
 									<label>公司商标</label>
-										<input type="file" name="uploadfile" multiple="" value="上传图片"  />
+										<input type="file" name="uploadfile" multiple="" value="/image/getlicenseimg.do?imgpath=${comp.companylicense}"  />
 
 										<button id="button-upload" type="submit" class="btn btn-primary" style="display: none">提交</button>
 									</form>

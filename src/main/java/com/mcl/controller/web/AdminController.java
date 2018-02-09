@@ -163,7 +163,7 @@ public class AdminController {
         }else {
             model.addAttribute("msg",response.getMsg());
         }
-        return "/admin/userdetail";
+         return "/admin/userdetail";
     }
 
 

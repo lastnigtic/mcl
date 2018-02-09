@@ -103,7 +103,7 @@
 								<div class="profile-header">
 									<div class="overlay"></div>
 									<div class="profile-main" id="userinfo" data-id="${userinfo.userBaseInfo.openid}">
-										<img src="${userinfo.userBaseInfo.avatarurl}" class="img-circle" alt="Avatar">
+										<img src="/image/getimg.do?imgpath=${userinfo.userBaseInfo.avatarurl}" class="img-circle" alt="Avatar">
 										<h3 class="name">${userinfo.userBaseInfo.realname}</h3>
 									</div>
 								</div>
@@ -142,7 +142,7 @@
 							<div class="profile-right">
 									<h4 class="heading" style="padding-bottom: 20px">个人简历
 									<select id="resumeSelect" class="form-control" style="float:right; width: auto">
-										<c:forEach items="${userinfo.resumeList}" var="resume" varStatus="xh" >
+										<c:forEach items="/image/getimg.do?imgpath=${userinfo.resumeList}" var="resume" varStatus="xh" >
 											<option value="${resume.resumename}" >${resume.resumename}</option>
 										</c:forEach>
 									</select>

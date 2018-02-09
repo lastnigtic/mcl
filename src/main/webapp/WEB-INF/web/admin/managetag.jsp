@@ -54,7 +54,16 @@
             width: auto;
             display: inline-block;
         }
-	</style>
+        .tagItem{
+            display: inline-block;
+            text-align: center;
+            white-space: pre-wrap;
+        }
+        .disImg{
+            width: 40px;
+            height: auto;
+        }
+    </style>
 </head>
 
 <body>
@@ -69,138 +78,161 @@
 			<div class="main-content">
 				<div class="container-fluid">
 					<div class="row">
-							<!-- RECENT PURCHASES -->
-							<div class="panel">
-								<div class="panel-heading">
-                                    <h3 class="panel-title">标签管理</h3>
-									<div class="right">
-                                        <select class="form-control status-select" id="typeSelect">
-                                            <option value="">标签增删</option>
-                                            <option value="">小程序首页标签管理</option>
-                                        </select>
-									</div>
-								</div>
-								<div class="panel-body">
-                                <div id="ctrlTag">
-									<table class="table table-striped">
-										<thead>
-											<tr>
-												<th>名字</th>
-												<th>操作</th>
-											</tr>
-										</thead>
-										<tbody id="tagBox">
-                                        <c:forEach items="${pageInfo.list}" var="tag" varStatus="xh">
-                                            <tr>
-                                                <td>${tag.name}</td>
-                                                <td><a href="#" class="J-delete" data-id="${tag.id}">删除</a></td>
-                                            </tr>
-                                        </c:forEach>
-										</tbody>
-									</table>
-                                    <button class="btn foot" id="addTag">新增</button>
-									<jsp:include page="/public/page.jsp">
-										<jsp:param name="url" value="/admin/managetag.html"></jsp:param>
-									</jsp:include>
-                                </div>
-                                    <from action="" id="wechatTag" style="display: none">
-                                        <div class="form-inline">
-                                            <div class="form-group">
-                                                <label>第一位显示</label>
-                                                <select class="form-control J-tags">
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <input class="form-control J-file" type="file" style="display: none">
-                                                <img src="/public/upload.png" class="J-up icon"></img>
-                                                <img src="" class="icon view" style="display: none"></img>
-                                            </div>
-                                        </div>
-                                        <div class="form-inline">
-                                        <div class="form-group">
-                                            <label>第二位显示</label>
-                                            <select class="form-control J-tags">
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <input class="form-control J-file" type="file" style="display: none">
-                                            <img src="/public/upload.png" class="J-up icon"></img>
-                                            <img src="" class="icon view" style="display: none"></img>
-                                        </div>
-                                    </div>
-                                        <div class="form-inline">
-                                            <div class="form-group">
-                                                <label>第三位显示</label>
-                                                <select class="form-control J-tags">
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <input class="form-control J-file" type="file" style="display: none">
-                                                <img src="/public/upload.png" class="J-up icon"></img>
-                                                <img src="" class="icon view" style="display: none"></img>
-                                            </div>
-                                        </div>
-                                        <div class="form-inline">
-                                            <div class="form-group">
-                                                <label>第四位显示</label>
-                                                <select class="form-control J-tags">
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <input class="form-control J-file" type="file" style="display: none">
-                                                <img src="/public/upload.png" class="J-up icon"></img>
-                                                <img src="" class="icon view" style="display: none"></img>
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">提交</button>
-                                    </from>
-								</div>
-							</div>
-							<!-- END RECENT PURCHASES -->
-					</div>
+                       <!-- RECENT PURCHASES -->
+                       <div class="panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">标签管理</h3>
+                            <div class="right">
+                                <select class="form-control status-select" id="typeSelect">
+                                    <option value="">标签增删</option>
+                                    <option value="">小程序首页标签管理</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="ctrlTag">
+                             <table class="table table-striped">
+                              <thead>
+                               <tr>
+                                <th>名字</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tagBox">
+                            <c:forEach items="${pageInfo.list}" var="tag" varStatus="xh">
+                            <tr>
+                                <td>${tag.name}</td>
+                                <td><a href="#" class="J-delete" data-id="${tag.id}">删除</a></td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+                <button class="btn foot" id="addTag">新增</button>
+                <jsp:include page="/public/page.jsp">
+                <jsp:param name="url" value="/admin/managetag.html"></jsp:param>
+            </jsp:include>
+        </div>
+        <form enctype="multipart/form-data" method="post"  action="/admin/customize.html" id="wechatTag" style="display:none">
+            <div style="display: none" id="currentTags">
+                <h4>当前展示标签</h4>
+                <div class="tagItem">
+                    <img class="disImg" src = ""></img>
+                    <span></span>
+                </div>
+                <div class="tagItem">
+                    <img class="disImg" src = ""></img>
+                    <span></span>
+                </div>  
+                <div class="tagItem">
+                    <img class="disImg" src = ""></img>
+                    <span></span>
+                </div>  
+                <div class="tagItem">
+                    <img class="disImg" src = ""></img>
+                    <span></span>
+                </div>    
+            </div>
+            <div class="form-inline">
+                <div class="form-group">
+                    <label>第一位显示</label>
+                    <select class="form-control J-tags" data-id="tagid1">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input class="form-control J-file" type="file" name="uploadfile" style="display: none">
+                    <img src="/public/upload.png" class="J-up icon"></img>
+                    <input id="tagid1" name="tagid1" style="display:none">
+                    <img src="" class="icon view" style="display: none"></img>
+                </div>
+            </div>
+            <div class="form-inline">
+                <div class="form-group">
+                    <label>第二位显示</label>
+                    <select class="form-control J-tags" data-id="tagid2">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input class="form-control J-file" type="file" name="uploadfile" style="display: none">
+                    <img src="/public/upload.png" class="J-up icon"></img>
+                    <input id="tagid2" name="tagid2" style="display:none">
+                    <img src="" class="icon view" style="display: none"></img>
+                </div>
+            </div>
+            <div class="form-inline">
+                <div class="form-group">
+                    <label>第三位显示</label>
+                    <select class="form-control J-tags" data-id="tagid3">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input class="form-control J-file" type="file" name="uploadfile" style="display: none">
+                    <img src="/public/upload.png" class="J-up icon"></img>
+                    <input id="tagid3" name="tagid3" style="display:none">
+                    <img src="" class="icon view" style="display: none"></img>
+                </div>
+            </div>
+            <div class="form-inline">
+                <div class="form-group">
+                    <label>第四位显示</label>
+                    <select class="form-control J-tags" data-id="tagid4">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input class="form-control J-file" type="file" name="uploadfile" style="display: none">
+                    <img src="/public/upload.png" class="J-up icon"></img>
+                    <input id="tagid4" name="tagid4" style="display:none">
+                    <img src="" class="icon view" style="display: none"></img>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="wechatSb">提交</button>
+        </form>
+    </div>
+</div>
+<!-- END RECENT PURCHASES -->
+</div>
 
-				</div>
-			</div>
-			<!-- END MAIN CONTENT -->
-		</div>
-		<!-- END MAIN -->
-		<div class="clearfix"></div>
-		<footer>
-			<div class="container-fluid">
-				<p class="copyright">Copyright &copy; 2017.Company name All rights reserved.</p>
-			</div>
-		</footer>
-	</div>
-	<!-- END WRAPPER -->
-	<!-- Javascript -->
-	<script src="/assets/vendor/jquery/jquery.min.js"></script>
-	<script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-	<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-	<script src="/assets/scripts/klorofil-common.js"></script>
-	<script type="text/javascript">
-		$(function(){
-			$('.J-up').on('click',function(e){
-				var tar = $(e.target);
-				tar.prev().click();
-			})
-			$('.J-file').on('change',function(e){
-				var file = this.files[0];
-				var img = $($(e.target).siblings('.view')[0]);
-				if(file.size > 128000){
-					img.siblings('input[type=file]')[0].src = '';
-					img.hide();
-					return window.alert('请上传小于128k的图片')
-				}
-				var read  = new FileReader();
-				read.readAsDataURL(file);
-				read.onload=function(){
-					var url = read.result;
-					img.attr('src', url) ;
-					img.css('display','inline-block');
-				}
-			})
-            var tagBox = $('#tagBox');
-			var typePage = [$('#ctrlTag'),$('#wechatTag')];
+</div>
+</div>
+<!-- END MAIN CONTENT -->
+</div>
+<!-- END MAIN -->
+<div class="clearfix"></div>
+<footer>
+   <div class="container-fluid">
+    <p class="copyright">Copyright &copy; 2017.Company name All rights reserved.</p>
+</div>
+</footer>
+</div>
+<!-- END WRAPPER -->
+<!-- Javascript -->
+<script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/assets/scripts/klorofil-common.js"></script>
+<script type="text/javascript">
+  $(function(){
+   $('.J-up').on('click',function(e){
+    var tar = $(e.target);
+    tar.prev().click();
+})
+   $('.J-file').on('change',function(e){
+    var file = this.files[0];
+    var img = $($(e.target).siblings('.view')[0]);
+    if(file.size > 128000){
+     img.siblings('input[type=file]')[0].src = '';
+     img.hide();
+     return window.alert('请上传小于128k的图片')
+ }
+ var read  = new FileReader();
+ read.readAsDataURL(file);
+ read.onload=function(){
+     var url = read.result;
+     img.attr('src', url) ;
+     img.css('display','inline-block');
+ }
+})
+   var tagBox = $('#tagBox');
+   var typePage = [$('#ctrlTag'),$('#wechatTag')];
             // 分页显示
             $('#typeSelect').on('change',function(e){
                 $(typePage).each(function(idx, item){
@@ -217,10 +249,10 @@
             // 新增填写显示
             $('#addTag').on('click', function(e){
                 var el = "<tr>"
-                        + "<td><input class='name form-control'></td>"
-                        + "<td><a href='javascript: ;' class='J-confirmTag' data-type='confirm'>确认</a>&nbsp;<a class='J-cancel'>取消</a></td>"
-                        + "</tr>"
-               tagBox.append(el);
+                + "<td><input class='name form-control'></td>"
+                + "<td><a href='javascript: ;' class='J-confirmTag' data-type='confirm'>确认</a>&nbsp;<a class='J-cancel'>取消</a></td>"
+                + "</tr>"
+                tagBox.append(el);
             })
             // 标签请求
             $('#tagBox').on('click',function(e){
@@ -247,16 +279,18 @@
                     }
                 }
                 else if(tar.hasClass('J-delete')){
-                    $.post('/admin/deltag.do',{
-                        id: tar.data('id')
-                    },function(res){
-                        if(res.status == 0){
-                            parent.parent().remove();
-                            window.alert('删除标签成功！');
-                        }else{
-                            window.alert('失败请重试！');
-                        }
-                    })
+                    if(window.confirm('确认删除标签？')){
+                        $.post('/admin/deltag.do',{
+                            id: tar.data('id')
+                        },function(res){
+                            if(res.status == 0){
+                                parent.parent().remove();
+                                window.alert('删除标签成功！');
+                            }else{
+                                window.alert('失败请重试！');
+                            }
+                        })
+                    }
                 }
                 else if(tar.hasClass('J-cancel')){
                     parent.parent().remove()
@@ -264,34 +298,64 @@
                 e.preventDefault();
             })
            //  获取所有标签
-            function getAllTag(){
-                $.get('/admin/getalltag.do?type=jobtag',function(res){
-                    var jobtag;
-                    if(res.status === 0){
-                        for(var i = 0, len = res.data.length;i < len; i++){
-                            if(res.data[i].type === 'jobtag'){
-                                jobtag = res.data[i].list;
-                                break;
-                            }
-                        }
-                        initSelect(jobtag)
+           function getAllTag(){
+            $.get('/admin/getjobtag.do',function(res){
+                var jobtag;
+                if(res.status === 0){
+                    var jobtag = res.data;
+                    initSelect(jobtag)
+                }
+            })
+        }
+           // 初始化选择
+           function initSelect(tags){
+            var tagsEl = [];
+            var firstVal = tags[0].id;
+            $(tags).each(function(idx, item){
+                tagsEl.push('<option value='+item.name+' data-id='+item.id+'>'+item.name+'</option>')
+            })
+            tagsEl = tagsEl.join('');
+            $('.J-tags').each(function(idx, item){
+                item = $(item);
+                item.append(tagsEl);
+                var parent = $(this).parent();
+                $('#tagid'+(idx+1)).val(firstVal);
+            })
+            $.get('/user/customize.do',function(res){
+                if(res.status === 0){
+                    var box = $('#currentTags');
+                    var nameList = box.find('span');
+                    var disImg  = box.find('img')
+
+                    $(res.data).each(function(idx,item){
+                        var imgPath = '/image/getimg.do?imgpath=' + item.icon; 
+                        disImg[idx].src = imgPath;
+                        nameList[idx].innerText = item.name
+                    })
+                    box.show();
+                }
+            })
+            //初始化数据
+        }
+           // 选择标签事件
+           $('.J-tags').on('change',function(e){
+            var tar = $(this);
+            var idx  = tar.prop('selectedIndex');
+            var val = $(tar.find('option')[idx]).data('id');
+            var inpid = tar.data('id');
+            $('#'+inpid).val(val);
+        })
+            // 表单提交
+            $('#wechatSb').on('click',function(e){
+                $('#wechatTag').find('input').each(function(idx, item){
+                    item = $(item);
+                    if(!item.val()){
+                        window.alert('请上传所需图片')
                     }
                 })
-            }
-           // 初始化选择
-            function initSelect(tags){
-                var tagsEl = []
-                $(tags).each(function(idx, item){
-                    tagsEl.push('<option value='+item+'>'+item+'</option>')
-                })
-                tagsEl = tagsEl.join('');
-                $('.J-tags').each(function(idx, item){
-                    item = $(item)
-                    item.append(tagsEl)
-                })
-            }
-		})
-	</script>
+            })
+        })
+    </script>
 </body>
 
 </html>
