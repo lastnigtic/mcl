@@ -18,6 +18,8 @@ public interface ITagPropertyService {
 
     List<String> getJobTypeList();
 
+    List<TagProperty> getJobTag();
+
     List<String> getFinancingsList();
 
     List<String> getIndustryList();

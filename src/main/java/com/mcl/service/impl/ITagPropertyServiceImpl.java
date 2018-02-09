@@ -42,6 +42,15 @@ public class ITagPropertyServiceImpl implements ITagPropertyService {
         return tagPropertyMapper.selectListByType("jobtype");
     }
 
+    /**
+     * 获取所有jobtag的信息
+     * @return
+     */
+    @Override
+    public List<TagProperty> getJobTag() {
+        return tagPropertyMapper.getJobTag();
+    }
+
     @Override
     public List<String> getFinancingsList() {
         return tagPropertyMapper.selectListByType("financings");
