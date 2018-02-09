@@ -342,6 +342,16 @@ public class AdminController {
     }
 
     /**
+     * 获取所有自定义标签信息
+     * @return
+     */
+    @RequestMapping(value = "getjobtag.do",method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse getJobTag(){
+        return ServerResponse.createBySuccess(iTagPropertyService.getJobTag());
+    }
+
+    /**
      * 获取所有tag信息
      * @return
      */
