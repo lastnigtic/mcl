@@ -90,7 +90,7 @@
       <if test="icon != null" >
         icon = #{icon,jdbcType=VARCHAR},
       </if>
-      <if test="name != null" >
+      <if test="iconorder != null" >
         iconorder = #{iconorder,jdbcType=INTEGER},
       </if>
     </set>
