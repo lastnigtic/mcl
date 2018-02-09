@@ -38,6 +38,10 @@
 		.media-main-info .title{
 			padding: 20px 0;
 		}
+		.media-right img{
+			width: 150px;
+			height: auto;
+		}
 	</style>
 </head>
 

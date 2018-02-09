@@ -103,57 +103,61 @@
 										<jsp:param name="url" value="/admin/managetag.html"></jsp:param>
 									</jsp:include>
                                 </div>
-                                    <from action="" id="wechatTag" style="display: none">
+                                    <form enctype="multipart/form-data" method="post"  action="/admin/customize.html" id="wechatTag" style="display:none">
                                         <div class="form-inline">
                                             <div class="form-group">
                                                 <label>第一位显示</label>
-                                                <select class="form-control J-tags">
+                                                <select class="form-control J-tags" data-id="tagid1">
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <input class="form-control J-file" type="file" style="display: none">
+                                                <input class="form-control J-file" type="file" name="uploadfile" style="display: none">
                                                 <img src="/public/upload.png" class="J-up icon"></img>
+                                                <input id="tagid1" name="tagid1" style="display:none">
                                                 <img src="" class="icon view" style="display: none"></img>
                                             </div>
                                         </div>
                                         <div class="form-inline">
                                         <div class="form-group">
                                             <label>第二位显示</label>
-                                            <select class="form-control J-tags">
+                                            <select class="form-control J-tags" data-id="tagid2">
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <input class="form-control J-file" type="file" style="display: none">
+                                            <input class="form-control J-file" type="file" name="uploadfile" style="display: none">
                                             <img src="/public/upload.png" class="J-up icon"></img>
+                                            <input id="tagid2" name="tagid2" style="display:none">
                                             <img src="" class="icon view" style="display: none"></img>
                                         </div>
                                     </div>
                                         <div class="form-inline">
                                             <div class="form-group">
                                                 <label>第三位显示</label>
-                                                <select class="form-control J-tags">
+                                                <select class="form-control J-tags" data-id="tagid3">
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <input class="form-control J-file" type="file" style="display: none">
+                                                <input class="form-control J-file" type="file" name="uploadfile" style="display: none">
                                                 <img src="/public/upload.png" class="J-up icon"></img>
+                                                <input id="tagid3" name="tagid3" style="display:none">
                                                 <img src="" class="icon view" style="display: none"></img>
                                             </div>
                                         </div>
                                         <div class="form-inline">
                                             <div class="form-group">
                                                 <label>第四位显示</label>
-                                                <select class="form-control J-tags">
+                                                <select class="form-control J-tags" data-id="tagid4">
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <input class="form-control J-file" type="file" style="display: none">
+                                                <input class="form-control J-file" type="file" name="uploadfile" style="display: none">
                                                 <img src="/public/upload.png" class="J-up icon"></img>
+                                                <input id="tagid4" name="tagid4" style="display:none">
                                                 <img src="" class="icon view" style="display: none"></img>
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary">提交</button>
-                                    </from>
+                                    </form>
 								</div>
 							</div>
 							<!-- END RECENT PURCHASES -->
@@ -247,16 +251,18 @@
                     }
                 }
                 else if(tar.hasClass('J-delete')){
-                    $.post('/admin/deltag.do',{
-                        id: tar.data('id')
-                    },function(res){
-                        if(res.status == 0){
-                            parent.parent().remove();
-                            window.alert('删除标签成功！');
-                        }else{
-                            window.alert('失败请重试！');
-                        }
-                    })
+                    if(window.confirm('确认删除标签？')){
+                        $.post('/admin/deltag.do',{
+                            id: tar.data('id')
+                        },function(res){
+                            if(res.status == 0){
+                                parent.parent().remove();
+                                window.alert('删除标签成功！');
+                            }else{
+                                window.alert('失败请重试！');
+                            }
+                        })
+                    }
                 }
                 else if(tar.hasClass('J-cancel')){
                     parent.parent().remove()
@@ -265,7 +271,7 @@
             })
            //  获取所有标签
             function getAllTag(){
-                $.get('/admin/getalltag.do?type=jobtag',function(res){
+                $.get('/admin/getJobTag.do',function(res){
                     var jobtag;
                     if(res.status === 0){
                         for(var i = 0, len = res.data.length;i < len; i++){
@@ -280,16 +286,28 @@
             }
            // 初始化选择
             function initSelect(tags){
-                var tagsEl = []
+                var tagsEl = [];
+                var firstVal = tags[0];
                 $(tags).each(function(idx, item){
                     tagsEl.push('<option value='+item+'>'+item+'</option>')
                 })
                 tagsEl = tagsEl.join('');
                 $('.J-tags').each(function(idx, item){
-                    item = $(item)
-                    item.append(tagsEl)
+                    item = $(item);
+                    item.append(tagsEl);
+                    var parent = $(this).parent();
+                    $('#tagid'+(idx+1)).val(firstVal);
                 })
+//               初始化数据
             }
+           // 选择标签事件
+            $('.J-tags').on('change',function(e){
+                var tar = $(this);
+                var idx  = tar.prop('selectedIndex');
+                var val = tar.find('option')[idx].value;
+                var id = tar.data('id');
+                $('#'+id).val(val);
+            })
 		})
 	</script>
 </body>

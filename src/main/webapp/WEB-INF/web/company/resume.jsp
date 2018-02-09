@@ -298,7 +298,7 @@
     <!-- WRAPPER -->
     <div id="pdfWrapper" class="pdf-wrapper" style="display: none">
         <table>
-            <tr><td><img src="${resume.avatarurl}" class="avatar"></td></tr>
+            <tr><td><img src="/image/getimg.do?imgpath=${resume.avatarurl}" class="avatar"></td></tr>
             <tr><td class="title">个人信息</td></tr>
             <tr><td>名字：${resume.userBaseInfo.realname} &nbsp;|&nbsp; 性别：<span>${resume.userBaseInfo.gender==1?'男':'女'}</span> &nbsp;|&nbsp; 生日：<span class="J-Date">${resume.userBaseInfo.birthday}</span> &nbsp;|&nbsp; 专业：${resume.userBaseInfo.majortype}</td></tr>
             <tr><td>手机：${resume.userBaseInfo.phone} &nbsp;|&nbsp; 邮箱：${resume.userBaseInfo.email}</td></tr>
