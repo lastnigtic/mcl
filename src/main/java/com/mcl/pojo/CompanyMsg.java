@@ -19,15 +19,11 @@ public class CompanyMsg {
 
     private Integer joid ;
 
-    public Integer getJoid() {
-        return joid;
+    public CompanyMsg(){
+        
     }
 
-    public void setJoid(Integer joid) {
-        this.joid = joid;
-    }
-
-    public CompanyMsg(Integer id, String title, String content, Integer type, Integer status, Date updatetime, String companyid) {
+    public CompanyMsg(Integer id, String title, String content, Integer type, Integer status, Date updatetime, String companyid, Integer joid) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -35,10 +31,7 @@ public class CompanyMsg {
         this.status = status;
         this.updatetime = updatetime;
         this.companyid = companyid;
-    }
-
-    public CompanyMsg() {
-        super();
+        this.joid = joid;
     }
 
     public Integer getId() {
@@ -54,7 +47,7 @@ public class CompanyMsg {
     }
 
     public void setTitle(String title) {
-        this.title = title == null ? null : title.trim();
+        this.title = title;
     }
 
     public String getContent() {
@@ -62,7 +55,7 @@ public class CompanyMsg {
     }
 
     public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+        this.content = content;
     }
 
     public Integer getType() {
@@ -94,6 +87,14 @@ public class CompanyMsg {
     }
 
     public void setCompanyid(String companyid) {
-        this.companyid = companyid == null ? null : companyid.trim();
+        this.companyid = companyid;
+    }
+
+    public Integer getJoid() {
+        return joid;
+    }
+
+    public void setJoid(Integer joid) {
+        this.joid = joid;
     }
 }
