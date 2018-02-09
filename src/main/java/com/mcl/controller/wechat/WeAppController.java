@@ -7,12 +7,14 @@ package com.mcl.controller.wechat;
 import com.mcl.common.ServerResponse;
 import com.mcl.util.PropertiesUtil;
 
+import com.mcl.util.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +30,9 @@ import java.io.InputStreamReader;
 @RestController
 @RequestMapping(value = "/weapp/")
 public class WeAppController {
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     //请求地址
     private static final String TargetURL = PropertiesUtil.getProperty("weapp.url");
@@ -68,6 +73,22 @@ public class WeAppController {
             return ServerResponse.createBySuccess(content);
 
         return ServerResponse.createByErrorMessage("没有返回");
+    }
+
+    /**
+     * 收集formid
+     * @param openid
+     * @param formid
+     * @return
+     */
+    @RequestMapping(value = "collectformid.do",method = RequestMethod.POST)
+    public ServerResponse getOpenId(String openid,String formid){
+        if(StringUtils.isBlank(openid)||StringUtils.isBlank(formid))
+            return ServerResponse.createByErrorMessage("参数为空");
+
+        redisUtil.setFormId(openid,formid);
+
+        return ServerResponse.createBySuccess("收集成功");
     }
 
 }
