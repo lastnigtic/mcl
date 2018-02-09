@@ -29,4 +29,6 @@ public interface TagPropertyMapper {
     void cleanAllOrder();
 
     List<TagProperty> get4Icon();
+
+    List<TagProperty> getJobTag();
 }
