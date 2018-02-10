@@ -9,13 +9,20 @@ import com.mcl.dao.*;
 import com.mcl.pojo.*;
 import com.mcl.service.IResumeService;
 import com.mcl.util.MsgTemplate;
+import com.mcl.util.PropertiesUtil;
+import com.mcl.util.RedisUtil;
+import com.mcl.util.WeChatMessageSender;
 import com.mcl.vo.ResumeVO;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +50,14 @@ public class IResumeServiceImpl implements IResumeService {
 
     @Autowired
     private JobOffersMapper jobOffersMapper;
+
+    @Autowired
+    private RedisUtil redisUtil ;
+
+    @Autowired
+    private WeChatMessageSender weChatMessageSender;
+
+    private Logger logger = LoggerFactory.getLogger(IResumeServiceImpl.class);
 
     /**
      * 创建或修改简历
@@ -342,6 +357,13 @@ public class IResumeServiceImpl implements IResumeService {
 
                 userMsg.setMsgtitle(MsgTemplate.interviewMsg(company,jobOffers));
 
+                //发小程序模版消息,redis里面有对应的formid就可以发
+                String formid = redisUtil.getFormId(openid);
+                if(StringUtils.isNotBlank(formid))
+                    weChatMessageSender.sendInterviewMsg(jobOffers.getJobname(),company.getCompanyname(),openid,formid,StringUtils.isNotBlank(msg)?msg:"");
+                else
+                    logger.warn("找不到openid为："+openid+"，的formid");
+
             }else if(status == Const.DeliveryStatus.PassInterview){
 
                 if(entrytime==null)
@@ -440,6 +462,42 @@ public class IResumeServiceImpl implements IResumeService {
             }
         }
         return ServerResponse.createByErrorMessage("查询错误");
+    }
+
+    /**
+     * 保存或更新简历的头像地址
+     * @param resumeid
+     * @param imgpath
+     * @param request
+     * @return
+     */
+    @Override
+    public ServerResponse saveResumeImgPath(Integer resumeid, String imgpath, HttpServletRequest request) {
+
+        if(resumeid==null||StringUtils.isBlank(imgpath))
+            return ServerResponse.createByErrorMessage("参数为空");
+
+        Resume resume = resumeMapper.selectByPrimaryKey(resumeid);
+
+        if(resume==null)
+            return ServerResponse.createByErrorMessage("找不到简历信息");
+
+        if(StringUtils.isNotBlank(resume.getAvatarurl())){
+            File f = new File(request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("ftp.uploadimg.rootpath"))+"/"+resume.getAvatarurl());
+            if(f.exists()){
+                logger.info("删除旧图：路径:{}，简历id:{}",f.getPath(),resumeid);
+                f.delete();
+            }
+        }
+
+        resume.setAvatarurl(imgpath);
+
+        int row = resumeMapper.updateByPrimaryKey(resume);
+
+        if(row>0)
+            return ServerResponse.createBySuccess("更新成功");
+
+        return ServerResponse.createByErrorMessage("更新失败");
     }
 
     /**

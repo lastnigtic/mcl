@@ -3,10 +3,7 @@ package com.mcl.controller.wechat;
 import com.github.pagehelper.PageInfo;
 import com.mcl.common.ServerResponse;
 import com.mcl.pojo.*;
-import com.mcl.service.IMsgService;
-import com.mcl.service.IScoreService;
-import com.mcl.service.ITagPropertyService;
-import com.mcl.service.IUserService;
+import com.mcl.service.*;
 import com.mcl.util.DateTimeUtil;
 import com.mcl.util.PropertiesUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +35,9 @@ public class UserController {
 
     @Autowired
     private ITagPropertyService iTagPropertyService ;
+
+    @Autowired
+    private IResumeService iResumeService ;
 
     /**
      * 进入小程序后存储或更新用户基本信息
@@ -302,6 +302,53 @@ public class UserController {
         return ServerResponse.createBySuccess(backpath);
     }
 
+    /**
+     * 上传简历图片
+     * @param file
+     * @param request
+     * @return 返回路径，这里是路径！！应谋哥的要求做的！
+     */
+    @RequestMapping(value = "uploadresumeimg.do",method = RequestMethod.POST)
+    public ServerResponse uploadResumeImg(@RequestParam(value = "filePath",required = false) MultipartFile file, HttpServletRequest request){
+        String openid = request.getParameter("openid");
+        if(!iUserService.checkOpenid(openid))
+            return ServerResponse.createByErrorMessage("用户不存在");
+        //存放路径
+        String uploadpath = request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("upload.avatar.rootpath"))+"/"+ DateTimeUtil.dateToStr(new Date(),"yyyyMMdd");
+        //文件原始名
+        String fileName = file.getOriginalFilename();
+        //扩展名
+        String fileExtensionName = fileName.substring(fileName.lastIndexOf(".")+1);
+        //上传后的文件名
+        String uploadFileName = UUID.randomUUID().toString()+"."+fileExtensionName;
+        //上传临时路径是否存在，不存在则要创建
+        File fileDir = new File(uploadpath);
+        if(!fileDir.exists()){
+            fileDir.setWritable(true);
+            fileDir.mkdirs();
+        }
+        File targetFile = new File(uploadpath,uploadFileName);
+        try {
+            file.transferTo(targetFile);
+        } catch (IOException e) {
+            return null;
+        }
+        //返回一个路径
+        String backpath = DateTimeUtil.dateToStr(new Date(),"yyyyMMdd")+"/"+targetFile.getName();
+        return ServerResponse.createBySuccess(backpath);
+    }
+
+    /**
+     * 保存简历图片
+     * @param resumeid
+     * @param imgpath
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "saveresumeimgpath.do",method = RequestMethod.POST)
+    public ServerResponse saveResumeImgPath(Integer resumeid ,String imgpath,HttpServletRequest request){
+        return iResumeService.saveResumeImgPath(resumeid,imgpath,request);
+    }
 
     /**
      * 获取用户的六种能力平均分

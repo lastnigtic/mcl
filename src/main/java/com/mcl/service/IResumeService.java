@@ -4,6 +4,7 @@ import com.mcl.common.ServerResponse;
 import com.mcl.pojo.Account;
 import com.mcl.pojo.Resume;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -25,4 +26,6 @@ public interface IResumeService {
     ServerResponse getResumeByJobId(int pageNum, int pageSize, Integer id, String companyid);
 
     ServerResponse getResumeVOByRdsIdAndResId(Integer id, Integer resumeid);
+
+    ServerResponse saveResumeImgPath(Integer resumeid, String imgpath, HttpServletRequest request);
 }
