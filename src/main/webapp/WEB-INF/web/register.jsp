@@ -74,7 +74,7 @@
 </html>
 <script>
 	$(function(){
-        $("#button-login").click(function(){
+        $("#button-login").click(function(e){
             var name = $("#signin-uanme").val();
             var pass = $("#signin-password").val();
             var pass_again = $("#signin-password-again").val();
@@ -84,11 +84,12 @@
             }
             if(pass.length < 6){
                 alert('密码至少为六位')
+                e.preventDefault();
 			}
             if(pass!=pass_again){
                 alert('两次输入的密码不相同');
+                e.preventDefault();
 			}
-
         });
         
     })

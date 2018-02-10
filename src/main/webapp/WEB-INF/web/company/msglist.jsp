@@ -90,7 +90,14 @@
 												<tr>
 													<td>${xh.count}</td>
 													<td>${msg.title}</td>
-													<td>${msg.type}</td>
+													<c:choose>
+														<c:when test="${msg.type == 1}">
+															<td>系统消息</td>
+														</c:when>
+														<c:otherwise>
+															<td>岗位消息</td>
+														</c:otherwise>
+													</c:choose>
 													<td class="J-len">${msg.content}</td>
 													<td class="J-Date">${msg.updatetime}</td>
 													<c:choose>
@@ -102,7 +109,7 @@
 														</c:when>
 													</c:choose>
 													<td>
-														<a href="#" class="J-detail" style="cursor: pointer" data-id="${msg.id}">详情</a> &nbsp;
+														<a href="#" class="J-detail" style="cursor: pointer" data-toggle="modal" data-target="#msgModal" data-id="${msg.id}">详情</a> &nbsp;
 														<a href="#" class="J-delete" data-id="${msg.id}" style="cursor: pointer">删除</a>
 													</td>
 												</tr>
@@ -131,21 +138,18 @@
 		</div>
 		<!-- END MAIN -->
 		<!-- Modal -->
-		<%--<div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">--%>
-			<%--<div class="modal-dialog" role="document">--%>
-				<%--<div class="modal-content">--%>
-					<%--<div class="modal-header">--%>
-						<%--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--%>
-						<%--<h4 class="modal-title" id="myModalLabel">消息详情</h4>--%>
-					<%--</div>--%>
-					<%--<div class="modal-body">--%>
-						<%--<p></p>--%>
-					<%--</div>--%>
-					<%--<div class="modal-footer">--%>
-					<%--</div>--%>
-				<%--</div>--%>
-			<%--</div>--%>
-		<%--</div>--%>
+		<div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="msgTitle"></h4>
+					</div>
+					<div class="modal-body">
+						<p id="msgContent"></p>
+					</div>
+			</div>
+		</div>
 		<!-- Modal-end -->
 		<div class="clearfix"></div>
 		<footer>
@@ -168,12 +172,19 @@
             $('.J-detail').on('click',function(e){
                 var tar = $(e.target);
                 var id = tar.data('id');
-                console.log(id)
                 $.post('/comp/readmsg.do',{id: id},function(res){
                     if(res.status === 0){
 						var label = $(tar.parent().prev().find('.label'));
 						label.removeClass('label-danger');
-						label.addClass('label-success');
+						label.addClass('label-success').text('已读');
+						$.post('/comp/getmsg.do', {id: id},function(res){
+						    if(res.status === 0){
+						        var title = res.data.title;
+						        var content = res.data.content;
+						        $('#msgTitle').text(title);
+						        $('#msgContent').text(content);
+							}
+						})
 					}
                 })
             })
@@ -181,14 +192,14 @@
 			$('.J-delete').on('click',function(e){
 			    var tar = $(e.target);
 			    var id = tar.data('id');
-//			    $.post('',{id: id},function(res){
-//				if(res.status === 0){
-//                    tar.closest('tr').remove();
-//                    window.alert('删除成功')
-//                }else{
-//				    window.alert('操作失败，请重试')
-//				}
-//				})
+			    $.post('delmsg.do',{id: id},function(res){
+				if(res.status === 0){
+                    tar.closest('tr').remove();
+                    window.alert('删除成功')
+                }else{
+				    window.alert('操作失败，请重试')
+				}
+				})
 			})
 		})
 	</script>
