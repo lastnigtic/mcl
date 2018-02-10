@@ -1,7 +1,5 @@
 package com.mcl.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.mcl.common.Const;
 import com.mcl.common.ServerResponse;
 import com.mcl.dao.*;
@@ -13,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -99,11 +97,12 @@ public class IAccountServiceImpl implements IAccountService {
      *
      * @param id
      * @param company
+     * @param session
      * @return
      */
     @Override
     @Transactional
-    public ServerResponse saveOrUpdateCompany(Integer id, Company company) {
+    public ServerResponse saveOrUpdateCompany(Integer id, Company company, HttpSession session) {
         if(company!=null&&id!=null){
             String cid = accountMapper.selectCompanyIdById(id);
             if(StringUtils.isBlank(company.getId())&&StringUtils.isBlank(cid)){
@@ -111,13 +110,14 @@ public class IAccountServiceImpl implements IAccountService {
                 if(checkCompanyInfoComplete(company)){
                     //信息完整
                     String uuid = UUID.randomUUID().toString();  //随机id作为companyid
-                    Account account = accountMapper.selectByPrimaryKey(id);//获取该商家用户实例
+                    Account account = accountMapper.selectByKey(id);//获取该商家用户实例
                     company.setId(uuid);
                     company.setChecked(0);
                     account.setCompanyid(uuid);
                     int rowInsert = companyMapper.insert(company);  //插入一条公司信息
                     int rowAccount = accountMapper.updateByPrimaryKeySelective(account);  //更新商家的companyid
                     if(rowInsert>0&&rowAccount>0){
+                        session.setAttribute(Const.CURRENT_USER,account);
                         return ServerResponse.createBySuccess(uuid,"创建成功");
                     }
                     return ServerResponse.createByErrorMessage("创建失败");

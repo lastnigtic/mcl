@@ -10,13 +10,19 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    Id, uname, upass, companyid
+    id, uname, upass, companyid
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from account
-    where Id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByKey" resultType="com.mcl.pojo.Account" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from account
+    where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from account

@@ -233,7 +233,7 @@
         companylicense = #{companylicense,jdbcType=VARCHAR},
       </if>
       <if test="setuptime != null" >
-        setuptime = #{setuptime,jdbcType=TIMESTAMP},
+        setuptime = #{setuptime},
       </if>
       <if test="registeredcapital != null" >
         registeredcapital = #{registeredcapital,jdbcType=INTEGER},

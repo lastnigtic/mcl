@@ -21,4 +21,6 @@ public interface AccountMapper {
     Account selectLogin(@Param("uname") String uname,@Param("upass") String md5Password);
 
     String selectCompanyIdById(Integer id);
+
+    Account selectByKey(Integer id);
 }

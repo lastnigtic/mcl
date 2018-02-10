@@ -91,4 +91,16 @@ public class WeAppController {
         return ServerResponse.createBySuccess("收集成功");
     }
 
+    /**
+     * 获取formid
+     * @param openid
+     * @return
+     */
+    @RequestMapping(value = "checkuserformid.do",method = RequestMethod.POST)
+    public ServerResponse checkUserFormid(String openid){
+        if(StringUtils.isBlank(openid))
+            return ServerResponse.createByErrorMessage("参数为空");
+
+        return ServerResponse.createBySuccess(redisUtil.getAllFormId(openid));
+    }
 }

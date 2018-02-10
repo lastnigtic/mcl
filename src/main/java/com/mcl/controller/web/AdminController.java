@@ -32,7 +32,7 @@ import java.util.UUID;
  * Created by Administrator on 2018/1/20 0020.
  */
 @Controller
-@RequestMapping(value = "/admin/")
+@RequestMapping(value = "admin/")
 public class AdminController {
 
 
@@ -59,7 +59,7 @@ public class AdminController {
         if(company==null)
             company = new Company();
 
-        company.setChecked(0);
+        company.setChecked(Const.Verified.Submit); //提交的状态为1
         ServerResponse response = iAdminService.getCompanyList(pageNum,pageSize,company);
         if(response.isSuccess()){
             PageInfo<Company> pageInfo = (PageInfo<Company>) response.getData();
@@ -126,7 +126,7 @@ public class AdminController {
     }
 
     /**
-     * 公司待审核列表
+     * 用户列表
      * @param model
      * @param pageNum
      * @param pageSize
