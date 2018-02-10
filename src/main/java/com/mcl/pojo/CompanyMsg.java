@@ -20,7 +20,7 @@ public class CompanyMsg {
     private Integer joid ;
 
     public CompanyMsg(){
-        
+
     }
 
     public CompanyMsg(Integer id, String title, String content, Integer type, Integer status, Date updatetime, String companyid, Integer joid) {

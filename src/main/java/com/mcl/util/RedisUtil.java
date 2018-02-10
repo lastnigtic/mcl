@@ -1,5 +1,6 @@
 package com.mcl.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +30,21 @@ public class RedisUtil {
 
         jedis.expire(openid,OVERTIME);
 
+
+
     }
 
     public String getFormId(String openid){
 
         Jedis jedis = jedisPool.getResource();
 
-        return jedis.spop(openid);
-
+        for(int i=0;i<3;i++){
+            String formid = jedis.spop(openid);
+            if(StringUtils.isNotBlank(formid)){
+                return formid;
+            }
+        }
+        return null ;
     }
 
 
