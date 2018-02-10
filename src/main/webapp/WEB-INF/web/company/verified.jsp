@@ -44,11 +44,13 @@
 					<div class="row">
 						<div class="col-md-offset-1 col-md-6">
 							<c:choose>
-								<c:when test="${company.checked == 1}">
-									<h4>您已通过认证</h4><div style="margin-bottom:20px">
-									<img src="/image/getlicenseimg.do?imgpath=${empty path?company.companylicense:path}" class="img-thumbnail" alt="认证资料图片">
-								</c:when>
 								<c:when test="${company.checked == 2}">
+									<h4>您已通过认证</h4><div style="margin-bottom:20px">
+								<div style="margin-bottom:20px">
+									<img src="/image/getlicenseimg.do?imgpath=${empty path?company.companylicense:path}" class="img-thumbnail" alt="认证资料图片">
+								</div>
+								</c:when>
+								<c:when test="${company.checked == 3}">
 									<!-- INPUTS -->
 									<div class="panel">
 										<h4>您的认证未通过</h4>
@@ -69,12 +71,29 @@
 									</div>
 									<!-- END INPUTS -->
 								</c:when>
-								<c:otherwise>
+								<c:when test="${company.checked == 1}">
 									<h2>审核中……</h2>
 									<div style="margin-bottom:20px">
 										<img src="/image/getlicenseimg.do?imgpath=${empty path?company.companylicense:path}" class="img-thumbnail" alt="认证资料图片">
 									</div>
-								</c:otherwise>
+								</c:when>
+								<c:when test="${company.checked == 0}">
+									<h2>请提交认证资料……</h2>
+									<form enctype="multipart/form-data" method="post" action="/comp/compverified.do">
+										<div class="panel-body">
+											<h3 class="page-title">上传公司认证资料</h3>
+											<br>
+											<div style="margin-bottom:20px">
+												<img src="/image/getlicenseimg.do?imgpath=${empty path?company.companylicense:path}" class="img-thumbnail" alt="认证资料图片">
+											</div>
+											<input type="file" name="uploadfile" multiple="" value="上传图片"  />
+											<button id="button-upload" type="submit" class="btn btn-primary" style="float: right">提交</button>
+											<c:if test="${!empty msg}">
+												<p style="color: red">错误：${msg}</p>
+											</c:if>
+										</div>
+									</form>
+								</c:when>
 							</c:choose>
 						</div>
 						
