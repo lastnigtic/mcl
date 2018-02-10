@@ -18,9 +18,8 @@
 				<li>
 					<a href="#subPages2" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>企业信息管理</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 					<div id="subPages2" class="collapse">
-						<ul class="nav">
+						<ul class="nav" id="leftVerti">
 							<li><a href="/comp/editinfo.html" class="">编辑公司信息</a></li>
-							<li><a href="/comp/verified.html" class="">实名认证</a></li>
 						</ul>
 					</div>
 				</li>
@@ -41,6 +40,22 @@
             }
         }
         if(!isHigh){as[0].className = 'active'}
+        var ajax = new XMLHttpRequest();
+        ajax.open('GET','/comp/ispassverified.do');
+        ajax.send();
+        ajax.onreadystatechange = function (res) {
+            if (ajax.readyState==4 &&ajax.status==200) {
+                var res = JSON.parse(ajax.response);
+                if(res.status === 0){
+                    var li = document.createElement('li');
+                    var a = document.createElement('a');
+                    a.href = '/comp/verified.html';
+                    a.innerText = '实名认证';
+                    li.appendChild(a)
+                    document.getElementById('leftVerti').appendChild(li)
+				}
+            }
+        }
 	</script>
 </div>
 <!-- END LEFT SIDEBAR -->

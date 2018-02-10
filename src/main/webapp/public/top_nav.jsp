@@ -27,14 +27,19 @@
 					<%--</ul>--%>
 				<%--</li>--%>
 				<li class="dropdown">
-					<a href="/logout.do"><i class="lnr lnr-exit"></i> <span>登出</span></a>
+					<a href="/logout.do" id="logout"><i class="lnr lnr-exit"></i> <span>登出</span></a>
 					<%--<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="/assets/img/user.png" class="img-circle" alt="Avatar"> <span>HR 您好！</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>--%>
 					<%--<ul class="dropdown-menu">--%>
 						<%--<!-- <li><a href="#"><i class="lnr lnr-user"></i> <span>My Profile</span></a></li>--%>
 						<%--<li><a href="#"><i class="lnr lnr-envelope"></i> <span>Message</span></a></li> -->--%>
 						<%--<li><a href="/logout.do"><i class="lnr lnr-exit"></i> <span>登出</span></a></li>--%>
 					<%--</ul>--%>
-				</li>				
+				</li>
+					<script>
+						if(location.toString().indexOf('admin') >= 0){
+						    document.getElementById('logout').href = '/adminlogout.do';
+						}
+					</script>
 			</ul>
 		</div>
 	</div>

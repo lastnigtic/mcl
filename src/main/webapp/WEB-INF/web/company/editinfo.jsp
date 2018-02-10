@@ -49,7 +49,7 @@
 										<button id="button-upload" type="submit" class="btn btn-primary" style="display: none">提交</button>
 									</form>
 									<c:choose>
-										<c:when test="${comp.companylicense}!=null">
+										<c:when test="${comp.companylicense!=null}">
 											<img src="/image/getlicenseimg.do?imgpath=${comp.companylicense}" alt="" style="width: 40px;height: auto">
 										</c:when>
 									</c:choose>
@@ -152,31 +152,6 @@
 		$("#button-update").click(function(){
 		    upBasic()
 		});
-		function uploadImg(){
-            var file = $('#imgurl').prop('files')[0];
-            if(!file){
-                window.alert('请上传商标')
-            }
-            var form = new FormData();
-            form.append("uploadfile", file);
-            $.ajax({
-                url: '/comp/compimg.do',
-                method: 'POST',
-                data: form,
-				// 告诉jQuery不要去处理发送的数据
-                processData : false,
-				// 告诉jQuery不要去设置Content-Type请求头
-                contentType : false,
-                success: function(res){
-                    if(res.status === 0){
-                        window.alert('上传成功')
-                        $(window).attr('location','/comp/index.html');
-                    }else{
-                        window.alert('上传失败请重试')
-                    }
-                }
-            })
-		}
 		function upBasic(){
 			var companyname = $("#companyname").val();
 			var address = $("#address").val();
