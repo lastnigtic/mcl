@@ -48,6 +48,11 @@
 
 										<button id="button-upload" type="submit" class="btn btn-primary" style="display: none">提交</button>
 									</form>
+									<c:choose>
+										<c:when test="${comp.companylicense}!=null">
+											<img src="/image/getlicenseimg.do?imgpath=${comp.companylicense}" alt="" style="width: 40px;height: auto">
+										</c:when>
+									</c:choose>
 									<br>
 									<label>公司名称</label>
 									<input type="text" class="form-control" name="companyname" id="companyname" value="${company.companyname}" placeholder="请输入公司名称...">
