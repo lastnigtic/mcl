@@ -28,13 +28,7 @@ public class Const {
 
 
     }
-    public interface CompStatus{
-        int FailTOPass = 2 ; //审批不通过
-        int SuccessTOPass = 1 ; //审批通过
-        int NoApproval = 0 ; //未审批
 
-
-    }
 
     public interface RatingDuration{
         long  Day30 = 60*60*24*30 ;

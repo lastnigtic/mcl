@@ -155,9 +155,9 @@ public class IAdminServiceImpl implements IAdminService {
                 /**
                  * 发送消息
                  */
-                if(checked== Const.CompStatus.SuccessTOPass){
+                if(checked== Const.Verified.Pass){
                     companyMsgMapper.insert(MsgTemplate.newCompanyPassMsg(company));
-                }else if (checked==Const.CompStatus.FailTOPass){
+                }else if (checked==Const.Verified.Fail){
                     companyMsgMapper.insert(MsgTemplate.newCompanyRejectMsg(company));
                 }
 
@@ -191,9 +191,9 @@ public class IAdminServiceImpl implements IAdminService {
                 /**
                  * 发送消息
                  */
-                if(checked== Const.CompStatus.SuccessTOPass){
+                if(checked== Const.JobStatus.SuccessTOPass){
                     companyMsgMapper.insert(MsgTemplate.newJobPassMsg(jobOffers));
-                }else if (checked==Const.CompStatus.FailTOPass){
+                }else if (checked==Const.JobStatus.FailTOPass){
                     companyMsgMapper.insert(MsgTemplate.newJobRejectMsg(jobOffers));
                 }
                 if (rowCount>0){
