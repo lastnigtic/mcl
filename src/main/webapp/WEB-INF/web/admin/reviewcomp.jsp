@@ -135,7 +135,7 @@
 		$('.J-pass').on('click', function(e){
 			var tar = $(e.currentTarget);
 			    if(window.confirm('通过 '+tar.data('name') +' 实名认证?')){
-					$.post('/admin/passcompany.do?companyid='+tar.data('id')+'&checked=1',{
+					$.post('/admin/passcompany.do?companyid='+tar.data('id')+'&checked=2',{
 					},function(res){
 					    if(res.status === 0){
                             toastr.success('通过一项企业实名审核', tar.data('name'), {timeOut: 2000});
@@ -150,7 +150,7 @@
 		$('.J-reject').on('click', function(e){
 			var tar = $(e.currentTarget);
 			    if(window.confirm('拒绝 '+tar.data('name') +' 实名认证?')){
-                    $.post('/admin/passcompany.do?companyid='+tar.data('id')+'&checked=2',{
+                    $.post('/admin/passcompany.do?companyid='+tar.data('id')+'&checked=3',{
                     },function(res){
                         if(res.status === 0){
                             toastr.success('拒绝一项企业实名审核', tar.data('name'), {timeOut: 2000});

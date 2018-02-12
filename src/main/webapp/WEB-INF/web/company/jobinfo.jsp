@@ -55,7 +55,7 @@
                                 <h2 class="media-heading">${job.jobname}</h2>
                                 <div class="media-head-info">
                                     <p class="J-Date">${job.updatetime}</p>
-                                    <p>${job.wage}元/月 &nbsp;|&nbsp; ${job.city} &nbsp;|&nbsp; ${job.education} &nbsp;|&nbsp; ${job.workfrequency}天／周 &nbsp;|&nbsp; 实习${job.duration}个月</p>
+                                    <p>${job.wage}元/天 &nbsp;|&nbsp; ${job.city} &nbsp;|&nbsp; ${job.education} &nbsp;|&nbsp; ${job.workfrequency}天／周 &nbsp;|&nbsp; 实习${job.duration}个月</p>
                                     <p>职位诱惑：${job.temptation}</p>
                                 </div>
                                 <div class="media-main-info">
@@ -81,7 +81,7 @@
                             </div>
                             <div class="media-right" style="text-align: center;">
                                 <a href="#">
-                                    <img class="media-object" src="/assets/img/user-medium.png" alt="..." style="display: inline-block">
+                                    <img class="media-object" src="/image/getimg.do?imgpath=${job.company.imgurl}" alt="..." style="display: inline-block">
                                 </a>
                                 <c:choose>
                                     <c:when test="${job.checked == 2||job.checked == 3}">

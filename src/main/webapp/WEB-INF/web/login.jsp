@@ -53,6 +53,10 @@
 									<br/>
 									<p style="color: red">错误:${msg}</p>
 								</c:if>
+								<c:if test="${!empty registerresult}">
+								<br/>
+								<p style="color: red">注册成功，请登录！</p>
+							</c:if>
 							</form>
 						</div>
 					</div>

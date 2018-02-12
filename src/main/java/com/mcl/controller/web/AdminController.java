@@ -32,7 +32,7 @@ import java.util.UUID;
  * Created by Administrator on 2018/1/20 0020.
  */
 @Controller
-@RequestMapping(value = "/admin/")
+@RequestMapping(value = "admin/")
 public class AdminController {
 
 
@@ -59,7 +59,7 @@ public class AdminController {
         if(company==null)
             company = new Company();
 
-        company.setChecked(0);
+        company.setChecked(Const.Verified.Submit); //提交的状态为1
         ServerResponse response = iAdminService.getCompanyList(pageNum,pageSize,company);
         if(response.isSuccess()){
             PageInfo<Company> pageInfo = (PageInfo<Company>) response.getData();
@@ -126,7 +126,7 @@ public class AdminController {
     }
 
     /**
-     * 公司待审核列表
+     * 用户列表
      * @param model
      * @param pageNum
      * @param pageSize
@@ -448,7 +448,7 @@ public class AdminController {
     @RequestMapping(value = "customize.html",method = RequestMethod.POST)
     public String customize(@RequestParam(value = "uploadfile",required = false) MultipartFile[] files, HttpServletRequest request, Model model){
         //存放路径
-        String uploadpath = request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("ftp.uploadimg.rootpath"))+"/"+ DateTimeUtil.dateToStr(new Date(),"yyyyMMdd");
+        String uploadpath = request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("upload.avatar.rootpath"))+"/"+ DateTimeUtil.dateToStr(new Date(),"yyyyMMdd");
         //文件原始名
         List<TagProperty> tagPropertyList = new ArrayList<>();
         int i = 1 ;
@@ -473,9 +473,9 @@ public class AdminController {
             //返回一个路径
             String backpath = DateTimeUtil.dateToStr(new Date(),"yyyyMMdd")+"/"+targetFile.getName();
             TagProperty tagProperty = new TagProperty();
-            tagProperty.setId( Integer.valueOf(request.getParameter("tagid"+i++)));
+            tagProperty.setId( Integer.valueOf(request.getParameter("tagid"+i)));
             tagProperty.setIcon(backpath);
-            tagProperty.setIconorder(i);
+            tagProperty.setIconorder(i++);
             tagPropertyList.add(tagProperty);
 
         }

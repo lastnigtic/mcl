@@ -50,9 +50,9 @@
 									<input maxlength="13" type="password" class="form-control" id="signin-password-again" value="" placeholder="确认密码">
 								</div>
 								<button type="submit" class="btn btn-primary btn-lg btn-block" id="button-login">注册</button>
-								<c:if test="${!empty msg}">
+								<c:if test="${!empty registerresult}">
 									<br/>
-									<p style="color: red">错误:${msg}</p>
+									<p style="color: red">注册结果:${registerresult}</p>
 								</c:if>
 							</form>
 						</div>

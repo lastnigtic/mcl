@@ -7,9 +7,7 @@ import com.mcl.pojo.*;
 import com.mcl.service.*;
 import com.mcl.util.DateTimeUtil;
 import com.mcl.util.PropertiesUtil;
-import com.mcl.vo.CompScoreVO;
 import com.mcl.vo.ResumeVO;
-import com.mcl.vo.TagVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,16 +19,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 /**
  * Created by Administrator on 2018/1/13 0013.
  */
 @Controller
-@RequestMapping(value = "/comp/")
+@RequestMapping(value = "comp/")
 public class CompController {
 
 
@@ -219,7 +215,7 @@ public class CompController {
             return "/company/editinfo" ;
         }
 
-        if(company.getChecked()==0){
+        if(company.getChecked()!=Const.Verified.Pass){
             model.addAttribute("msg","未通过认证");
             return "/company/verified" ;
         }
@@ -273,7 +269,7 @@ public class CompController {
     @ResponseBody
     public ServerResponse saveOrUpdateCompany(Company company, HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
-        return iAccountService.saveOrUpdateCompany(account.getId(),company);
+        return iAccountService.saveOrUpdateCompany(account.getId(),company,session);
     }
 
 
@@ -301,7 +297,7 @@ public class CompController {
     public ServerResponse addJob(JobOffers jobOffers, HttpSession session){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
         Company company = iAccountService.getCompanyByAccount(account.getId());
-        if(company==null||company.getChecked()==0){
+        if(company==null||company.getChecked()!=Const.Verified.Pass){
             return ServerResponse.createByErrorMessage("未通过认证");
         }
         jobOffers.setCompanyid(company.getId());
@@ -414,7 +410,7 @@ public class CompController {
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
         Company company = iAccountService.getCompanyByAccount(account.getId());
         if(company==null)return ServerResponse.createByErrorMessage("未有公司信息");
-        if(company.getChecked()==0){
+        if(company.getChecked()!=Const.Verified.Pass){
             return ServerResponse.createByErrorMessage("未通过认证");
         }
         return iResumeService.getResumeBox(pageNum,pageSize,resume,account);
@@ -470,9 +466,11 @@ public class CompController {
         String backpath = DateTimeUtil.dateToStr(new Date(),"yyyyMMdd")+"/"+targetFile.getName();
         //保存或更新到数据库
         company.setCompanylicense(backpath);
-        iCompanyService.updateCompanyLicense(company.getId(),backpath);
+        company.setChecked(Const.Verified.Submit);
+        iCompanyService.updateCompany(company);
         //然后返回这个路径
         model.addAttribute("path",backpath);
+        model.addAttribute("company",company);
         return "/company/verified";
     }
 
@@ -485,13 +483,17 @@ public class CompController {
      * @return
      */
     @RequestMapping(value = "compimg.do",method = RequestMethod.POST)
-    public ServerResponse compimg(@RequestParam(value = "uploadfile",required = false) MultipartFile file,HttpSession session, HttpServletRequest request){
+    public String compimg(@RequestParam(value = "uploadfile",required = false) MultipartFile file,HttpSession session, HttpServletRequest request,Model model){
         Account account = (Account)session.getAttribute(Const.CURRENT_USER);
 
         Company company = iAccountService.getCompanyByAccount(account.getId());
 
-        if(company==null)
-            return ServerResponse.createByErrorMessage("未找到公司信息");
+        if(company==null){
+            model.addAttribute("msg","未找到公司信息");
+
+            return "/company/editinfo";
+
+        }
 
         //存放路径
         String uploadpath = request.getSession().getServletContext().getRealPath(PropertiesUtil.getProperty("upload.avatar.rootpath"))+"/"+ DateTimeUtil.dateToStr(new Date(),"yyyyMMdd");
@@ -524,7 +526,9 @@ public class CompController {
             if(targetFile.exists())
                 targetFile.delete();
 
-            return ServerResponse.createByErrorMessage("操作失败");
+            model.addAttribute("msg","操作失败");
+
+            return "/company/editinfo";
 
         }
 
@@ -539,15 +543,23 @@ public class CompController {
                 f.delete();
 
         }
-        //返回一个路径
+
+        //保存路径
         String backpath = DateTimeUtil.dateToStr(new Date(),"yyyyMMdd")+"/"+targetFile.getName();
 
         company.setImgurl(backpath);
 
         iCompanyService.updateCompany(company);
 
-        //然后返回这个路径
-        return ServerResponse.createBySuccess(backpath);
+
+        model.addAttribute("financings",iTagPropertyService.getFinancingsList());
+        model.addAttribute("compsize",iTagPropertyService.getCompSizeList());
+        model.addAttribute("industry",iTagPropertyService.getIndustryList());
+        model.addAttribute("city",iTagPropertyService.getCityPropertyList());
+        model.addAttribute("company",company);
+
+
+        return "/company/editinfo";
     }
 
 
