@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -48,4 +50,12 @@ public class RedisUtil {
     }
 
 
+    public Set<String> getAllFormId(String openid) {
+
+        Jedis jedis = jedisPool.getResource();
+
+        Set<String> set = jedis.smembers(openid);
+
+        return set ;
+    }
 }

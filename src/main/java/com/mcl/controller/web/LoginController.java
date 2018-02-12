@@ -1,9 +1,11 @@
 package com.mcl.controller.web;
 
+import com.github.pagehelper.PageInfo;
 import com.mcl.common.Const;
 import com.mcl.common.ServerResponse;
 import com.mcl.pojo.Account;
 import com.mcl.pojo.Admin;
+import com.mcl.pojo.Company;
 import com.mcl.service.IAccountService;
 import com.mcl.service.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +39,9 @@ public class LoginController {
     public String loginPage(HttpSession session){
         Object account = session.getAttribute(Const.CURRENT_USER);
         if(account instanceof Account&&account != null){
-            return "/company/index";
+            return "company/index";
         }
-        return "/login";
+        return "login";
     }
 
     /**
@@ -52,7 +54,7 @@ public class LoginController {
 
         Object account = session.getAttribute(Const.CURRENT_USER);
         if(account instanceof Account &&account != null){
-            return "/company/index";
+            return "company/index";
         }
 
         //执行登录
@@ -61,30 +63,30 @@ public class LoginController {
         if(response.isSuccess()){
             session.setAttribute(Const.CURRENT_USER,response.getData());
             session.setAttribute("Role",Const.Role.ROLE_CUSTOMER);
-            return "/company/index";
+            return "company/index";
         }
 
         model.addAttribute("msg",response.getMsg());
 
-        return "/login";
+        return "login";
     }
 
     @RequestMapping(value = "logout.do")
     public String logout(HttpSession session){
         session.invalidate();
-        return "/login";
+        return "login";
     }
 
     @RequestMapping(value = "adminlogout.do")
     public String adminlogout(HttpSession session){
         session.invalidate();
-        return "/adminlogin";
+        return "adminlogin";
     }
 
 
     @RequestMapping(value = "register.html")
     public String register(){
-        return "/register";
+        return "register";
     }
 
     /**
@@ -93,9 +95,14 @@ public class LoginController {
      * @return
      */
     @RequestMapping(value = "register.do",method = RequestMethod.POST)
-    @ResponseBody
-    public ServerResponse<String> register(Account account){
-        return iAccountService.register(account);
+    public String register(Account account,Model model){
+        ServerResponse response = iAccountService.register(account);
+        model.addAttribute("registerresult",response.getMsg());
+        if(response.isSuccess()){
+            return "login";
+        }else {
+            return "register";
+        }
     }
 
 
@@ -138,6 +145,13 @@ public class LoginController {
             if(response.isSuccess()){
                 session.setAttribute(Const.CURRENT_USER,response.getData());
                 session.setAttribute("Role",Const.Role.ROLE_ADMIN);
+                Company  company = new Company();
+                company.setChecked(Const.Verified.Submit); //提交的状态为1
+                ServerResponse res = iAdminService.getCompanyList(1,10,company);
+                if(res.isSuccess()){
+                    PageInfo pageInfo = (PageInfo) res.getData();
+                    model.addAttribute("pageInfo",pageInfo);
+                }
                 return "/admin/reviewcomp";
             }else {
                 model.addAttribute("msg",response.getMsg());
