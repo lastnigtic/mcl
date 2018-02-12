@@ -13,11 +13,11 @@ public class Const {
     }
 
     public interface DeliveryStatus{
-        int AlreadyDelivered = 1 ; //已投递
-        int AlreadyViewed = 2 ; //被查看
-        int InvitedToInterview = 3 ;//邀约面试
-        int PassInterview = 4 ;//面试通过
-        int FailInterview = 5 ;//面试不通过
+        int AlreadyDelivered = 0 ; //已投递
+        int AlreadyViewed = 1 ; //被查看
+        int InvitedToInterview = 2 ;//邀约面试
+        int PassInterview = 3 ;//面试通过
+        int FailInterview = 4 ;//面试不通过
     }
 
     public interface JobStatus{
