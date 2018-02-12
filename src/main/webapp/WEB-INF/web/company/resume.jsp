@@ -412,15 +412,16 @@
         var staBox = $('#statusList');
         var msgInp = $('#msg');
         var entryTimeInp = $('#entryTime');
+        // 0 已投递 1被查看 2面试邀约 3通过 4不合适
 //        拿到所需数据
 function params(){
     var _status = staBox.data('status');
     var _id = staBox.data('id');
     var _joid = staBox.data('joid');
     var _openid = staBox.data('openid');
-    if(_status === 1){
-        doChangeStatus(true, _id, _joid, 2);
-        _status = 2;
+    if(_status === 0){
+        doChangeStatus(true, _id, _joid, 1);
+        _status = 1;
     }
     params = function(str){
         if(str === 'id'){
@@ -438,10 +439,10 @@ params();
 //       邀约面试时显示信息输入框(邀约面试需要邀请消息,通过面试设置入职时间)
 staBox.on('change', function(e){
     var status = staBox.find("option:selected")[0].value;
-    if( status== 3 && params('status') !== 3){
+    if( status== 2 && params('status') !== 3){
         msgInp.css('display','inline-block');
         entryTimeInp.hide();
-    }else if(status == 4 && params('status') !== 4){
+    }else if(status == 3 && params('status') !== 4){
         entryTimeInp.css('display','inline-block');
         msgInp.hide();
     }
@@ -453,13 +454,13 @@ staBox.on('change', function(e){
 //        初始化状态组件
 function initCtrl(n){
     var statArr = ['已投递','被查看','邀约面试','面试通过','不合适'];
-    var i = n - 1,
+    var i = n,
     len = statArr.length;
     statArr[i] += '(当前)';
     for(; i < len; i++){
-        staBox.append('<option value='+ (Number(i)+1) +'>'+ statArr[i] +'</option>')
+        staBox.append('<option value='+ (Number(i)) +'>'+ statArr[i] +'</option>')
     }
-    if(n == 4){
+    if(n == 3){
        $(staBox.find('option:last-child')).remove()
    }
 }
@@ -472,9 +473,9 @@ $('#changeStatus').on('click', function(){
     joid = params('joid'),
     msg,
     entrytime;
-    if(status == 3){
+    if(status == 2){
         msg = msgInp.val();
-    }else if(status == 4){
+    }else if(status == 3){
         entrytime = entryTimeInp.val();
     }
 
@@ -486,12 +487,12 @@ function doChangeStatus(isInit, id, joid, status, msg, entrytime){
         status: status,
         joid: joid
     }
-    if(status == 3){
+    if(status == 2){
         if(!msg){
             return window.alert('请输入邀约信息')
         }
         data.msg = msg
-    }else if(status == 4){
+    }else if(status == 3){
         if(!entrytime){
             return window.alert('请设置入职时间')
         }
