@@ -439,10 +439,10 @@ params();
 //       邀约面试时显示信息输入框(邀约面试需要邀请消息,通过面试设置入职时间)
 staBox.on('change', function(e){
     var status = staBox.find("option:selected")[0].value;
-    if( status== 2 && params('status') !== 3){
+    if( status== 2 && params('status') !== 2){
         msgInp.css('display','inline-block');
         entryTimeInp.hide();
-    }else if(status == 3 && params('status') !== 4){
+    }else if(status == 3 && params('status') !== 3){
         entryTimeInp.css('display','inline-block');
         msgInp.hide();
     }
