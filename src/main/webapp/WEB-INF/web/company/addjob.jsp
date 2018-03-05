@@ -52,7 +52,7 @@
 									<input type="text" name="temptation" id="temptation" class="form-control" placeholder="请输入职位诱惑...">
 									<br>
 									<label>日薪</label>
-									<input type="number" name="wage"  id="wage" class="J-positiveNum form-control" placeholder="请输入月薪...">
+									<input type="number" name="wage"  id="wage" class="J-positiveNum form-control" placeholder="请输入日薪...">
 									<br>
 									<label>工作时长</label>
 									<input type="number" name="duration" id="duration" class="J-positiveNum form-control" placeholder="请输入工作时长（单位：月）..." >

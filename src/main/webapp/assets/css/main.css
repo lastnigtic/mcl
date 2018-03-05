@@ -1764,4 +1764,7 @@ ul.activity-timeline > li {
   width: 88px;
   height:auto;
 }
+a{
+  cursor: pointer
+}
 /*# sourceMappingURL=main.css.map */

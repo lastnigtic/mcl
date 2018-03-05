@@ -65,7 +65,7 @@
 
 									<br>
 									<label>注册资本</label>
-									<input  class="form-control" name="registeredcapital" id="registeredcapital" type="text" value="${company.registeredcapital}">
+									<input  class="form-control" name="registeredcapital" id="registeredcapital" type="number" value="${company.registeredcapital}" placeholder="万元">
 									<br>
 									<label>法人代表</label>
 									<input class="form-control" name="legalrepresentative" id="legalrepresentative" type="text" value="${company.legalrepresentative}">

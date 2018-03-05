@@ -42,6 +42,7 @@
 				<div class="container-fluid">
 					
 					<div class="row">
+						${company.checked}
 						<div class="col-md-offset-1 col-md-6">
 							<c:choose>
 								<c:when test="${company.checked == 2}">
@@ -83,9 +84,6 @@
 										<div class="panel-body">
 											<h3 class="page-title">上传公司认证资料</h3>
 											<br>
-											<div style="margin-bottom:20px">
-												<img src="/image/getlicenseimg.do?imgpath=${empty path?company.companylicense:path}" class="img-thumbnail" alt="认证资料图片">
-											</div>
 											<input type="file" name="uploadfile" multiple="" value="上传图片"  />
 											<button id="button-upload" type="submit" class="btn btn-primary" style="float: right">提交</button>
 											<c:if test="${!empty msg}">

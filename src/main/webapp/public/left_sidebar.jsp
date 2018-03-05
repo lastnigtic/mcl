@@ -46,7 +46,7 @@
         ajax.onreadystatechange = function (res) {
             if (ajax.readyState==4 &&ajax.status==200) {
                 var res = JSON.parse(ajax.response);
-                if(res.status === 0){
+                if(res.status === 0 && res.data == 0){
                     var li = document.createElement('li');
                     var a = document.createElement('a');
                     a.href = '/comp/verified.html';
